@@ -1,0 +1,1340 @@
+package V20
+
+// todo json tags
+
+type Order struct {
+	Id               OrderID
+	CreateTime       DateTime
+	State            OrderState
+	ClientExtensions ClientExtensions
+}
+
+type MarketOrder struct {
+	//
+	// The Order’s identifier, unique within the Order’s Account.
+	//
+	id OrderID
+
+	//
+	// The time when the Order was created.
+	//
+	createTime DateTime
+
+	//
+	// The current state of the Order.
+	//
+	state OrderState
+
+	//
+	// The client extensions of the Order. Do not set, modify, or delete
+	// clientExtensions if your account is associated with MT4.
+	//
+	clientExtensions ClientExtensions
+
+	//
+	// The type of the Order. Always set to “MARKET” for Market Orders.
+	//
+	Type OrderType //default=MARKET
+
+	//
+	// The Market Order’s Instrument.
+	//
+	instrument InstrumentName
+
+	//
+	// The quantity requested to be filled by the Market Order. A posititive
+	// number of units results in a long Order, and a negative number of units
+	// results in a short Order.
+	//
+	units DecimalNumber
+
+	//
+	// The time-in-force requested for the Market Order. Restricted to FOK or
+	// IOC for a MarketOrder.
+	//
+	timeInForce TimeInForce
+
+	//
+	// The worst price that the client is willing to have the Market Order
+	// filled at.
+	//
+	priceBound PriceValue
+
+	//
+	// Specification of how Positions in the Account are modified when the Order
+	// is filled.
+	//
+	positionFill OrderPositionFill
+
+	//
+	// Details of the Trade requested to be closed, only provided when the
+	// Market Order is being used to explicitly close a Trade.
+	//
+	tradeClose MarketOrderTradeClose
+
+	//
+	// Details of the long Position requested to be closed out, only provided
+	// when a Market Order is being used to explicitly closeout a long Position.
+	//
+	longPositionCloseout MarketOrderPositionCloseout
+
+	//
+	// Details of the short Position requested to be closed out, only provided
+	// when a Market Order is being used to explicitly closeout a short
+	// Position.
+	//
+	shortPositionCloseout MarketOrderPositionCloseout
+
+	//
+	// Details of the Margin Closeout that this Market Order was created for
+	//
+	marginCloseout MarketOrderMarginCloseout
+
+	//
+	// Details of the delayed Trade close that this Market Order was created for
+	//
+	delayedTradeClose MarketOrderDelayedTradeClose
+
+	//
+	// TakeProfitDetails specifies the details of a Take Profit Order to be
+	// created on behalf of a client. This may happen when an Order is filled
+	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
+	// Take Profit Order is modified directly through the Trade.
+	//
+	takeProfitOnFill TakeProfitDetails
+
+	//
+	// StopLossDetails specifies the details of a Stop Loss Order to be created
+	// on behalf of a client. This may happen when an Order is filled that opens
+	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
+	// Order is modified directly through the Trade.
+	//
+	stopLossOnFill StopLossDetails
+
+	//
+	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
+	// Order to be created on behalf of a client. This may happen when an Order
+	// is filled that opens a Trade requiring a Trailing Stop Loss, or when a
+	// Trade’s dependent Trailing Stop Loss Order is modified directly through
+	// the Trade.
+	//
+	trailingStopLossOnFill TrailingStopLossDetails
+
+	//
+	// Client Extensions to add to the Trade created when the Order is filled
+	// (if such a Trade is created). Do not set, modify, or delete
+	// tradeClientExtensions if your account is associated with MT4.
+	//
+	tradeClientExtensions ClientExtensions
+
+	//
+	// ID of the Transaction that filled this Order (only provided when the
+	// Order’s state is FILLED)
+	//
+	fillingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was filled (only provided when the Order’s state
+	// is FILLED)
+	//
+	filledTime DateTime
+
+	//
+	// Trade ID of Trade opened when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was opened as a result of the
+	// fill)
+	//
+	tradeOpenedID TradeID
+
+	//
+	// Trade ID of Trade reduced when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was reduced as a result of the
+	// fill)
+	//
+	tradeReducedID TradeID
+
+	//
+	// Trade IDs of Trades closed when the Order was filled (only provided when
+	// the Order’s state is FILLED and one or more Trades were closed as a
+	// result of the fill)
+	//
+	tradeClosedIDs []TradeID
+
+	//
+	// ID of the Transaction that cancelled the Order (only provided when the
+	// Order’s state is CANCELLED)
+	//
+	cancellingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was cancelled (only provided when the state of
+	// the Order is CANCELLED)
+	//
+	cancelledTime DateTime
+}
+
+type FixedPriceOrder struct {
+	//
+	// The Order’s identifier, unique within the Order’s Account.
+	//
+	id OrderID
+
+	//
+	// The time when the Order was created.
+	//
+	createTime DateTime
+
+	//
+	// The current state of the Order.
+	//
+	state OrderState
+
+	//
+	// The client extensions of the Order. Do not set, modify, or delete
+	// clientExtensions if your account is associated with MT4.
+	//
+	clientExtensions ClientExtensions
+
+	//
+	// The type of the Order. Always set to “FIXED_PRICE” for Fixed Price
+	// Orders.
+	//
+	Type OrderType
+
+	//
+	// The Fixed Price Order’s Instrument.
+	//
+	instrument InstrumentName
+
+	//
+	// The quantity requested to be filled by the Fixed Price Order. A
+	// posititive number of units results in a long Order, and a negative number
+	// of units results in a short Order.
+	//
+	units DecimalNumber
+
+	//
+	// The price specified for the Fixed Price Order. This price is the exact
+	// price that the Fixed Price Order will be filled at.
+	//
+	price PriceValue
+
+	//
+	// Specification of how Positions in the Account are modified when the Order
+	// is filled.
+	//
+	positionFill OrderPositionFill
+
+	//
+	// The state that the trade resulting from the Fixed Price Order should be
+	// set to.
+	//
+	tradeState string
+
+	//
+	// TakeProfitDetails specifies the details of a Take Profit Order to be
+	// created on behalf of a client. This may happen when an Order is filled
+	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
+	// Take Profit Order is modified directly through the Trade.
+	//
+	takeProfitOnFill TakeProfitDetails
+
+	//
+	// StopLossDetails specifies the details of a Stop Loss Order to be created
+	// on behalf of a client. This may happen when an Order is filled that opens
+	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
+	// Order is modified directly through the Trade.
+	//
+	stopLossOnFill StopLossDetails
+
+	//
+	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
+	// Order to be created on behalf of a client. This may happen when an Order
+	// is filled that opens a Trade requiring a Trailing Stop Loss, or when a
+	// Trade’s dependent Trailing Stop Loss Order is modified directly through
+	// the Trade.
+	//
+	trailingStopLossOnFill TrailingStopLossDetails
+
+	//
+	// Client Extensions to add to the Trade created when the Order is filled
+	// (if such a Trade is created). Do not set, modify, or delete
+	// tradeClientExtensions if your account is associated with MT4.
+	//
+	tradeClientExtensions ClientExtensions
+
+	//
+	// ID of the Transaction that filled this Order (only provided when the
+	// Order’s state is FILLED)
+	//
+	fillingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was filled (only provided when the Order’s state
+	// is FILLED)
+	//
+	filledTime DateTime
+
+	//
+	// Trade ID of Trade opened when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was opened as a result of the
+	// fill)
+	//
+	tradeOpenedID TradeID
+
+	//
+	// Trade ID of Trade reduced when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was reduced as a result of the
+	// fill)
+	//
+	tradeReducedID TradeID
+
+	//
+	// Trade IDs of Trades closed when the Order was filled (only provided when
+	// the Order’s state is FILLED and one or more Trades were closed as a
+	// result of the fill)
+	//
+	tradeClosedIDs []TradeID
+
+	//
+	// ID of the Transaction that cancelled the Order (only provided when the
+	// Order’s state is CANCELLED)
+	//
+	cancellingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was cancelled (only provided when the state of
+	// the Order is CANCELLED)
+	//
+	cancelledTime DateTime
+}
+
+type LimitOrder struct {
+	//
+	// The Order’s identifier, unique within the Order’s Account.
+	//
+	id OrderID
+
+	//
+	// The time when the Order was created.
+	//
+	createTime DateTime
+
+	//
+	// The current state of the Order.
+	//
+	state OrderState
+
+	//
+	// The client extensions of the Order. Do not set, modify, or delete
+	// clientExtensions if your account is associated with MT4.
+	//
+	clientExtensions ClientExtensions
+
+	//
+	// The type of the Order. Always set to “LIMIT” for Limit Orders.
+	//
+	Type OrderType
+
+	//
+	// The Limit Order’s Instrument.
+	//
+	instrument InstrumentName
+
+	//
+	// The quantity requested to be filled by the Limit Order. A posititive
+	// number of units results in a long Order, and a negative number of units
+	// results in a short Order.
+	//
+	units DecimalNumber
+
+	//
+	// The price threshold specified for the Limit Order. The Limit Order will
+	// only be filled by a market price that is equal to or better than this
+	// price.
+	//
+	price PriceValue
+
+	//
+	// The time-in-force requested for the Limit Order.
+	//
+	timeInForce TimeInForce
+
+	//
+	// The date/time when the Limit Order will be cancelled if its timeInForce
+	// is “GTD”.
+	//
+	gtdTime DateTime
+
+	//
+	// Specification of how Positions in the Account are modified when the Order
+	// is filled.
+	//
+	positionFill OrderPositionFill
+
+	//
+	// Specification of which price component should be used when determining if
+	// an Order should be triggered and filled. This allows Orders to be
+	// triggered based on the bid, ask, mid, default (ask for buy, bid for sell)
+	// or inverse (ask for sell, bid for buy) price depending on the desired
+	// behaviour. Orders are always filled using their default price component.
+	// This feature is only provided through the REST API. Clients who choose to
+	// specify a non-default trigger condition will not see it reflected in any
+	// of OANDA’s proprietary or partner trading platforms, their transaction
+	// history or their account statements. OANDA platforms always assume that
+	// an Order’s trigger condition is set to the default value when indicating
+	// the distance from an Order’s trigger price, and will always provide the
+	// default trigger condition when creating or modifying an Order. A special
+	// restriction applies when creating a guaranteed Stop Loss Order. In this
+	// case the TriggerCondition value must either be “DEFAULT”, or the
+	// “natural” trigger side “DEFAULT” results in. So for a Stop Loss Order for
+	// a long trade valid values are “DEFAULT” and “BID”, and for short trades
+	// “DEFAULT” and “ASK” are valid.
+	//
+	triggerCondition OrderTriggerCondition
+
+	//
+	// TakeProfitDetails specifies the details of a Take Profit Order to be
+	// created on behalf of a client. This may happen when an Order is filled
+	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
+	// Take Profit Order is modified directly through the Trade.
+	//
+	takeProfitOnFill TakeProfitDetails
+
+	//
+	// StopLossDetails specifies the details of a Stop Loss Order to be created
+	// on behalf of a client. This may happen when an Order is filled that opens
+	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
+	// Order is modified directly through the Trade.
+	//
+	stopLossOnFill StopLossDetails
+
+	//
+	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
+	// Order to be created on behalf of a client. This may happen when an Order
+	// is filled that opens a Trade requiring a Trailing Stop Loss, or when a
+	// Trade’s dependent Trailing Stop Loss Order is modified directly through
+	// the Trade.
+	//
+	trailingStopLossOnFill TrailingStopLossDetails
+
+	//
+	// Client Extensions to add to the Trade created when the Order is filled
+	// (if such a Trade is created). Do not set, modify, or delete
+	// tradeClientExtensions if your account is associated with MT4.
+	//
+	tradeClientExtensions ClientExtensions
+
+	//
+	// ID of the Transaction that filled this Order (only provided when the
+	// Order’s state is FILLED)
+	//
+	fillingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was filled (only provided when the Order’s state
+	// is FILLED)
+	//
+	filledTime DateTime
+
+	//
+	// Trade ID of Trade opened when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was opened as a result of the
+	// fill)
+	//
+	tradeOpenedID TradeID
+
+	//
+	// Trade ID of Trade reduced when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was reduced as a result of the
+	// fill)
+	//
+	tradeReducedID TradeID
+
+	//
+	// Trade IDs of Trades closed when the Order was filled (only provided when
+	// the Order’s state is FILLED and one or more Trades were closed as a
+	// result of the fill)
+	//
+	tradeClosedIDs []TradeID
+
+	//
+	// ID of the Transaction that cancelled the Order (only provided when the
+	// Order’s state is CANCELLED)
+	//
+	cancellingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was cancelled (only provided when the state of
+	// the Order is CANCELLED)
+	//
+	cancelledTime DateTime
+
+	//
+	// The ID of the Order that was replaced by this Order (only provided if
+	// this Order was created as part of a cancel/replace).
+	//
+	replacesOrderID OrderID
+
+	//
+	// The ID of the Order that replaced this Order (only provided if this Order
+	// was cancelled as part of a cancel/replace).
+	//
+	replacedByOrderID OrderID
+}
+
+type StopOrder struct {
+	//
+	// The Order’s identifier, unique within the Order’s Account.
+	//
+	id OrderID
+
+	//
+	// The time when the Order was created.
+	//
+	createTime DateTime
+
+	//
+	// The current state of the Order.
+	//
+	state OrderState
+
+	//
+	// The client extensions of the Order. Do not set, modify, or delete
+	// clientExtensions if your account is associated with MT4.
+	//
+	clientExtensions ClientExtensions
+
+	//
+	// The type of the Order. Always set to “STOP” for Stop Orders.
+	//
+	Type OrderType
+
+	//
+	// The Stop Order’s Instrument.
+	//
+	instrument InstrumentName
+
+	//
+	// The quantity requested to be filled by the Stop Order. A posititive
+	// number of units results in a long Order, and a negative number of units
+	// results in a short Order.
+	//
+	units DecimalNumber
+
+	//
+	// The price threshold specified for the Stop Order. The Stop Order will
+	// only be filled by a market price that is equal to or worse than this
+	// price.
+	//
+	price PriceValue
+
+	//
+	// The worst market price that may be used to fill this Stop Order. If the
+	// market gaps and crosses through both the price and the priceBound, the
+	// Stop Order will be cancelled instead of being filled.
+	//
+	priceBound PriceValue
+
+	//
+	// The time-in-force requested for the Stop Order.
+	//
+	timeInForce TimeInForce
+
+	//
+	// The date/time when the Stop Order will be cancelled if its timeInForce is
+	// “GTD”.
+	//
+	gtdTime DateTime
+
+	//
+	// Specification of how Positions in the Account are modified when the Order
+	// is filled.
+	//
+	positionFill OrderPositionFill
+
+	//
+	// Specification of which price component should be used when determining if
+	// an Order should be triggered and filled. This allows Orders to be
+	// triggered based on the bid, ask, mid, default (ask for buy, bid for sell)
+	// or inverse (ask for sell, bid for buy) price depending on the desired
+	// behaviour. Orders are always filled using their default price component.
+	// This feature is only provided through the REST API. Clients who choose to
+	// specify a non-default trigger condition will not see it reflected in any
+	// of OANDA’s proprietary or partner trading platforms, their transaction
+	// history or their account statements. OANDA platforms always assume that
+	// an Order’s trigger condition is set to the default value when indicating
+	// the distance from an Order’s trigger price, and will always provide the
+	// default trigger condition when creating or modifying an Order. A special
+	// restriction applies when creating a guaranteed Stop Loss Order. In this
+	// case the TriggerCondition value must either be “DEFAULT”, or the
+	// “natural” trigger side “DEFAULT” results in. So for a Stop Loss Order for
+	// a long trade valid values are “DEFAULT” and “BID”, and for short trades
+	// “DEFAULT” and “ASK” are valid.
+	//
+	triggerCondition OrderTriggerCondition
+
+	//
+	// TakeProfitDetails specifies the details of a Take Profit Order to be
+	// created on behalf of a client. This may happen when an Order is filled
+	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
+	// Take Profit Order is modified directly through the Trade.
+	//
+	takeProfitOnFill TakeProfitDetails
+
+	//
+	// StopLossDetails specifies the details of a Stop Loss Order to be created
+	// on behalf of a client. This may happen when an Order is filled that opens
+	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
+	// Order is modified directly through the Trade.
+	//
+	stopLossOnFill StopLossDetails
+
+	//
+	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
+	// Order to be created on behalf of a client. This may happen when an Order
+	// is filled that opens a Trade requiring a Trailing Stop Loss, or when a
+	// Trade’s dependent Trailing Stop Loss Order is modified directly through
+	// the Trade.
+	//
+	trailingStopLossOnFill TrailingStopLossDetails
+
+	//
+	// Client Extensions to add to the Trade created when the Order is filled
+	// (if such a Trade is created). Do not set, modify, or delete
+	// tradeClientExtensions if your account is associated with MT4.
+	//
+	tradeClientExtensions ClientExtensions
+
+	//
+	// ID of the Transaction that filled this Order (only provided when the
+	// Order’s state is FILLED)
+	//
+	fillingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was filled (only provided when the Order’s state
+	// is FILLED)
+	//
+	filledTime DateTime
+
+	//
+	// Trade ID of Trade opened when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was opened as a result of the
+	// fill)
+	//
+	tradeOpenedID TradeID
+
+	//
+	// Trade ID of Trade reduced when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was reduced as a result of the
+	// fill)
+	//
+	tradeReducedID TradeID
+
+	//
+	// Trade IDs of Trades closed when the Order was filled (only provided when
+	// the Order’s state is FILLED and one or more Trades were closed as a
+	// result of the fill)
+	//
+	tradeClosedIDs []TradeID
+
+	//
+	// ID of the Transaction that cancelled the Order (only provided when the
+	// Order’s state is CANCELLED)
+	//
+	cancellingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was cancelled (only provided when the state of
+	// the Order is CANCELLED)
+	//
+	cancelledTime DateTime
+
+	//
+	// The ID of the Order that was replaced by this Order (only provided if
+	// this Order was created as part of a cancel/replace).
+	//
+	replacesOrderID OrderID
+
+	//
+	// The ID of the Order that replaced this Order (only provided if this Order
+	// was cancelled as part of a cancel/replace).
+	//
+	replacedByOrderID OrderID
+}
+
+type MarketIfTouchedOrder struct {
+	//
+	// The Order’s identifier, unique within the Order’s Account.
+	//
+	id OrderID
+
+	//
+	// The time when the Order was created.
+	//
+	createTime DateTime
+
+	//
+	// The current state of the Order.
+	//
+	state OrderState
+
+	//
+	// The client extensions of the Order. Do not set, modify, or delete
+	// clientExtensions if your account is associated with MT4.
+	//
+	clientExtensions ClientExtensions
+
+	//
+	// The type of the Order. Always set to “MARKET_IF_TOUCHED” for Market If
+	// Touched Orders.
+	//
+	Type OrderType
+
+	//
+	// The MarketIfTouched Order’s Instrument.
+	//
+	instrument InstrumentName
+
+	//
+	// The quantity requested to be filled by the MarketIfTouched Order. A
+	// posititive number of units results in a long Order, and a negative number
+	// of units results in a short Order.
+	//
+	units DecimalNumber
+
+	//
+	// The price threshold specified for the MarketIfTouched Order. The
+	// MarketIfTouched Order will only be filled by a market price that crosses
+	// this price from the direction of the market price at the time when the
+	// Order was created (the initialMarketPrice). Depending on the value of the
+	// Order’s price and initialMarketPrice, the MarketIfTouchedOrder will
+	// behave like a Limit or a Stop Order.
+	//
+	price PriceValue
+
+	//
+	// The worst market price that may be used to fill this MarketIfTouched
+	// Order.
+	//
+	priceBound PriceValue
+
+	//
+	// The time-in-force requested for the MarketIfTouched Order. Restricted to
+	// “GTC”, “GFD” and “GTD” for MarketIfTouched Orders.
+	//
+	timeInForce TimeInForce
+
+	//
+	// The date/time when the MarketIfTouched Order will be cancelled if its
+	// timeInForce is “GTD”.
+	//
+	gtdTime DateTime
+
+	//
+	// Specification of how Positions in the Account are modified when the Order
+	// is filled.
+	//
+	positionFill OrderPositionFill
+
+	//
+	// Specification of which price component should be used when determining if
+	// an Order should be triggered and filled. This allows Orders to be
+	// triggered based on the bid, ask, mid, default (ask for buy, bid for sell)
+	// or inverse (ask for sell, bid for buy) price depending on the desired
+	// behaviour. Orders are always filled using their default price component.
+	// This feature is only provided through the REST API. Clients who choose to
+	// specify a non-default trigger condition will not see it reflected in any
+	// of OANDA’s proprietary or partner trading platforms, their transaction
+	// history or their account statements. OANDA platforms always assume that
+	// an Order’s trigger condition is set to the default value when indicating
+	// the distance from an Order’s trigger price, and will always provide the
+	// default trigger condition when creating or modifying an Order. A special
+	// restriction applies when creating a guaranteed Stop Loss Order. In this
+	// case the TriggerCondition value must either be “DEFAULT”, or the
+	// “natural” trigger side “DEFAULT” results in. So for a Stop Loss Order for
+	// a long trade valid values are “DEFAULT” and “BID”, and for short trades
+	// “DEFAULT” and “ASK” are valid.
+	//
+	triggerCondition OrderTriggerCondition
+
+	//
+	// The Market price at the time when the MarketIfTouched Order was created.
+	//
+	initialMarketPrice PriceValue
+
+	//
+	// TakeProfitDetails specifies the details of a Take Profit Order to be
+	// created on behalf of a client. This may happen when an Order is filled
+	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
+	// Take Profit Order is modified directly through the Trade.
+	//
+	takeProfitOnFill TakeProfitDetails
+
+	//
+	// StopLossDetails specifies the details of a Stop Loss Order to be created
+	// on behalf of a client. This may happen when an Order is filled that opens
+	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
+	// Order is modified directly through the Trade.
+	//
+	stopLossOnFill StopLossDetails
+
+	//
+	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
+	// Order to be created on behalf of a client. This may happen when an Order
+	// is filled that opens a Trade requiring a Trailing Stop Loss, or when a
+	// Trade’s dependent Trailing Stop Loss Order is modified directly through
+	// the Trade.
+	//
+	trailingStopLossOnFill TrailingStopLossDetails
+
+	//
+	// Client Extensions to add to the Trade created when the Order is filled
+	// (if such a Trade is created). Do not set, modify, or delete
+	// tradeClientExtensions if your account is associated with MT4.
+	//
+	tradeClientExtensions ClientExtensions
+
+	//
+	// ID of the Transaction that filled this Order (only provided when the
+	// Order’s state is FILLED)
+	//
+	fillingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was filled (only provided when the Order’s state
+	// is FILLED)
+	//
+	filledTime DateTime
+
+	//
+	// Trade ID of Trade opened when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was opened as a result of the
+	// fill)
+	//
+	tradeOpenedID TradeID
+
+	//
+	// Trade ID of Trade reduced when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was reduced as a result of the
+	// fill)
+	//
+	tradeReducedID TradeID
+
+	//
+	// Trade IDs of Trades closed when the Order was filled (only provided when
+	// the Order’s state is FILLED and one or more Trades were closed as a
+	// result of the fill)
+	//
+	tradeClosedIDs []TradeID
+
+	//
+	// ID of the Transaction that cancelled the Order (only provided when the
+	// Order’s state is CANCELLED)
+	//
+	cancellingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was cancelled (only provided when the state of
+	// the Order is CANCELLED)
+	//
+	cancelledTime DateTime
+
+	//
+	// The ID of the Order that was replaced by this Order (only provided if
+	// this Order was created as part of a cancel/replace).
+	//
+	replacesOrderID OrderID
+
+	//
+	// The ID of the Order that replaced this Order (only provided if this Order
+	// was cancelled as part of a cancel/replace).
+	//
+	replacedByOrderID OrderID
+}
+
+type TakeProfitOrder struct {
+	//
+	// The Order’s identifier, unique within the Order’s Account.
+	//
+	id OrderID
+
+	//
+	// The time when the Order was created.
+	//
+	createTime DateTime
+
+	//
+	// The current state of the Order.
+	//
+	state OrderState
+
+	//
+	// The client extensions of the Order. Do not set, modify, or delete
+	// clientExtensions if your account is associated with MT4.
+	//
+	clientExtensions ClientExtensions
+
+	//
+	// The type of the Order. Always set to “TAKE_PROFIT” for Take Profit
+	// Orders.
+	//
+	Type OrderType
+
+	//
+	// The ID of the Trade to close when the price threshold is breached.
+	//
+	tradeID TradeID
+
+	//
+	// The client ID of the Trade to be closed when the price threshold is
+	// breached.
+	//
+	clientTradeID ClientID
+
+	//
+	// The price threshold specified for the TakeProfit Order. The associated
+	// Trade will be closed by a market price that is equal to or better than
+	// this threshold.
+	//
+	price PriceValue
+
+	//
+	// The time-in-force requested for the TakeProfit Order. Restricted to
+	// “GTC”, “GFD” and “GTD” for TakeProfit Orders.
+	//
+	timeInForce TimeInForce
+
+	//
+	// The date/time when the TakeProfit Order will be cancelled if its
+	// timeInForce is “GTD”.
+	//
+	gtdTime DateTime
+
+	//
+	// Specification of which price component should be used when determining if
+	// an Order should be triggered and filled. This allows Orders to be
+	// triggered based on the bid, ask, mid, default (ask for buy, bid for sell)
+	// or inverse (ask for sell, bid for buy) price depending on the desired
+	// behaviour. Orders are always filled using their default price component.
+	// This feature is only provided through the REST API. Clients who choose to
+	// specify a non-default trigger condition will not see it reflected in any
+	// of OANDA’s proprietary or partner trading platforms, their transaction
+	// history or their account statements. OANDA platforms always assume that
+	// an Order’s trigger condition is set to the default value when indicating
+	// the distance from an Order’s trigger price, and will always provide the
+	// default trigger condition when creating or modifying an Order. A special
+	// restriction applies when creating a guaranteed Stop Loss Order. In this
+	// case the TriggerCondition value must either be “DEFAULT”, or the
+	// “natural” trigger side “DEFAULT” results in. So for a Stop Loss Order for
+	// a long trade valid values are “DEFAULT” and “BID”, and for short trades
+	// “DEFAULT” and “ASK” are valid.
+	//
+	triggerCondition OrderTriggerCondition
+
+	//
+	// ID of the Transaction that filled this Order (only provided when the
+	// Order’s state is FILLED)
+	//
+	fillingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was filled (only provided when the Order’s state
+	// is FILLED)
+	//
+	filledTime DateTime
+
+	//
+	// Trade ID of Trade opened when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was opened as a result of the
+	// fill)
+	//
+	tradeOpenedID TradeID
+
+	//
+	// Trade ID of Trade reduced when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was reduced as a result of the
+	// fill)
+	//
+	tradeReducedID TradeID
+
+	//
+	// Trade IDs of Trades closed when the Order was filled (only provided when
+	// the Order’s state is FILLED and one or more Trades were closed as a
+	// result of the fill)
+	//
+	tradeClosedIDs []TradeID
+
+	//
+	// ID of the Transaction that cancelled the Order (only provided when the
+	// Order’s state is CANCELLED)
+	//
+	cancellingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was cancelled (only provided when the state of
+	// the Order is CANCELLED)
+	//
+	cancelledTime DateTime
+
+	//
+	// The ID of the Order that was replaced by this Order (only provided if
+	// this Order was created as part of a cancel/replace).
+	//
+	replacesOrderID OrderID
+
+	//
+	// The ID of the Order that replaced this Order (only provided if this Order
+	// was cancelled as part of a cancel/replace).
+	//
+	replacedByOrderID OrderID
+}
+
+type StopLossOrder struct {
+	//
+	// The Order’s identifier, unique within the Order’s Account.
+	//
+	id OrderID
+
+	//
+	// The time when the Order was created.
+	//
+	createTime DateTime
+
+	//
+	// The current state of the Order.
+	//
+	state OrderState
+
+	//
+	// The client extensions of the Order. Do not set, modify, or delete
+	// clientExtensions if your account is associated with MT4.
+	//
+	clientExtensions ClientExtensions
+
+	//
+	// The type of the Order. Always set to “STOP_LOSS” for Stop Loss Orders.
+	//
+	Type OrderType
+
+	//
+	// The premium that will be charged if the Stop Loss Order is guaranteed and
+	// the Order is filled at the guaranteed price. It is in price units and is
+	// charged for each unit of the Trade.
+	//
+	guaranteedExecutionPremium DecimalNumber
+
+	//
+	// The ID of the Trade to close when the price threshold is breached.
+	//
+	tradeID TradeID
+
+	//
+	// The client ID of the Trade to be closed when the price threshold is
+	// breached.
+	//
+	clientTradeID ClientID
+
+	//
+	// The price threshold specified for the Stop Loss Order. If the guaranteed
+	// flag is false, the associated Trade will be closed by a market price that
+	// is equal to or worse than this threshold. If the flag is true the
+	// associated Trade will be closed at this price.
+	//
+	price PriceValue
+
+	//
+	// Specifies the distance (in price units) from the Account’s current price
+	// to use as the Stop Loss Order price. If the Trade is short the
+	// Instrument’s bid price is used, and for long Trades the ask is used.
+	//
+	distance DecimalNumber
+
+	//
+	// The time-in-force requested for the StopLoss Order. Restricted to “GTC”,
+	// “GFD” and “GTD” for StopLoss Orders.
+	//
+	timeInForce TimeInForce
+
+	//
+	// The date/time when the StopLoss Order will be cancelled if its
+	// timeInForce is “GTD”.
+	//
+	gtdTime DateTime
+
+	//
+	// Specification of which price component should be used when determining if
+	// an Order should be triggered and filled. This allows Orders to be
+	// triggered based on the bid, ask, mid, default (ask for buy, bid for sell)
+	// or inverse (ask for sell, bid for buy) price depending on the desired
+	// behaviour. Orders are always filled using their default price component.
+	// This feature is only provided through the REST API. Clients who choose to
+	// specify a non-default trigger condition will not see it reflected in any
+	// of OANDA’s proprietary or partner trading platforms, their transaction
+	// history or their account statements. OANDA platforms always assume that
+	// an Order’s trigger condition is set to the default value when indicating
+	// the distance from an Order’s trigger price, and will always provide the
+	// default trigger condition when creating or modifying an Order. A special
+	// restriction applies when creating a guaranteed Stop Loss Order. In this
+	// case the TriggerCondition value must either be “DEFAULT”, or the
+	// “natural” trigger side “DEFAULT” results in. So for a Stop Loss Order for
+	// a long trade valid values are “DEFAULT” and “BID”, and for short trades
+	// “DEFAULT” and “ASK” are valid.
+	//
+	triggerCondition OrderTriggerCondition
+
+	//
+	// Flag indicating that the Stop Loss Order is guaranteed. The default value
+	// depends on the GuaranteedStopLossOrderMode of the account, if it is
+	// REQUIRED, the default will be true, for DISABLED or ENABLED the default
+	// is false.
+	//
+	guaranteed bool
+
+	//
+	// ID of the Transaction that filled this Order (only provided when the
+	// Order’s state is FILLED)
+	//
+	fillingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was filled (only provided when the Order’s state
+	// is FILLED)
+	//
+	filledTime DateTime
+
+	//
+	// Trade ID of Trade opened when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was opened as a result of the
+	// fill)
+	//
+	tradeOpenedID TradeID
+
+	//
+	// Trade ID of Trade reduced when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was reduced as a result of the
+	// fill)
+	//
+	tradeReducedID TradeID
+
+	//
+	// Trade IDs of Trades closed when the Order was filled (only provided when
+	// the Order’s state is FILLED and one or more Trades were closed as a
+	// result of the fill)
+	//
+	tradeClosedIDs []TradeID
+
+	//
+	// ID of the Transaction that cancelled the Order (only provided when the
+	// Order’s state is CANCELLED)
+	//
+	cancellingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was cancelled (only provided when the state of
+	// the Order is CANCELLED)
+	//
+	cancelledTime DateTime
+
+	//
+	// The ID of the Order that was replaced by this Order (only provided if
+	// this Order was created as part of a cancel/replace).
+	//
+	replacesOrderID OrderID
+
+	//
+	// The ID of the Order that replaced this Order (only provided if this Order
+	// was cancelled as part of a cancel/replace).
+	//
+	replacedByOrderID OrderID
+}
+
+type TrailingStopLossOrder struct {
+	//
+	// The Order’s identifier, unique within the Order’s Account.
+	//
+	id OrderID
+
+	//
+	// The time when the Order was created.
+	//
+	createTime DateTime
+
+	//
+	// The current state of the Order.
+	//
+	state OrderState
+
+	//
+	// The client extensions of the Order. Do not set, modify, or delete
+	// clientExtensions if your account is associated with MT4.
+	//
+	clientExtensions ClientExtensions
+
+	//
+	// The type of the Order. Always set to “TRAILING_STOP_LOSS” for Trailing
+	// Stop Loss Orders.
+	//
+	Type OrderType
+
+	//
+	// The ID of the Trade to close when the price threshold is breached.
+	//
+	tradeID TradeID
+
+	//
+	// The client ID of the Trade to be closed when the price threshold is
+	// breached.
+	//
+	clientTradeID ClientID
+
+	//
+	// The price distance (in price units) specified for the TrailingStopLoss
+	// Order.
+	//
+	distance DecimalNumber
+
+	//
+	// The time-in-force requested for the TrailingStopLoss Order. Restricted to
+	// “GTC”, “GFD” and “GTD” for TrailingStopLoss Orders.
+	//
+	timeInForce TimeInForce
+
+	//
+	// The date/time when the StopLoss Order will be cancelled if its
+	// timeInForce is “GTD”.
+	//
+	gtdTime DateTime
+
+	//
+	// Specification of which price component should be used when determining if
+	// an Order should be triggered and filled. This allows Orders to be
+	// triggered based on the bid, ask, mid, default (ask for buy, bid for sell)
+	// or inverse (ask for sell, bid for buy) price depending on the desired
+	// behaviour. Orders are always filled using their default price component.
+	// This feature is only provided through the REST API. Clients who choose to
+	// specify a non-default trigger condition will not see it reflected in any
+	// of OANDA’s proprietary or partner trading platforms, their transaction
+	// history or their account statements. OANDA platforms always assume that
+	// an Order’s trigger condition is set to the default value when indicating
+	// the distance from an Order’s trigger price, and will always provide the
+	// default trigger condition when creating or modifying an Order. A special
+	// restriction applies when creating a guaranteed Stop Loss Order. In this
+	// case the TriggerCondition value must either be “DEFAULT”, or the
+	// “natural” trigger side “DEFAULT” results in. So for a Stop Loss Order for
+	// a long trade valid values are “DEFAULT” and “BID”, and for short trades
+	// “DEFAULT” and “ASK” are valid.
+	//
+	triggerCondition OrderTriggerCondition
+
+	//
+	// The trigger price for the Trailing Stop Loss Order. The trailing stop
+	// value will trail (follow) the market price by the TSL order’s configured
+	// “distance” as the market price moves in the winning direction. If the
+	// market price moves to a level that is equal to or worse than the trailing
+	// stop value, the order will be filled and the Trade will be closed.
+	//
+	trailingStopValue PriceValue
+
+	//
+	// ID of the Transaction that filled this Order (only provided when the
+	// Order’s state is FILLED)
+	//
+	fillingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was filled (only provided when the Order’s state
+	// is FILLED)
+	//
+	filledTime DateTime
+
+	//
+	// Trade ID of Trade opened when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was opened as a result of the
+	// fill)
+	//
+	tradeOpenedID TradeID
+
+	//
+	// Trade ID of Trade reduced when the Order was filled (only provided when
+	// the Order’s state is FILLED and a Trade was reduced as a result of the
+	// fill)
+	//
+	tradeReducedID TradeID
+
+	//
+	// Trade IDs of Trades closed when the Order was filled (only provided when
+	// the Order’s state is FILLED and one or more Trades were closed as a
+	// result of the fill)
+	//
+	tradeClosedIDs []TradeID
+
+	//
+	// ID of the Transaction that cancelled the Order (only provided when the
+	// Order’s state is CANCELLED)
+	//
+	cancellingTransactionID TransactionID
+
+	//
+	// Date/time when the Order was cancelled (only provided when the state of
+	// the Order is CANCELLED)
+	//
+	cancelledTime DateTime
+
+	//
+	// The ID of the Order that was replaced by this Order (only provided if
+	// this Order was created as part of a cancel/replace).
+	//
+	replacesOrderID OrderID
+
+	//
+	// The ID of the Order that replaced this Order (only provided if this Order
+	// was cancelled as part of a cancel/replace).
+	//
+	replacedByOrderID OrderID
+}
+
+type OrderRequest struct{} //todo
+
+type MarketOrderRequest struct{} // todo
+
+type LimitOrderRequest struct{} // todo
+
+type StopOrderRequest struct{} // todo
+
+type MarketIfTouchedOrderRequest struct{} //  todo
+
+type TakeProfitOrderRequest struct{} // todo
+
+type StopLossOrderRequest struct{} // todo
+
+type TrailingStopLossOrderRequest struct{} // todo
+
+type OrderID string
+
+type OrderType string // todo do consts
+
+type CancellableOrderType string // todo do consts
+
+type OrderState string // todo consts
+
+type OrderStateFilter string // todo consts
+
+type OrderIdentifier struct{} // todo
+
+type OrderSpecifier string
+
+type TimeInForce string // todo consts
+
+type OrderPositionFill string // todo consts
+
+type OrderTriggerCondition string // todo consts
+
+type DynamicOrderState struct{} // todo
+
+type UnitsAvailableDetails struct{} //todo
+
+type UnitsAvailable struct{} // todo
+
+type GuaranteedStopLossOrderEntryData struct{} //todo

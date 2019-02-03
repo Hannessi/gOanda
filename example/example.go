@@ -1,6 +1,6 @@
 package main
 
-import "gitlab.com/personal/go/gOanda/V20"
+import "github.com/hannessi/gOanda/V20"
 
 func main() {
 

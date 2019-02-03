@@ -1,6 +1,6 @@
 package api
 
-import "gitlab.com/personal/go/gOanda/V20"
+import "github.com/hannessi/gOanda/V20/requester/V20"
 
 func New() *Requester {
 	return &Requester{}

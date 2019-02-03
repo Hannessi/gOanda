@@ -1,8 +1,9 @@
 package V20
 
 import (
+	"github.com/hannessi/gOanda/V20/requester/V20"
+	"github.com/hannessi/gOanda/V20/requester/V20/api"
 	"github.com/sirupsen/logrus"
-	"gitlab.com/personal/go/gOanda/V20/requester/api"
 )
 
 func New(new NewRequest) *Client {
@@ -22,15 +23,15 @@ type NewRequest struct {
 
 type Client struct {
 	AccountNumber string
-	Requester     Requester
+	Requester     V20.Requester
 }
 
 // account endpoints
 func (c *Client) GetAccounts() error {
-	getAccountResponse, err := c.Requester.GetAccounts(GetAccountsRequest{})
+	getAccountResponse, err := c.Requester.GetAccounts(V20.GetAccountsRequest{})
 	if err != nil {
 		return err
 	}
-	 logrus.Info("GetAccountResponse: ", getAccountResponse)
+	logrus.Info("GetAccountResponse: ", getAccountResponse)
 	return nil
 }

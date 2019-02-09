@@ -63,6 +63,7 @@ func (c *Client) GetAccount() (*GetAccountResponse, error) {
 
 type GetAccountSummaryResponse struct {
 	// todo
+
 }
 
 func (c *Client) GetAccountSummary() (*GetAccountSummaryResponse, error) {

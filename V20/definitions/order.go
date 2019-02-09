@@ -1,4 +1,4 @@
-package V20
+package definitions
 
 // todo json tags
 
@@ -1324,6 +1324,8 @@ type OrderStateFilter string // todo consts
 type OrderIdentifier struct{} // todo
 
 type OrderSpecifier string
+
+func (o OrderSpecifier) String() string {return string(o)}
 
 type TimeInForce string // todo consts
 

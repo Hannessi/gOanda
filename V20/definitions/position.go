@@ -1,4 +1,4 @@
-package V20
+package definitions
 
 type Position struct{} // todo
 

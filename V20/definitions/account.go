@@ -1,4 +1,6 @@
-package V20
+package definitions
+
+import "fmt"
 
 // TODO COMMENTS
 
@@ -29,7 +31,7 @@ type Account struct {
 	PendingOrderCount           int                         `json:"pendingOrderCount"`
 	HedgingEnabled              bool                        `json:"hedgingEnabled"`
 	UnrealizedPL                AccountUnits                `json:"unrealizedPL"`
-	NAV                         AccountUnits                `json:"nAV"`
+	NAV                         AccountUnits                `json:"NAV"`
 	MarginUsed                  AccountUnits                `json:"marginUsed"`
 	MarginAvailable             AccountUnits                `json:"marginAvailable"`
 	PositionValue               AccountUnits                `json:"positionValue"`
@@ -45,6 +47,10 @@ type Account struct {
 	Trades                      []TradeSummary              `json:"trades"`
 	Positions                   []Position                  `json:"positions"`
 	Orders                      []Order                     `json:"orders"`
+}
+
+func (a Account) String() string {
+	return fmt.Sprintf("{AccountId: %s, Currency: %s, NAV: %s}", a.Id, a.Currency, a.NAV)
 }
 
 type AccountChangesState struct {

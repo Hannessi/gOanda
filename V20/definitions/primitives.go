@@ -1,4 +1,4 @@
-package V20
+package definitions
 
 // TODO add comments
 
@@ -9,6 +9,8 @@ type AccountUnits string
 type Currency string
 
 type InstrumentName string
+
+func (i InstrumentName) String() string {return string(i)}
 
 type InstrumentType string
 

@@ -1,4 +1,4 @@
-package definitions
+package gOanda
 
 type TradeID string
 

@@ -1,8 +1,6 @@
-package V20
+package requester
 
-import (
-	"github.com/hannessi/gOanda/V20/definitions"
-)
+import "github.com/hannessi/gOanda"
 
 type Requester interface {
 	// account
@@ -55,30 +53,52 @@ type Requester interface {
 type GetAccountsRequest struct{}
 
 type GetAccountsResponse struct {
-	Accounts []definitions.Account `json:"accounts"`
+	Accounts     []gOanda.AccountProperties `json:"accounts"`
+	ErrorCode    string                     `json:"errorCode"`
+	ErrorMessage string                     `json:"errorMessage"`
 }
 
 type GetAccountRequest struct{}
 
 type GetAccountResponse struct {
-	Account definitions.Account `json:"account"`
+	Account      gOanda.Account `json:"account"`
+	ErrorCode    string         `json:"errorCode"`
+	ErrorMessage string         `json:"errorMessage"`
 }
 
 type GetAccountSummaryRequest struct{}
 
-type GetAccountSummaryResponse struct{}
+type GetAccountSummaryResponse struct {
+	Account           gOanda.AccountSummary `json:"account"`
+	LastTransactionID gOanda.TransactionID  `json:"lastTransactionID"`
+	ErrorCode         string                `json:"errorCode"`
+	ErrorMessage      string                `json:"errorMessage"`
+}
 
 type GetAccountInstrumentsRequest struct{}
 
-type GetAccountInstrumentsResponse struct{}
+type GetAccountInstrumentsResponse struct {
+	ErrorCode    string `json:"errorCode"`
+	ErrorMessage string `json:"errorMessage"`
+}
 
 type PatchAccountConfigurationRequest struct{}
 
 type PatchAccountConfigurationResponse struct{}
 
-type GetInstrumentCandlesRequest struct{}
+type GetInstrumentCandlesRequest struct {
+	InstrumentName gOanda.InstrumentName
+	Count          int
+	Granularity    gOanda.CandlestickGranularity
+}
 
-type GetInstrumentCandlesResponse struct{}
+type GetInstrumentCandlesResponse struct {
+	Instrument   gOanda.InstrumentName         `json:"instrument"`
+	Granularity  gOanda.CandlestickGranularity `json:"granularity"`
+	Candles      []gOanda.Candlestick          `json:"candles"`
+	ErrorCode    string                        `json:"errorCode"`
+	ErrorMessage string                        `json:"errorMessage"`
+}
 
 type GetInstrumentOrderBookRequest struct{}
 
@@ -124,13 +144,31 @@ type GetOpenTradesRequest struct{}
 
 type GetOpenTradesResponse struct{}
 
-type GetTradeRequest struct{}
+type GetTradeRequest struct {
+	TradeSpecifier gOanda.TradeSpecifier
+}
 
-type GetTradeResponse struct{}
+type GetTradeResponse struct {
+	Trade             gOanda.Trade         `json:"trade"`
+	LastTransactionID gOanda.TransactionID `json:"lastTransactionID"`
+	ErrorCode         string               `json:"errorCode"`
+	ErrorMessage      string               `json:"errorMessage"`
+}
 
-type PutCloseTradeRequest struct{}
+type PutCloseTradeRequest struct {
+	TradeSpecifier gOanda.TradeSpecifier
+}
 
-type PutCloseTradeResponse struct{}
+type PutCloseTradeResponse struct {
+	OrderCreateTransaction gOanda.MarketOrderTransaction       `json:"orderCreateTransaction"`
+	OrderFillTransaction   gOanda.OrderFillTransaction         `json:"orderFillTransaction"`
+	OrderCancelTransaction gOanda.OrderCancelTransaction       `json:"orderCancelTransaction"`
+	OrderRejectTransaction gOanda.MarketOrderRejectTransaction `json:"orderRejectTransaction"`
+	RelatedTransactionsIDs []gOanda.TransactionID              `json:"relatedTransactionsIDs"`
+	LastTransactionID      gOanda.TransactionID                `json:"lastTransactionID"`
+	ErrorCode              string                              `json:"errorCode"`
+	ErrorMessage           string                              `json:"errorMessage"`
+}
 
 type PutUpdateTradeClientExtensionsRequest struct{}
 

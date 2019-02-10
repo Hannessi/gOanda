@@ -1,6 +1,9 @@
-package definitions
+package gOanda
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // TODO COMMENTS
 
@@ -73,9 +76,13 @@ type AccountChangesState struct {
 }
 
 type AccountProperties struct {
-	Id           []AccountID `json:"id"`
+	Id           AccountID `json:"id"`
 	Mt4AccountID int         `json:"mt4AccountID"`
 	Tags         []string    `json:"tags"`
+}
+
+func (a AccountProperties) String() string {
+	return fmt.Sprintf("{AccountId: %s, Mt4AccountId: %d, Tags:[%s]}", a.Id, a.Mt4AccountID, strings.Join(a.Tags,", "))
 }
 
 type GuaranteedStopLossOrderMode string

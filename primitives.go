@@ -1,10 +1,42 @@
-package definitions
+package gOanda
+
+import (
+	"gitlab.com/andile/go/popcorn/log"
+	"strconv"
+)
 
 // TODO add comments
 
 type DecimalNumber string
 
+func (d *DecimalNumber) ToFloat() float64 {
+	float, err := strconv.ParseFloat(string(*d), 10)
+	if err != nil {
+		log.Error("tried to convert '", *d, "' to a float:", err)
+		return 0
+	}
+	return float
+}
+
+func (d *DecimalNumber) ToInt() int64 {
+	integer, err := strconv.ParseInt(string(*d), 10, 64)
+	if err != nil {
+		log.Error("tried to convert '", *d, "' to an int:", err)
+		return 0
+	}
+	return integer
+}
+
 type AccountUnits string
+
+func (d *AccountUnits) ToFloat() float64 {
+	float, err := strconv.ParseFloat(string(*d), 10)
+	if err != nil {
+		log.Error("tried to convert '", *d, "' to a float:", err)
+		return 0
+	}
+	return float
+}
 
 type Currency string
 

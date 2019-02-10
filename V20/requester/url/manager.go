@@ -1,7 +1,9 @@
 package url
 
 import (
-	"github.com/hannessi/gOanda/V20/definitions"
+	"github.com/hannessi/gOanda"
+	"strconv"
+	"strings"
 )
 
 type Manager struct {
@@ -30,28 +32,48 @@ func (m *Manager) GetAccountChanges(LastTransactionID string) string {
 }
 
 // instruments
-func (m *Manager) GetInstrumentCandles(instrumentName definitions.InstrumentName) string {
-	return m.BaseUrl + "/instruments/" + instrumentName.String() + "/candles"
+type GetInstrumentCandlesRequestParameters struct {
+	InstrumentName gOanda.InstrumentName
+	Count          int
+	Granularity    gOanda.CandlestickGranularity
 }
-func (m *Manager) GetInstrumentOrderBook(instrumentName definitions.InstrumentName) string {
+
+func (m *Manager) GetInstrumentCandles(parameters GetInstrumentCandlesRequestParameters) string {
+	url := m.BaseUrl + "/instruments/" + parameters.InstrumentName.String() + "/candles"
+
+	additionalParameters := make([]string, 0)
+	if parameters.Count > 0 {
+		additionalParameters = append(additionalParameters, "count="+strconv.Itoa(parameters.Count))
+	}
+	if parameters.Granularity != "" {
+		additionalParameters = append(additionalParameters, "granularity="+parameters.Granularity.String())
+	}
+
+	if len(additionalParameters) > 0 {
+		url = url + "?" + strings.Join(additionalParameters, "&")
+	}
+
+	return url
+}
+func (m *Manager) GetInstrumentOrderBook(instrumentName gOanda.InstrumentName) string {
 	return m.BaseUrl + "/instruments/" + instrumentName.String() + "/orderBook"
 }
-func (m *Manager) GetInstrumentPositionBook(instrumentName definitions.InstrumentName) string {
+func (m *Manager) GetInstrumentPositionBook(instrumentName gOanda.InstrumentName) string {
 	return m.BaseUrl + "/instruments/" + instrumentName.String() + "/positionBook"
 }
 
 // orders
 func (m *Manager) PostOrder() string {
-	return m.BaseUrl+"/accounts/"+m.AccountId+"/orders"
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders"
 }
 func (m *Manager) GetOrders() string {
-	return m.BaseUrl+"/accounts/"+m.AccountId+"/orders"
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders"
 }
 func (m *Manager) GetPendingOrders() string {
-	return m.BaseUrl+"/accounts/"+m.AccountId+"/pendingOrders"
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/pendingOrders"
 }
-func (m *Manager) GetOrder(orderSpecifier definitions.OrderSpecifier) string {
-	return m.BaseUrl+"/accounts/"+m.AccountId+"/order/"+orderSpecifier.String()
+func (m *Manager) GetOrder(orderSpecifier gOanda.OrderSpecifier) string {
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/order/" + orderSpecifier.String()
 }
 func (m *Manager) PutReplaceOrder() string {
 	return "" // todo
@@ -121,4 +143,3 @@ func (m *Manager) GetInstrumentPricing() string {
 func (m *Manager) GetPricingStream() string {
 	return "" // todo
 }
-

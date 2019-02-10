@@ -2,10 +2,9 @@ package V20
 
 import (
 	"github.com/hannessi/gOanda"
-	"github.com/hannessi/gOanda/V20/definitions"
-	"github.com/hannessi/gOanda/V20/requester/V20"
-	"github.com/hannessi/gOanda/V20/requester/V20/api"
-	"github.com/hannessi/gOanda/V20/requester/V20/url"
+	"github.com/hannessi/gOanda/V20/requester"
+	"github.com/hannessi/gOanda/V20/requester/api"
+	"github.com/hannessi/gOanda/V20/requester/url"
 )
 
 func New(accountNumber string, apiKey string) *Client {
@@ -17,28 +16,28 @@ func New(accountNumber string, apiKey string) *Client {
 	}
 
 	//instantiate requester
-	requester := api.New(accountNumber, apiKey, urlManager)
+	requesterInstance := api.New(accountNumber, apiKey, urlManager)
 
 	return &Client{
 		AccountNumber: accountNumber,
 		ApiKey:        apiKey,
-		Requester:     requester,
+		Requester:     requesterInstance,
 	}
 }
 
 type Client struct {
 	AccountNumber string
 	ApiKey        string
-	Requester     V20.Requester
+	Requester     requester.Requester
 }
 
 // account endpoints
 type GetAccountsResponse struct {
-	Account []definitions.Account
+	Account []gOanda.AccountProperties
 }
 
 func (c *Client) GetAccounts() (*GetAccountsResponse, error) {
-	getAccountResponse, err := c.Requester.GetAccounts(V20.GetAccountsRequest{})
+	getAccountResponse, err := c.Requester.GetAccounts(requester.GetAccountsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -48,11 +47,11 @@ func (c *Client) GetAccounts() (*GetAccountsResponse, error) {
 }
 
 type GetAccountResponse struct {
-	Account definitions.Account
+	Account gOanda.Account
 }
 
 func (c *Client) GetAccount() (*GetAccountResponse, error) {
-	getAccountResponse, err := c.Requester.GetAccount(V20.GetAccountRequest{})
+	getAccountResponse, err := c.Requester.GetAccount(requester.GetAccountRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -62,16 +61,19 @@ func (c *Client) GetAccount() (*GetAccountResponse, error) {
 }
 
 type GetAccountSummaryResponse struct {
-	// todo
-
+	Account           gOanda.AccountSummary
+	LastTransactionID gOanda.TransactionID
 }
 
 func (c *Client) GetAccountSummary() (*GetAccountSummaryResponse, error) {
-	_, err := c.Requester.GetAccountSummary(V20.GetAccountSummaryRequest{})
+	getAccountSummaryResponse, err := c.Requester.GetAccountSummary(requester.GetAccountSummaryRequest{})
 	if err != nil {
 		return nil, err
 	}
-	return &GetAccountSummaryResponse{}, nil
+	return &GetAccountSummaryResponse{
+		Account:           getAccountSummaryResponse.Account,
+		LastTransactionID: getAccountSummaryResponse.LastTransactionID,
+	}, nil
 }
 
 type GetAccountInstrumentsResponse struct {
@@ -79,7 +81,7 @@ type GetAccountInstrumentsResponse struct {
 }
 
 func (c *Client) GetAccountInstruments() (*GetAccountInstrumentsResponse, error) {
-	_, err := c.Requester.GetAccountInstruments(V20.GetAccountInstrumentsRequest{})
+	_, err := c.Requester.GetAccountInstruments(requester.GetAccountInstrumentsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -91,23 +93,39 @@ type PatchAccountConfigurationResponse struct {
 }
 
 func (c *Client) PatchAccountConfiguration() (*PatchAccountConfigurationResponse, error) {
-	_, err := c.Requester.PatchAccountConfiguration(V20.PatchAccountConfigurationRequest{})
+	_, err := c.Requester.PatchAccountConfiguration(requester.PatchAccountConfigurationRequest{})
 	if err != nil {
 		return nil, err
 	}
 	return &PatchAccountConfigurationResponse{}, nil
 }
 
-type GetInstrumentCandlesResponse struct {
-	// todo
+type GetInstrumentCandlesRequest struct {
+	InstrumentName gOanda.InstrumentName
+	Count          int
+	Granularity    gOanda.CandlestickGranularity
 }
 
-func (c *Client) GetInstrumentCandles() (*GetInstrumentCandlesResponse, error) {
-	_, err := c.Requester.GetInstrumentCandles(V20.GetInstrumentCandlesRequest{})
+type GetInstrumentCandlesResponse struct {
+	Instrument  gOanda.InstrumentName         `json:"instrument"`
+	Granularity gOanda.CandlestickGranularity `json:"granularity"`
+	Candles     []gOanda.Candlestick          `json:"candles"`
+}
+
+func (c *Client) GetInstrumentCandles(request GetInstrumentCandlesRequest) (*GetInstrumentCandlesResponse, error) {
+	getInstrumentCandlesResponse, err := c.Requester.GetInstrumentCandles(requester.GetInstrumentCandlesRequest{
+		InstrumentName: request.InstrumentName,
+		Count:          request.Count,
+		Granularity:    request.Granularity,
+	})
 	if err != nil {
 		return nil, err
 	}
-	return &GetInstrumentCandlesResponse{}, nil
+	return &GetInstrumentCandlesResponse{
+		Instrument:  getInstrumentCandlesResponse.Instrument,
+		Granularity: getInstrumentCandlesResponse.Granularity,
+		Candles:     getInstrumentCandlesResponse.Candles,
+	}, nil
 }
 
 type GetInstrumentOrderBookResponse struct {
@@ -115,7 +133,7 @@ type GetInstrumentOrderBookResponse struct {
 }
 
 func (c *Client) GetInstrumentOrderBook() (*GetInstrumentOrderBookResponse, error) {
-	_, err := c.Requester.GetInstrumentOrderBook(V20.GetInstrumentOrderBookRequest{})
+	_, err := c.Requester.GetInstrumentOrderBook(requester.GetInstrumentOrderBookRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +145,7 @@ type GetInstrumentPositionBookResponse struct {
 }
 
 func (c *Client) GetInstrumentPositionBook() (*GetInstrumentPositionBookResponse, error) {
-	_, err := c.Requester.GetInstrumentPositionBook(V20.GetInstrumentPositionBookRequest{})
+	_, err := c.Requester.GetInstrumentPositionBook(requester.GetInstrumentPositionBookRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +157,7 @@ type PostOrderResponse struct {
 }
 
 func (c *Client) PostOrder() (*PostOrderResponse, error) {
-	_, err := c.Requester.PostOrder(V20.PostOrderRequest{})
+	_, err := c.Requester.PostOrder(requester.PostOrderRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -151,7 +169,7 @@ type GetOrdersResponse struct {
 }
 
 func (c *Client) GetOrders() (*GetOrdersResponse, error) {
-	_, err := c.Requester.GetOrders(V20.GetOrdersRequest{})
+	_, err := c.Requester.GetOrders(requester.GetOrdersRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +181,7 @@ type GetPendingOrdersResponse struct {
 }
 
 func (c *Client) GetPendingOrders() (*GetPendingOrdersResponse, error) {
-	_, err := c.Requester.GetPendingOrders(V20.GetPendingOrdersRequest{})
+	_, err := c.Requester.GetPendingOrders(requester.GetPendingOrdersRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +193,7 @@ type GetOrderResponse struct {
 }
 
 func (c *Client) GetOrder() (*GetOrderResponse, error) {
-	_, err := c.Requester.GetOrder(V20.GetOrderRequest{})
+	_, err := c.Requester.GetOrder(requester.GetOrderRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +205,7 @@ type PutReplaceOrderResponse struct {
 }
 
 func (c *Client) PutReplaceOrder() (*PutReplaceOrderResponse, error) {
-	_, err := c.Requester.PutReplaceOrder(V20.PutReplaceOrderRequest{})
+	_, err := c.Requester.PutReplaceOrder(requester.PutReplaceOrderRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -199,7 +217,7 @@ type PutCancelOrderResponse struct {
 }
 
 func (c *Client) PutCancelOrder() (*PutCancelOrderResponse, error) {
-	_, err := c.Requester.PutCancelOrder(V20.PutCancelOrderRequest{})
+	_, err := c.Requester.PutCancelOrder(requester.PutCancelOrderRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -211,7 +229,7 @@ type PutUpdateOrderClientExtensionsResponse struct {
 }
 
 func (c *Client) PutUpdateOrderClientExtensions() (*PutUpdateOrderClientExtensionsResponse, error) {
-	_, err := c.Requester.PutUpdateOrderClientExtensions(V20.PutUpdateOrderClientExtensionsRequest{})
+	_, err := c.Requester.PutUpdateOrderClientExtensions(requester.PutUpdateOrderClientExtensionsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +241,7 @@ type GetTradesResponse struct {
 }
 
 func (c *Client) GetTrades() (*GetTradesResponse, error) {
-	_, err := c.Requester.GetTrades(V20.GetTradesRequest{})
+	_, err := c.Requester.GetTrades(requester.GetTradesRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -235,35 +253,64 @@ type GetOpenTradesResponse struct {
 }
 
 func (c *Client) GetOpenTrades() (*GetOpenTradesResponse, error) {
-	_, err := c.Requester.GetOpenTrades(V20.GetOpenTradesRequest{})
+	_, err := c.Requester.GetOpenTrades(requester.GetOpenTradesRequest{})
 	if err != nil {
 		return nil, err
 	}
 	return &GetOpenTradesResponse{}, nil
 }
 
-type GetTradeResponse struct {
-	// todo
+type GetTradeRequest struct {
+	TradeSpecifier gOanda.TradeSpecifier
 }
 
-func (c *Client) GetTrade() (*GetTradeResponse, error) {
-	_, err := c.Requester.GetTrade(V20.GetTradeRequest{})
+type GetTradeResponse struct {
+	Trade             gOanda.Trade
+	LastTransactionID gOanda.TransactionID
+}
+
+func (c *Client) GetTrade(request GetTradeRequest) (*GetTradeResponse, error) {
+	getTradeResponse, err := c.Requester.GetTrade(requester.GetTradeRequest{
+		TradeSpecifier: request.TradeSpecifier,
+	})
 	if err != nil {
 		return nil, err
 	}
-	return &GetTradeResponse{}, nil
+	return &GetTradeResponse{
+		Trade:             getTradeResponse.Trade,
+		LastTransactionID: getTradeResponse.LastTransactionID,
+	}, nil
+}
+
+type PutCloseTradeRequest struct {
+	TradeSpecifier gOanda.TradeSpecifier
+	Units          int // todo in body of request
 }
 
 type PutCloseTradeResponse struct {
-	// todo
+	OrderCreateTransaction gOanda.MarketOrderTransaction
+	OrderFillTransaction   gOanda.OrderFillTransaction
+	OrderCancelTransaction gOanda.OrderCancelTransaction
+	OrderRejectTransaction gOanda.MarketOrderRejectTransaction
+	RelatedTransactionsIDs []gOanda.TransactionID
+	LastTransactionID      gOanda.TransactionID
 }
 
-func (c *Client) PutCloseTrade() (*PutCloseTradeResponse, error) {
-	_, err := c.Requester.PutCloseTrade(V20.PutCloseTradeRequest{})
+func (c *Client) PutCloseTrade(request PutCloseTradeRequest) (*PutCloseTradeResponse, error) {
+	putCloseTradeResponse, err := c.Requester.PutCloseTrade(requester.PutCloseTradeRequest{
+		TradeSpecifier: request.TradeSpecifier,
+	})
 	if err != nil {
 		return nil, err
 	}
-	return &PutCloseTradeResponse{}, nil
+	return &PutCloseTradeResponse{
+		OrderCreateTransaction: putCloseTradeResponse.OrderCreateTransaction,
+		OrderFillTransaction:   putCloseTradeResponse.OrderFillTransaction,
+		OrderCancelTransaction: putCloseTradeResponse.OrderCancelTransaction,
+		OrderRejectTransaction: putCloseTradeResponse.OrderRejectTransaction,
+		RelatedTransactionsIDs: putCloseTradeResponse.RelatedTransactionsIDs,
+		LastTransactionID:      putCloseTradeResponse.LastTransactionID,
+	}, nil
 }
 
 type PutUpdateTradeClientExtensionsResponse struct {
@@ -271,7 +318,7 @@ type PutUpdateTradeClientExtensionsResponse struct {
 }
 
 func (c *Client) PutUpdateTradeClientExtensions() (*PutUpdateTradeClientExtensionsResponse, error) {
-	_, err := c.Requester.PutUpdateTradeClientExtensions(V20.PutUpdateTradeClientExtensionsRequest{})
+	_, err := c.Requester.PutUpdateTradeClientExtensions(requester.PutUpdateTradeClientExtensionsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -283,7 +330,7 @@ type PutUpdateTradeDependentOrdersResponse struct {
 }
 
 func (c *Client) PutUpdateTradeDependentOrders() (*PutUpdateTradeDependentOrdersResponse, error) {
-	_, err := c.Requester.PutUpdateTradeDependentOrders(V20.PutUpdateTradeDependentOrdersRequest{})
+	_, err := c.Requester.PutUpdateTradeDependentOrders(requester.PutUpdateTradeDependentOrdersRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -295,7 +342,7 @@ type GetPositionsResponse struct {
 }
 
 func (c *Client) GetPositions() (*GetPositionsResponse, error) {
-	_, err := c.Requester.GetPositions(V20.GetPositionsRequest{})
+	_, err := c.Requester.GetPositions(requester.GetPositionsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -307,7 +354,7 @@ type GetOpenPositionsResponse struct {
 }
 
 func (c *Client) GetOpenPositions() (*GetOpenPositionsResponse, error) {
-	_, err := c.Requester.GetOpenPositions(V20.GetOpenPositionsRequest{})
+	_, err := c.Requester.GetOpenPositions(requester.GetOpenPositionsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -319,7 +366,7 @@ type GetInstrumentsPositionResponse struct {
 }
 
 func (c *Client) GetInstrumentsPosition() (*GetInstrumentsPositionResponse, error) {
-	_, err := c.Requester.GetInstrumentsPosition(V20.GetInstrumentsPositionRequest{})
+	_, err := c.Requester.GetInstrumentsPosition(requester.GetInstrumentsPositionRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -331,7 +378,7 @@ type PutClosePositionResponse struct {
 }
 
 func (c *Client) PutClosePosition() (*PutClosePositionResponse, error) {
-	_, err := c.Requester.PutClosePosition(V20.PutClosePositionRequest{})
+	_, err := c.Requester.PutClosePosition(requester.PutClosePositionRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -343,7 +390,7 @@ type GetTransactionsResponse struct {
 }
 
 func (c *Client) GetTransactions() (*GetTransactionsResponse, error) {
-	_, err := c.Requester.GetTransactions(V20.GetTransactionsRequest{})
+	_, err := c.Requester.GetTransactions(requester.GetTransactionsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -355,7 +402,7 @@ type GetTransactionResponse struct {
 }
 
 func (c *Client) GetTransaction() (*GetTransactionResponse, error) {
-	_, err := c.Requester.GetTransaction(V20.GetTransactionRequest{})
+	_, err := c.Requester.GetTransaction(requester.GetTransactionRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -367,7 +414,7 @@ type GetRangeOfTransactionsResponse struct {
 }
 
 func (c *Client) GetRangeOfTransactions() (*GetRangeOfTransactionsResponse, error) {
-	_, err := c.Requester.GetRangeOfTransactions(V20.GetRangeOfTransactionsRequest{})
+	_, err := c.Requester.GetRangeOfTransactions(requester.GetRangeOfTransactionsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -379,7 +426,7 @@ type GetTransactionsAfterTransactionResponse struct {
 }
 
 func (c *Client) GetTransactionsAfterTransaction() (*GetTransactionsAfterTransactionResponse, error) {
-	_, err := c.Requester.GetTransactionsAfterTransaction(V20.GetTransactionsAfterTransactionRequest{})
+	_, err := c.Requester.GetTransactionsAfterTransaction(requester.GetTransactionsAfterTransactionRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -391,7 +438,7 @@ type GetTransactionsStreamResponse struct {
 }
 
 func (c *Client) GetTransactionsStream() (*GetTransactionsStreamResponse, error) {
-	_, err := c.Requester.GetTransactionsStream(V20.GetTransactionsStreamRequest{})
+	_, err := c.Requester.GetTransactionsStream(requester.GetTransactionsStreamRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -403,7 +450,7 @@ type GetInstrumentPricingResponse struct {
 }
 
 func (c *Client) GetInstrumentPricing() (*GetInstrumentPricingResponse, error) {
-	_, err := c.Requester.GetInstrumentPricing(V20.GetInstrumentPricingRequest{})
+	_, err := c.Requester.GetInstrumentPricing(requester.GetInstrumentPricingRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -415,7 +462,7 @@ type GetPricingStreamResponse struct {
 }
 
 func (c *Client) GetPricingStream() (*GetPricingStreamResponse, error) {
-	_, err := c.Requester.GetPricingStream(V20.GetPricingStreamRequest{})
+	_, err := c.Requester.GetPricingStream(requester.GetPricingStreamRequest{})
 	if err != nil {
 		return nil, err
 	}

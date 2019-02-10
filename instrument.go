@@ -1,8 +1,10 @@
-package definitions
+package gOanda
 
 // todo json tags
 
 type CandlestickGranularity string
+
+func (c CandlestickGranularity) String () string {return string(c)}
 
 type WeeklyAlignment string
 

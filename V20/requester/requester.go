@@ -108,9 +108,21 @@ type GetInstrumentPositionBookRequest struct{}
 
 type GetInstrumentPositionBookResponse struct{}
 
-type PostOrderRequest struct{}
+type PostOrderRequest struct {
+	Order gOanda.AnOrderRequest
+}
 
-type PostOrderResponse struct{}
+type PostOrderResponse struct {
+	OrderCreateTransaction        gOanda.Transaction            `json:"orderCreateTransaction"`
+	OrderFillTransaction          gOanda.OrderFillTransaction   `json:"orderFillTransaction"`
+	OrderCancelTransaction        gOanda.OrderCancelTransaction `json:"orderCancelTransaction"`
+	OrderReissueTransaction       gOanda.Transaction            `json:"orderReissueTransaction"`
+	OrderReissueRejectTransaction gOanda.Transaction            `json:"orderReissueRejectTransaction"`
+	RelatedTransactionIDs         []gOanda.TransactionID        `json:"relatedTransactionIDs"`
+	LastTransactionID             gOanda.TransactionID          `json:"lastTransactionID"`
+	ErrorCode                     string                        `json:"errorCode"`
+	ErrorMessage                  string                        `json:"errorMessage"`
+}
 
 type GetOrdersRequest struct{}
 

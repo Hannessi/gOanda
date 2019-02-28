@@ -1295,9 +1295,54 @@ type TrailingStopLossOrder struct {
 	replacedByOrderID OrderID
 }
 
-type OrderRequest struct{} //todo
+type AnOrderRequest interface {
+	ToOrderRequest() OrderRequest
+} //todo
 
-type MarketOrderRequest struct{} // todo
+type OrderRequest struct {
+	Type                   OrderType               `json:"type"`
+	Instrument             InstrumentName          `json:"instrument"`
+	Units                  DecimalNumber           `json:"units"`
+	TimeInForce            TimeInForce             `json:"timeInForce"`
+	PriceBound             PriceValue              `json:"priceBound"`
+	PositionFill           OrderPositionFill       `json:"positionFill"`
+	ClientExtensions       ClientExtensions        `json:"clientExtensions"`
+	TakeProfitOnFill       TakeProfitDetails       `json:"takeProfitOnFill"`
+	StopLossOnFill         StopLossDetails         `json:"stopLossOnFill"`
+	TrailingStopLossOnFill TrailingStopLossDetails `json:"trailingStopLossOnFill"`
+	TradeClientExtensions  ClientExtensions        `json:"tradeClientExtensions"`
+}
+
+type MarketOrderRequest struct {
+	Type                   OrderType               `json:"type"`
+	Instrument             InstrumentName          `json:"instrument"`
+	Units                  DecimalNumber           `json:"units"`
+	TimeInForce            TimeInForce             `json:"timeInForce"`
+	PriceBound             PriceValue              `json:"priceBound"`
+	PositionFill           OrderPositionFill       `json:"positionFill"`
+	ClientExtensions       ClientExtensions        `json:"clientExtensions"`
+	TakeProfitOnFill       TakeProfitDetails       `json:"takeProfitOnFill"`
+	StopLossOnFill         StopLossDetails         `json:"stopLossOnFill"`
+	TrailingStopLossOnFill TrailingStopLossDetails `json:"trailingStopLossOnFill"`
+	TradeClientExtensions  ClientExtensions        `json:"tradeClientExtensions"`
+}
+
+// TODO
+func (m *MarketOrderRequest) ToOrderRequest() OrderRequest {
+	return OrderRequest{
+		Type:                   m.Type,
+		Instrument:             m.Instrument,
+		Units:                  m.Units,
+		TimeInForce:            m.TimeInForce,
+		PriceBound:             m.PriceBound,
+		PositionFill:           m.PositionFill,
+		ClientExtensions:       m.ClientExtensions,
+		TakeProfitOnFill:       m.TakeProfitOnFill,
+		StopLossOnFill:         m.StopLossOnFill,
+		TrailingStopLossOnFill: m.TrailingStopLossOnFill,
+		TradeClientExtensions:  m.TradeClientExtensions,
+	}
+}
 
 type LimitOrderRequest struct{} // todo
 
@@ -1325,7 +1370,7 @@ type OrderIdentifier struct{} // todo
 
 type OrderSpecifier string
 
-func (o OrderSpecifier) String() string {return string(o)}
+func (o OrderSpecifier) String() string { return string(o) }
 
 type TimeInForce string // todo consts
 

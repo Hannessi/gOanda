@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"io"
@@ -10,7 +11,7 @@ import (
 
 type method string
 
-func(m method) String() string {
+func (m method) String() string {
 	return string(m)
 }
 
@@ -18,13 +19,24 @@ const GET method = "GET"
 const POST method = "POST"
 const PATCH method = "PATCH"
 
-func HttpRequestWrapper(method method, url string, requestBody io.Reader, response interface{}, token string) error {
-	httpRequest, err := http.NewRequest(method.String(), url, requestBody)
+func HttpRequestWrapper(method method, url string, requestBody interface{}, response interface{}, token string) error {
+	var body io.Reader
+
+	if requestBody != nil {
+		marshaledBody, err := json.Marshal(requestBody)
+		if err != nil {
+			return err
+		}
+
+		body = bytes.NewBuffer(marshaledBody)
+	}
+
+	httpRequest, err := http.NewRequest(method.String(), url, body)
 	if err != nil {
 		return errors.New("could not create new HTTP request: " + err.Error())
 	}
 
-	httpRequest.Header.Add("Content-type","application/json")
+	httpRequest.Header.Add("Content-type", "application/json")
 
 	if token != "" {
 		httpRequest.Header.Add("Authorization", "Bearer "+token)
@@ -38,7 +50,7 @@ func HttpRequestWrapper(method method, url string, requestBody io.Reader, respon
 	defer httpResponse.Body.Close()
 	responseBody, err := ioutil.ReadAll(httpResponse.Body)
 	if err != nil {
-		return  errors.New("could not read body of response: " + err.Error())
+		return errors.New("could not read body of response: " + err.Error())
 	}
 
 	err = json.Unmarshal(responseBody, response)

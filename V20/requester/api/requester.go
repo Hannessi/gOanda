@@ -2,6 +2,7 @@ package api
 
 import (
 	"errors"
+	"github.com/hannessi/gOanda"
 	"github.com/hannessi/gOanda/V20/requester"
 	"github.com/hannessi/gOanda/V20/requester/url"
 )
@@ -87,7 +88,19 @@ func (r *Requester) GetInstrumentPositionBook(request requester.GetInstrumentPos
 
 // orders
 func (r *Requester) PostOrder(request requester.PostOrderRequest) (*requester.PostOrderResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &requester.PostOrderResponse{}
+	requestUrl := r.UrlManager.PostOrder()
+
+	order := struct {
+		Order gOanda.OrderRequest `json:"order"`
+	}{
+		Order: request.Order.ToOrderRequest(),
+	}
+
+	if err := HttpRequestWrapper(POST, requestUrl, order, response, r.Token); err != nil {
+		return nil, err
+	}
+	return response, nil
 }
 
 func (r *Requester) GetOrders(request requester.GetOrdersRequest) (*requester.GetOrdersResponse, error) {

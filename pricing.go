@@ -1,7 +1,7 @@
 package gOanda
 
 import (
-	"gitlab.com/andile/go/popcorn/log"
+	log "github.com/sirupsen/logrus"
 	"strconv"
 )
 

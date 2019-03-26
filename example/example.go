@@ -14,7 +14,7 @@ func main() {
 	flag.Parse()
 
 	// create new client
-	oandaClient := V20.New(*account, *token)
+	oandaClient := gOanda.New(*account, *token)
 
 	getAccountsResponse, err := oandaClient.GetAccounts()
 	if err != nil {

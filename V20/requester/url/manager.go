@@ -86,8 +86,39 @@ func (m *Manager) PutUpdateOrderClientExtensions() string {
 }
 
 // trades
-func (m *Manager) GetTrades() string {
-	return "" // todo
+type GetTradesRequestParameters struct {
+	Ids []gOanda.TradeID
+	State gOanda.TradeStateFilter
+	InstrumentName gOanda.InstrumentName
+	BeforeID gOanda.TradeID
+	Count int64
+}
+
+func (m *Manager) GetTrades(request GetTradesRequestParameters) string {
+	url := m.BaseUrl + "/accounts/" + m.AccountId + "/trades"
+
+	additionalParameters := make([]string,0)
+	if len(request.Ids) > 0 {
+		additionalParameters = append(additionalParameters, "ids="+strings.Join(additionalParameters,","))
+	}
+	if request.State != "" {
+		additionalParameters = append(additionalParameters, "state="+request.State.String())
+	}
+	if request.InstrumentName != "" {
+		additionalParameters = append(additionalParameters, "instrument="+request.InstrumentName.String())
+	}
+	if request.Count > 0 {
+		additionalParameters = append(additionalParameters, "count="+string(request.Count))
+	}
+	if request.BeforeID != "" {
+		additionalParameters = append(additionalParameters, "beforeID"+request.BeforeID.String())
+	}
+
+	if len(additionalParameters) > 0 {
+		url = url + "?" + strings.Join(additionalParameters, "&")
+	}
+
+	return url
 }
 func (m *Manager) GetOpenTrades() string {
 	return "" // todo

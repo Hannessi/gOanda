@@ -1,4 +1,4 @@
-package V20
+package gOanda
 
 import (
 	"github.com/hannessi/gOanda"
@@ -157,17 +157,35 @@ type PostOrderRequest struct {
 }
 
 type PostOrderResponse struct {
-	// todo
+	OrderCreateTransaction        gOanda.Transaction
+	OrderFillTransaction          gOanda.OrderFillTransaction
+	OrderCancelTransaction        gOanda.OrderCancelTransaction
+	OrderReissueTransaction       gOanda.Transaction
+	OrderReissueRejectTransaction gOanda.Transaction
+	RelatedTransactionIDs         []gOanda.TransactionID
+	LastTransactionID             gOanda.TransactionID
+	ErrorCode                     string
+	ErrorMessage                  string
 }
 
 func (c *Client) PostOrder(request PostOrderRequest) (*PostOrderResponse, error) {
-	_, err := c.requester.PostOrder(requester.PostOrderRequest{
+	response, err := c.requester.PostOrder(requester.PostOrderRequest{
 		Order: request.Order,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &PostOrderResponse{}, nil
+	return &PostOrderResponse{
+		OrderCreateTransaction:        response.OrderCreateTransaction,
+		OrderFillTransaction:          response.OrderFillTransaction,
+		OrderCancelTransaction:        response.OrderCancelTransaction,
+		OrderReissueTransaction:       response.OrderReissueTransaction,
+		OrderReissueRejectTransaction: response.OrderReissueRejectTransaction,
+		RelatedTransactionIDs:         response.RelatedTransactionIDs,
+		LastTransactionID:             response.LastTransactionID,
+		ErrorCode:                     response.ErrorCode,
+		ErrorMessage:                  response.ErrorMessage,
+	}, nil
 }
 
 type GetOrdersResponse struct {
@@ -243,19 +261,36 @@ func (c *Client) PutUpdateOrderClientExtensions() (*PutUpdateOrderClientExtensio
 }
 
 type GetTradesResponse struct {
-	// todo
+	Trades            []gOanda.Trade
+	LastTransactionID gOanda.TransactionID
 }
 
-func (c *Client) GetTrades() (*GetTradesResponse, error) {
-	_, err := c.requester.GetTrades(requester.GetTradesRequest{})
+type GetTradesRequest struct {
+	Ids            []gOanda.TradeID
+	State          gOanda.TradeStateFilter
+	InstrumentName gOanda.InstrumentName
+	Count          int64
+	BeforeID       gOanda.TradeID
+}
+
+func (c *Client) GetTrades(request GetTradesRequest) (*GetTradesResponse, error) {
+	response, err := c.requester.GetTrades(requester.GetTradesRequest{
+		Ids:            request.Ids,
+		State:          request.State,
+		InstrumentName: request.InstrumentName,
+		Count:          request.Count,
+		BeforeID:       request.BeforeID,
+	})
 	if err != nil {
 		return nil, err
 	}
-	return &GetTradesResponse{}, nil
+	return &GetTradesResponse{
+		Trades:            response.Trades,
+		LastTransactionID: response.LastTransactionID,
+	}, nil
 }
 
 type GetOpenTradesResponse struct {
-	// todo
 }
 
 func (c *Client) GetOpenTrades() (*GetOpenTradesResponse, error) {

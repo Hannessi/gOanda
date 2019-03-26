@@ -129,7 +129,20 @@ func (r *Requester) PutUpdateOrderClientExtensions(request requester.PutUpdateOr
 
 // trades
 func (r *Requester) GetTrades(request requester.GetTradesRequest) (*requester.GetTradesResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &requester.GetTradesResponse{}
+	requestUrl := r.UrlManager.GetTrades(url.GetTradesRequestParameters{
+		Ids:            request.Ids,
+		State:          request.State,
+		InstrumentName: request.InstrumentName,
+		BeforeID:       request.BeforeID,
+		Count:          request.Count,
+	})
+
+	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (r *Requester) GetOpenTrades(request requester.GetOpenTradesRequest) (*requester.GetOpenTradesResponse, error) {

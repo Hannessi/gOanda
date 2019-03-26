@@ -148,9 +148,20 @@ type PutUpdateOrderClientExtensionsRequest struct{}
 
 type PutUpdateOrderClientExtensionsResponse struct{}
 
-type GetTradesRequest struct{}
+type GetTradesRequest struct {
+	Ids            []gOanda.TradeID        `json:"ids"`
+	State          gOanda.TradeStateFilter `json:"state"`
+	InstrumentName gOanda.InstrumentName   `json:"instrument"`
+	Count          int64                   `json:"count"`
+	BeforeID       gOanda.TradeID          `json:"beforeID"`
+}
 
-type GetTradesResponse struct{}
+type GetTradesResponse struct {
+	Trades            []gOanda.Trade       `json:"trades"`
+	LastTransactionID gOanda.TransactionID `json:"lastTransactionID"`
+	ErrorCode         string               `json:"errorCode"`
+	ErrorMessage      string               `json:"errorMessage"`
+}
 
 type GetOpenTradesRequest struct{}
 

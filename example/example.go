@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/hannessi/gOanda/V20"
+	"github.com/hannessi/gOanda"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,7 +21,7 @@ func main() {
 		logrus.Error(err.Error())
 	}
 
-	for _, account := range getAccountsResponse.Account {
+	for _, account := range getAccountsResponse.Accounts {
 		logrus.Info(account.String())
 	}
 

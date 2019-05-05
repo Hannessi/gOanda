@@ -1,6 +1,4 @@
-package requester
-
-import "github.com/hannessi/gOanda"
+package gOanda
 
 type Requester interface {
 	// account
@@ -53,7 +51,7 @@ type Requester interface {
 type GetAccountsRequest struct{}
 
 type GetAccountsResponse struct {
-	Accounts     []gOanda.AccountProperties `json:"accounts"`
+	Accounts     []AccountProperties `json:"accounts"`
 	ErrorCode    string                     `json:"errorCode"`
 	ErrorMessage string                     `json:"errorMessage"`
 }
@@ -61,7 +59,7 @@ type GetAccountsResponse struct {
 type GetAccountRequest struct{}
 
 type GetAccountResponse struct {
-	Account      gOanda.Account `json:"account"`
+	Account      Account `json:"account"`
 	ErrorCode    string         `json:"errorCode"`
 	ErrorMessage string         `json:"errorMessage"`
 }
@@ -69,8 +67,8 @@ type GetAccountResponse struct {
 type GetAccountSummaryRequest struct{}
 
 type GetAccountSummaryResponse struct {
-	Account           gOanda.AccountSummary `json:"account"`
-	LastTransactionID gOanda.TransactionID  `json:"lastTransactionID"`
+	Account           AccountSummary `json:"account"`
+	LastTransactionID TransactionID  `json:"lastTransactionID"`
 	ErrorCode         string                `json:"errorCode"`
 	ErrorMessage      string                `json:"errorMessage"`
 }
@@ -87,15 +85,15 @@ type PatchAccountConfigurationRequest struct{}
 type PatchAccountConfigurationResponse struct{}
 
 type GetInstrumentCandlesRequest struct {
-	InstrumentName gOanda.InstrumentName
+	InstrumentName InstrumentName
 	Count          int
-	Granularity    gOanda.CandlestickGranularity
+	Granularity    CandlestickGranularity
 }
 
 type GetInstrumentCandlesResponse struct {
-	Instrument   gOanda.InstrumentName         `json:"instrument"`
-	Granularity  gOanda.CandlestickGranularity `json:"granularity"`
-	Candles      []gOanda.Candlestick          `json:"candles"`
+	Instrument   InstrumentName         `json:"instrument"`
+	Granularity  CandlestickGranularity `json:"granularity"`
+	Candles      []Candlestick          `json:"candles"`
 	ErrorCode    string                        `json:"errorCode"`
 	ErrorMessage string                        `json:"errorMessage"`
 }
@@ -109,17 +107,17 @@ type GetInstrumentPositionBookRequest struct{}
 type GetInstrumentPositionBookResponse struct{}
 
 type PostOrderRequest struct {
-	Order gOanda.AnOrderRequest
+	Order AnOrderRequest
 }
 
 type PostOrderResponse struct {
-	OrderCreateTransaction        gOanda.Transaction            `json:"orderCreateTransaction"`
-	OrderFillTransaction          gOanda.OrderFillTransaction   `json:"orderFillTransaction"`
-	OrderCancelTransaction        gOanda.OrderCancelTransaction `json:"orderCancelTransaction"`
-	OrderReissueTransaction       gOanda.Transaction            `json:"orderReissueTransaction"`
-	OrderReissueRejectTransaction gOanda.Transaction            `json:"orderReissueRejectTransaction"`
-	RelatedTransactionIDs         []gOanda.TransactionID        `json:"relatedTransactionIDs"`
-	LastTransactionID             gOanda.TransactionID          `json:"lastTransactionID"`
+	OrderCreateTransaction        Transaction            `json:"orderCreateTransaction"`
+	OrderFillTransaction          OrderFillTransaction   `json:"orderFillTransaction"`
+	OrderCancelTransaction        OrderCancelTransaction `json:"orderCancelTransaction"`
+	OrderReissueTransaction       Transaction            `json:"orderReissueTransaction"`
+	OrderReissueRejectTransaction Transaction            `json:"orderReissueRejectTransaction"`
+	RelatedTransactionIDs         []TransactionID        `json:"relatedTransactionIDs"`
+	LastTransactionID             TransactionID          `json:"lastTransactionID"`
 	ErrorCode                     string                        `json:"errorCode"`
 	ErrorMessage                  string                        `json:"errorMessage"`
 }
@@ -149,16 +147,16 @@ type PutUpdateOrderClientExtensionsRequest struct{}
 type PutUpdateOrderClientExtensionsResponse struct{}
 
 type GetTradesRequest struct {
-	Ids            []gOanda.TradeID        `json:"ids"`
-	State          gOanda.TradeStateFilter `json:"state"`
-	InstrumentName gOanda.InstrumentName   `json:"instrument"`
+	Ids            []TradeID        `json:"ids"`
+	State          TradeStateFilter `json:"state"`
+	InstrumentName InstrumentName   `json:"instrument"`
 	Count          int64                   `json:"count"`
-	BeforeID       gOanda.TradeID          `json:"beforeID"`
+	BeforeID       TradeID          `json:"beforeID"`
 }
 
 type GetTradesResponse struct {
-	Trades            []gOanda.Trade       `json:"trades"`
-	LastTransactionID gOanda.TransactionID `json:"lastTransactionID"`
+	Trades            []Trade       `json:"trades"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
 	ErrorCode         string               `json:"errorCode"`
 	ErrorMessage      string               `json:"errorMessage"`
 }
@@ -168,27 +166,27 @@ type GetOpenTradesRequest struct{}
 type GetOpenTradesResponse struct{}
 
 type GetTradeRequest struct {
-	TradeSpecifier gOanda.TradeSpecifier
+	TradeSpecifier TradeSpecifier
 }
 
 type GetTradeResponse struct {
-	Trade             gOanda.Trade         `json:"trade"`
-	LastTransactionID gOanda.TransactionID `json:"lastTransactionID"`
+	Trade             Trade         `json:"trade"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
 	ErrorCode         string               `json:"errorCode"`
 	ErrorMessage      string               `json:"errorMessage"`
 }
 
 type PutCloseTradeRequest struct {
-	TradeSpecifier gOanda.TradeSpecifier
+	TradeSpecifier TradeSpecifier
 }
 
 type PutCloseTradeResponse struct {
-	OrderCreateTransaction gOanda.MarketOrderTransaction       `json:"orderCreateTransaction"`
-	OrderFillTransaction   gOanda.OrderFillTransaction         `json:"orderFillTransaction"`
-	OrderCancelTransaction gOanda.OrderCancelTransaction       `json:"orderCancelTransaction"`
-	OrderRejectTransaction gOanda.MarketOrderRejectTransaction `json:"orderRejectTransaction"`
-	RelatedTransactionsIDs []gOanda.TransactionID              `json:"relatedTransactionsIDs"`
-	LastTransactionID      gOanda.TransactionID                `json:"lastTransactionID"`
+	OrderCreateTransaction MarketOrderTransaction       `json:"orderCreateTransaction"`
+	OrderFillTransaction   OrderFillTransaction         `json:"orderFillTransaction"`
+	OrderCancelTransaction OrderCancelTransaction       `json:"orderCancelTransaction"`
+	OrderRejectTransaction MarketOrderRejectTransaction `json:"orderRejectTransaction"`
+	RelatedTransactionsIDs []TransactionID              `json:"relatedTransactionsIDs"`
+	LastTransactionID      TransactionID                `json:"lastTransactionID"`
 	ErrorCode              string                              `json:"errorCode"`
 	ErrorMessage           string                              `json:"errorMessage"`
 }

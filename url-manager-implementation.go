@@ -1,44 +1,43 @@
-package url
+package gOanda
 
 import (
-	"github.com/hannessi/gOanda"
 	"strconv"
 	"strings"
 )
 
-type Manager struct {
+type UrlManager struct {
 	BaseUrl   string
 	AccountId string
 }
 
 // accounts
-func (m *Manager) GetAccounts() string {
+func (m *UrlManager) GetAccounts() string {
 	return m.BaseUrl + "/accounts"
 }
-func (m *Manager) GetAccount() string {
+func (m *UrlManager) GetAccount() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId
 }
-func (m *Manager) GetAccountSummary() string {
+func (m *UrlManager) GetAccountSummary() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/summary"
 }
-func (m *Manager) GetAccountInstruments() string {
+func (m *UrlManager) GetAccountInstruments() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/instruments"
 }
-func (m *Manager) PatchAccountConfiguration() string {
+func (m *UrlManager) PatchAccountConfiguration() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/configuration"
 }
-func (m *Manager) GetAccountChanges(LastTransactionID string) string {
+func (m *UrlManager) GetAccountChanges(LastTransactionID string) string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/changes?sinceTransactionID=" + LastTransactionID
 }
 
 // instruments
 type GetInstrumentCandlesRequestParameters struct {
-	InstrumentName gOanda.InstrumentName
+	InstrumentName InstrumentName
 	Count          int
-	Granularity    gOanda.CandlestickGranularity
+	Granularity    CandlestickGranularity
 }
 
-func (m *Manager) GetInstrumentCandles(parameters GetInstrumentCandlesRequestParameters) string {
+func (m *UrlManager) GetInstrumentCandles(parameters GetInstrumentCandlesRequestParameters) string {
 	url := m.BaseUrl + "/instruments/" + parameters.InstrumentName.String() + "/candles"
 
 	additionalParameters := make([]string, 0)
@@ -55,46 +54,46 @@ func (m *Manager) GetInstrumentCandles(parameters GetInstrumentCandlesRequestPar
 
 	return url
 }
-func (m *Manager) GetInstrumentOrderBook(instrumentName gOanda.InstrumentName) string {
+func (m *UrlManager) GetInstrumentOrderBook(instrumentName InstrumentName) string {
 	return m.BaseUrl + "/instruments/" + instrumentName.String() + "/orderBook"
 }
-func (m *Manager) GetInstrumentPositionBook(instrumentName gOanda.InstrumentName) string {
+func (m *UrlManager) GetInstrumentPositionBook(instrumentName InstrumentName) string {
 	return m.BaseUrl + "/instruments/" + instrumentName.String() + "/positionBook"
 }
 
 // orders
-func (m *Manager) PostOrder() string {
+func (m *UrlManager) PostOrder() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders"
 }
-func (m *Manager) GetOrders() string {
+func (m *UrlManager) GetOrders() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders"
 }
-func (m *Manager) GetPendingOrders() string {
+func (m *UrlManager) GetPendingOrders() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/pendingOrders"
 }
-func (m *Manager) GetOrder(orderSpecifier gOanda.OrderSpecifier) string {
+func (m *UrlManager) GetOrder(orderSpecifier OrderSpecifier) string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/order/" + orderSpecifier.String()
 }
-func (m *Manager) PutReplaceOrder() string {
+func (m *UrlManager) PutReplaceOrder() string {
 	return "" // todo
 }
-func (m *Manager) PutCancelOrder() string {
+func (m *UrlManager) PutCancelOrder() string {
 	return "" // todo
 }
-func (m *Manager) PutUpdateOrderClientExtensions() string {
+func (m *UrlManager) PutUpdateOrderClientExtensions() string {
 	return "" // todo
 }
 
 // trades
 type GetTradesRequestParameters struct {
-	Ids []gOanda.TradeID
-	State gOanda.TradeStateFilter
-	InstrumentName gOanda.InstrumentName
-	BeforeID gOanda.TradeID
+	Ids []TradeID
+	State TradeStateFilter
+	InstrumentName InstrumentName
+	BeforeID TradeID
 	Count int64
 }
 
-func (m *Manager) GetTrades(request GetTradesRequestParameters) string {
+func (m *UrlManager) GetTrades(request GetTradesRequestParameters) string {
 	url := m.BaseUrl + "/accounts/" + m.AccountId + "/trades"
 
 	additionalParameters := make([]string,0)
@@ -120,57 +119,57 @@ func (m *Manager) GetTrades(request GetTradesRequestParameters) string {
 
 	return url
 }
-func (m *Manager) GetOpenTrades() string {
+func (m *UrlManager) GetOpenTrades() string {
 	return "" // todo
 }
-func (m *Manager) GetTrade() string {
+func (m *UrlManager) GetTrade() string {
 	return "" // todo
 }
-func (m *Manager) PutCloseTrade() string {
+func (m *UrlManager) PutCloseTrade() string {
 	return "" // todo
 }
-func (m *Manager) PutUpdateTradeClientExtensions() string {
+func (m *UrlManager) PutUpdateTradeClientExtensions() string {
 	return "" // todo
 }
-func (m *Manager) PutUpdateTradeDependentOrders() string {
+func (m *UrlManager) PutUpdateTradeDependentOrders() string {
 	return "" // todo
 }
 
 // positions
-func (m *Manager) GetPositions() string {
+func (m *UrlManager) GetPositions() string {
 	return "" // todo
 }
-func (m *Manager) GetOpenPositions() string {
+func (m *UrlManager) GetOpenPositions() string {
 	return "" // todo
 }
-func (m *Manager) GetInstrumentsPosition() string {
+func (m *UrlManager) GetInstrumentsPosition() string {
 	return "" // todo
 }
-func (m *Manager) PutClosePosition() string {
+func (m *UrlManager) PutClosePosition() string {
 	return "" // todo
 }
 
 // transactions
-func (m *Manager) GetTransactions() string {
+func (m *UrlManager) GetTransactions() string {
 	return "" // todo
 }
-func (m *Manager) GetTransaction() string {
+func (m *UrlManager) GetTransaction() string {
 	return "" // todo
 }
-func (m *Manager) GetRangeOfTransactions() string {
+func (m *UrlManager) GetRangeOfTransactions() string {
 	return "" // todo
 }
-func (m *Manager) GetTransactionsAfterTransaction() string {
+func (m *UrlManager) GetTransactionsAfterTransaction() string {
 	return "" // todo
 }
-func (m *Manager) GetTransactionsStream() string {
+func (m *UrlManager) GetTransactionsStream() string {
 	return "" // todo
 }
 
 // pricing
-func (m *Manager) GetInstrumentPricing() string {
+func (m *UrlManager) GetInstrumentPricing() string {
 	return "" // todo
 }
-func (m *Manager) GetPricingStream() string {
+func (m *UrlManager) GetPricingStream() string {
 	return "" // todo
 }

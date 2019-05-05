@@ -1,4 +1,4 @@
-package primitives
+package gOanda
 
 const INSTRUMENT_TYPE_CURRENCY = "CURRENCY"
 const INSTRUMENT_TYPE_CFD = "CFD"

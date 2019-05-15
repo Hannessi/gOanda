@@ -72,19 +72,11 @@ func (c *Client) PatchAccountConfiguration() (*PatchAccountConfigurationResponse
 }
 
 func (c *Client) GetInstrumentCandles(request GetInstrumentCandlesRequest) (*GetInstrumentCandlesResponse, error) {
-	getInstrumentCandlesResponse, err := c.requester.GetInstrumentCandles(GetInstrumentCandlesRequest{
-		InstrumentName: request.InstrumentName,
-		Count:          request.Count,
-		Granularity:    request.Granularity,
-	})
+	response, err := c.requester.GetInstrumentCandles(request)
 	if err != nil {
 		return nil, err
 	}
-	return &GetInstrumentCandlesResponse{
-		Instrument:  getInstrumentCandlesResponse.Instrument,
-		Granularity: getInstrumentCandlesResponse.Granularity,
-		Candles:     getInstrumentCandlesResponse.Candles,
-	}, nil
+	return response, nil
 }
 
 func (c *Client) GetInstrumentOrderBook() (*GetInstrumentOrderBookResponse, error) {
@@ -110,17 +102,7 @@ func (c *Client) PostOrder(request PostOrderRequest) (*PostOrderResponse, error)
 	if err != nil {
 		return nil, err
 	}
-	return &PostOrderResponse{
-		OrderCreateTransaction:        response.OrderCreateTransaction,
-		OrderFillTransaction:          response.OrderFillTransaction,
-		OrderCancelTransaction:        response.OrderCancelTransaction,
-		OrderReissueTransaction:       response.OrderReissueTransaction,
-		OrderReissueRejectTransaction: response.OrderReissueRejectTransaction,
-		RelatedTransactionIDs:         response.RelatedTransactionIDs,
-		LastTransactionID:             response.LastTransactionID,
-		ErrorCode:                     response.ErrorCode,
-		ErrorMessage:                  response.ErrorMessage,
-	}, nil
+	return response, nil
 }
 
 func (c *Client) GetOrders() (*GetOrdersResponse, error) {
@@ -172,28 +154,19 @@ func (c *Client) PutUpdateOrderClientExtensions() (*PutUpdateOrderClientExtensio
 }
 
 func (c *Client) GetTrades(request GetTradesRequest) (*GetTradesResponse, error) {
-	response, err := c.requester.GetTrades(GetTradesRequest{
-		Ids:            request.Ids,
-		State:          request.State,
-		InstrumentName: request.InstrumentName,
-		Count:          request.Count,
-		BeforeID:       request.BeforeID,
-	})
+	response, err := c.requester.GetTrades(request)
 	if err != nil {
 		return nil, err
 	}
-	return &GetTradesResponse{
-		Trades:            response.Trades,
-		LastTransactionID: response.LastTransactionID,
-	}, nil
+	return response, nil
 }
 
 func (c *Client) GetOpenTrades() (*GetOpenTradesResponse, error) {
-	_, err := c.requester.GetOpenTrades(GetOpenTradesRequest{})
+	response, err := c.requester.GetOpenTrades(GetOpenTradesRequest{})
 	if err != nil {
 		return nil, err
 	}
-	return &GetOpenTradesResponse{}, nil
+	return response, nil
 }
 
 func (c *Client) GetTrade(request GetTradeRequest) (*GetTradeResponse, error) {
@@ -314,12 +287,12 @@ func (c *Client) GetTransactionsStream() (*GetTransactionsStreamResponse, error)
 	return &GetTransactionsStreamResponse{}, nil
 }
 
-func (c *Client) GetInstrumentPricing() (*GetInstrumentPricingResponse, error) {
-	_, err := c.requester.GetInstrumentPricing(GetInstrumentPricingRequest{})
+func (c *Client) GetInstrumentPricing(request GetInstrumentPricingRequest) (*GetInstrumentPricingResponse, error) {
+	response, err := c.requester.GetInstrumentPricing(request)
 	if err != nil {
 		return nil, err
 	}
-	return &GetInstrumentPricingResponse{}, nil
+	return response, nil
 }
 
 func (c *Client) GetPricingStream() (*GetPricingStreamResponse, error) {

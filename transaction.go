@@ -161,7 +161,7 @@ type ResetResettablePLTransaction struct{} //todo
 
 type TransactionID string
 
-func (t TransactionID) String() string {return string(t)}
+func (t TransactionID) String() string { return string(t) }
 
 type TransactionType string // todo
 
@@ -195,11 +195,96 @@ type ClientComment string
 
 type ClientExtensions struct{} // TODO
 
-type TakeProfitDetails struct{} // TODO
+type TakeProfitDetails struct {
+	//
+	// The price that the Take Profit Order will be triggered at. Only one of
+	// the price and distance fields may be specified.
+	//
+	Price PriceValue `json:"price"`
 
-type StopLossDetails struct{} // TODO
+	//
+	// The time in force for the created Take Profit Order. This may only be
+	// GTC, GTD or GFD.
+	//
+	TimeInForce TimeInForce `json:"timeInForce"`
 
-type TrailingStopLossDetails struct{} // TODO
+	//
+	// The date when the Take Profit Order will be cancelled on if timeInForce
+	// is GTD.
+	//
+	GtdTime DateTime `json:"gtdTime"`
+
+	//
+	// The Client Extensions to add to the Take Profit Order when created.
+	//
+	ClientExtensions ClientExtensions `json:"clientExtensions"`
+}
+
+type StopLossDetails struct {
+	//
+	// The price that the Stop Loss Order will be triggered at. Only one of the
+	// price and distance fields may be specified.
+	//
+	Price PriceValue `json:"price"`
+
+	//
+	// Specifies the distance (in price units) from the Trade’s open price to
+	// use as the Stop Loss Order price. Only one of the distance and price
+	// fields may be specified.
+	//
+	Distance DecimalNumber `json:"distance"`
+
+	//
+	// The time in force for the created Stop Loss Order. This may only be GTC,
+	// GTD or GFD.
+	//
+	TimeInForce TimeInForce `json:"timeInForce"`
+
+	//
+	// The date when the Stop Loss Order will be cancelled on if timeInForce is
+	// GTD.
+	//
+	GtdTime DateTime `json:"gtdTime"`
+
+	//
+	// The Client Extensions to add to the Stop Loss Order when created.
+	//
+	ClientExtensions ClientExtensions `json:"clientExtensions"`
+
+	//
+	// Flag indicating that the price for the Stop Loss Order is guaranteed. The
+	// default value depends on the GuaranteedStopLossOrderMode of the account,
+	// if it is REQUIRED, the default will be true, for DISABLED or ENABLED the
+	// default is false.
+	//
+	Guaranteed bool `json:"guaranteed"`
+}
+
+type TrailingStopLossDetails struct {
+	//
+	// The distance (in price units) from the Trade’s fill price that the
+	// Trailing Stop Loss Order will be triggered at.
+	//
+	Distance DecimalNumber `json:"distance"`
+
+	//
+	// The time in force for the created Trailing Stop Loss Order. This may only
+	// be GTC, GTD or GFD.
+	//
+	TimeInForce TimeInForce `json:"timeInForce"`
+
+	//
+	// The date when the Trailing Stop Loss Order will be cancelled on if
+	// timeInForce is GTD.
+	//
+	GtdTime DateTime `json:"gtdTime"`
+
+	//
+	// The Client Extensions to add to the Trailing Stop Loss Order when
+	// created.
+	//
+	ClientExtensions ClientExtensions `json:"clientExtensions"`
+}
 
 type TradeOpen struct {
 	TradeID                TradeID          `json:"tradeID"`

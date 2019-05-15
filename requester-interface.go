@@ -52,16 +52,16 @@ type GetAccountsRequest struct{}
 
 type GetAccountsResponse struct {
 	Accounts     []AccountProperties `json:"accounts"`
-	ErrorCode    string                     `json:"errorCode"`
-	ErrorMessage string                     `json:"errorMessage"`
+	ErrorCode    string              `json:"errorCode"`
+	ErrorMessage string              `json:"errorMessage"`
 }
 
 type GetAccountRequest struct{}
 
 type GetAccountResponse struct {
 	Account      Account `json:"account"`
-	ErrorCode    string         `json:"errorCode"`
-	ErrorMessage string         `json:"errorMessage"`
+	ErrorCode    string  `json:"errorCode"`
+	ErrorMessage string  `json:"errorMessage"`
 }
 
 type GetAccountSummaryRequest struct{}
@@ -69,8 +69,8 @@ type GetAccountSummaryRequest struct{}
 type GetAccountSummaryResponse struct {
 	Account           AccountSummary `json:"account"`
 	LastTransactionID TransactionID  `json:"lastTransactionID"`
-	ErrorCode         string                `json:"errorCode"`
-	ErrorMessage      string                `json:"errorMessage"`
+	ErrorCode         string         `json:"errorCode"`
+	ErrorMessage      string         `json:"errorMessage"`
 }
 
 type GetAccountInstrumentsRequest struct{}
@@ -94,8 +94,8 @@ type GetInstrumentCandlesResponse struct {
 	Instrument   InstrumentName         `json:"instrument"`
 	Granularity  CandlestickGranularity `json:"granularity"`
 	Candles      []Candlestick          `json:"candles"`
-	ErrorCode    string                        `json:"errorCode"`
-	ErrorMessage string                        `json:"errorMessage"`
+	ErrorCode    string                 `json:"errorCode"`
+	ErrorMessage string                 `json:"errorMessage"`
 }
 
 type GetInstrumentOrderBookRequest struct{}
@@ -118,8 +118,8 @@ type PostOrderResponse struct {
 	OrderReissueRejectTransaction Transaction            `json:"orderReissueRejectTransaction"`
 	RelatedTransactionIDs         []TransactionID        `json:"relatedTransactionIDs"`
 	LastTransactionID             TransactionID          `json:"lastTransactionID"`
-	ErrorCode                     string                        `json:"errorCode"`
-	ErrorMessage                  string                        `json:"errorMessage"`
+	ErrorCode                     string                 `json:"errorCode"`
+	ErrorMessage                  string                 `json:"errorMessage"`
 }
 
 type GetOrdersRequest struct{}
@@ -150,20 +150,25 @@ type GetTradesRequest struct {
 	Ids            []TradeID        `json:"ids"`
 	State          TradeStateFilter `json:"state"`
 	InstrumentName InstrumentName   `json:"instrument"`
-	Count          int64                   `json:"count"`
+	Count          int64            `json:"count"`
 	BeforeID       TradeID          `json:"beforeID"`
 }
 
 type GetTradesResponse struct {
 	Trades            []Trade       `json:"trades"`
 	LastTransactionID TransactionID `json:"lastTransactionID"`
-	ErrorCode         string               `json:"errorCode"`
-	ErrorMessage      string               `json:"errorMessage"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
 }
 
 type GetOpenTradesRequest struct{}
 
-type GetOpenTradesResponse struct{}
+type GetOpenTradesResponse struct {
+	Trades            []Trade       `json:"trades"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
 
 type GetTradeRequest struct {
 	TradeSpecifier TradeSpecifier
@@ -172,8 +177,8 @@ type GetTradeRequest struct {
 type GetTradeResponse struct {
 	Trade             Trade         `json:"trade"`
 	LastTransactionID TransactionID `json:"lastTransactionID"`
-	ErrorCode         string               `json:"errorCode"`
-	ErrorMessage      string               `json:"errorMessage"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
 }
 
 type PutCloseTradeRequest struct {
@@ -187,8 +192,8 @@ type PutCloseTradeResponse struct {
 	OrderRejectTransaction MarketOrderRejectTransaction `json:"orderRejectTransaction"`
 	RelatedTransactionsIDs []TransactionID              `json:"relatedTransactionsIDs"`
 	LastTransactionID      TransactionID                `json:"lastTransactionID"`
-	ErrorCode              string                              `json:"errorCode"`
-	ErrorMessage           string                              `json:"errorMessage"`
+	ErrorCode              string                       `json:"errorCode"`
+	ErrorMessage           string                       `json:"errorMessage"`
 }
 
 type PutUpdateTradeClientExtensionsRequest struct{}
@@ -235,9 +240,16 @@ type GetTransactionsStreamRequest struct{}
 
 type GetTransactionsStreamResponse struct{}
 
-type GetInstrumentPricingRequest struct{}
+type GetInstrumentPricingRequest struct {
+	Instruments            []InstrumentName
+	Since                  DateTime
+	IncludeUnitsAvailable  bool
+	IncludeHomeConversions bool
+}
 
-type GetInstrumentPricingResponse struct{}
+type GetInstrumentPricingResponse struct {
+	Prices []Price
+}
 
 type GetPricingStreamRequest struct{}
 

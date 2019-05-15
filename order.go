@@ -1330,7 +1330,7 @@ type MarketOrderRequest struct {
 // TODO
 func (m *MarketOrderRequest) ToOrderRequest() OrderRequest {
 	return OrderRequest{
-		Type:                   m.Type,
+		Type:                   ORDER_TYPE_MARKET,
 		Instrument:             m.Instrument,
 		Units:                  m.Units,
 		TimeInForce:            m.TimeInForce,
@@ -1372,7 +1372,7 @@ type OrderSpecifier string
 
 func (o OrderSpecifier) String() string { return string(o) }
 
-type TimeInForce string // todo consts
+type TimeInForce string
 
 type OrderPositionFill string // todo consts
 

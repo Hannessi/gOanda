@@ -1,6 +1,7 @@
 package gOanda
 
 import (
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -86,19 +87,19 @@ func (m *UrlManager) PutUpdateOrderClientExtensions() string {
 
 // trades
 type GetTradesRequestParameters struct {
-	Ids []TradeID
-	State TradeStateFilter
+	Ids            []TradeID
+	State          TradeStateFilter
 	InstrumentName InstrumentName
-	BeforeID TradeID
-	Count int64
+	BeforeID       TradeID
+	Count          int64
 }
 
 func (m *UrlManager) GetTrades(request GetTradesRequestParameters) string {
 	url := m.BaseUrl + "/accounts/" + m.AccountId + "/trades"
 
-	additionalParameters := make([]string,0)
+	additionalParameters := make([]string, 0)
 	if len(request.Ids) > 0 {
-		additionalParameters = append(additionalParameters, "ids="+strings.Join(additionalParameters,","))
+		additionalParameters = append(additionalParameters, "ids="+strings.Join(additionalParameters, ","))
 	}
 	if request.State != "" {
 		additionalParameters = append(additionalParameters, "state="+request.State.String())
@@ -120,7 +121,7 @@ func (m *UrlManager) GetTrades(request GetTradesRequestParameters) string {
 	return url
 }
 func (m *UrlManager) GetOpenTrades() string {
-	return "" // todo
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/openTrades"
 }
 func (m *UrlManager) GetTrade() string {
 	return "" // todo
@@ -167,8 +168,42 @@ func (m *UrlManager) GetTransactionsStream() string {
 }
 
 // pricing
-func (m *UrlManager) GetInstrumentPricing() string {
-	return "" // todo
+type GetInstrumentPricingParameters struct {
+	Instruments            []InstrumentName
+	Since                  DateTime
+	IncludeUnitsAvailable  bool
+	IncludeHomeConversions bool
+}
+
+func (m *UrlManager) GetInstrumentPricing(params GetInstrumentPricingParameters) string {
+	urlRaw := m.BaseUrl + "/accounts/" + m.AccountId + "/pricing"
+
+	additionalParameters := make([]string, 0)
+	if len(params.Instruments) > 0 {
+		instrumentStrings := func(is []InstrumentName) []string {
+			s := make([]string,0)
+			for _, i := range is {
+				s = append(s, i.String())
+			}
+			return s
+		}(params.Instruments)
+		additionalParameters = append(additionalParameters, "instruments="+url.QueryEscape(strings.Join(instrumentStrings, ",")))
+	}
+	if params.Since != "" {
+		additionalParameters = append(additionalParameters, "since="+params.Since.String())
+	}
+	if params.IncludeHomeConversions {
+		additionalParameters = append(additionalParameters, "includeHomeConversions=true")
+	}
+	if params.IncludeUnitsAvailable {
+		additionalParameters = append(additionalParameters, "includeUnitsAvailable=true")
+	}
+
+	if len(additionalParameters) > 0 {
+		urlRaw = urlRaw + "?" + strings.Join(additionalParameters, "&")
+	}
+
+	return urlRaw
 }
 func (m *UrlManager) GetPricingStream() string {
 	return "" // todo

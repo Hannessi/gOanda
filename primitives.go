@@ -64,6 +64,8 @@ type Instrument struct {
 
 type DateTime string
 
+func (d DateTime) String() string {return string(d)}
+
 type AcceptDatetimeFormat string
 
 type InstrumentCommission struct {

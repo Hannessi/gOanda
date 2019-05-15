@@ -2,6 +2,7 @@ package gOanda
 
 import (
 	"errors"
+	"fmt"
 )
 
 func NewHttpRequester(
@@ -94,9 +95,12 @@ func (r *HttpRequester) PostOrder(request PostOrderRequest) (*PostOrderResponse,
 		Order: request.Order.ToOrderRequest(),
 	}
 
+	fmt.Println("orderRequest: ",order)
+
 	if err := HttpRequestWrapper(POST, requestUrl, order, response, r.Token); err != nil {
 		return nil, err
 	}
+	fmt.Println(response.OrderFillTransaction)
 	return response, nil
 }
 
@@ -143,7 +147,14 @@ func (r *HttpRequester) GetTrades(request GetTradesRequest) (*GetTradesResponse,
 }
 
 func (r *HttpRequester) GetOpenTrades(request GetOpenTradesRequest) (*GetOpenTradesResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &GetOpenTradesResponse{}
+	requestUrl := r.UrlManager.GetOpenTrades()
+
+	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (r *HttpRequester) GetTrade(request GetTradeRequest) (*GetTradeResponse, error) {
@@ -202,7 +213,19 @@ func (r *HttpRequester) GetTransactionsStream(request GetTransactionsStreamReque
 
 // pricing
 func (r *HttpRequester) GetInstrumentPricing(request GetInstrumentPricingRequest) (*GetInstrumentPricingResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &GetInstrumentPricingResponse{}
+	requestUrl := r.UrlManager.GetInstrumentPricing(GetInstrumentPricingParameters{
+		Instruments:            request.Instruments,
+		Since:                  request.Since,
+		IncludeUnitsAvailable:  request.IncludeUnitsAvailable,
+		IncludeHomeConversions: request.IncludeHomeConversions,
+	})
+
+	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (r *HttpRequester) GetPricingStream(request GetPricingStreamRequest) (*GetPricingStreamResponse, error) {

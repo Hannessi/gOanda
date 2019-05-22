@@ -2,7 +2,6 @@ package gOanda
 
 import (
 	"errors"
-	"fmt"
 )
 
 func NewHttpRequester(
@@ -95,12 +94,10 @@ func (r *HttpRequester) PostOrder(request PostOrderRequest) (*PostOrderResponse,
 		Order: request.Order.ToOrderRequest(),
 	}
 
-	fmt.Println("orderRequest: ",order)
-
 	if err := HttpRequestWrapper(POST, requestUrl, order, response, r.Token); err != nil {
 		return nil, err
 	}
-	fmt.Println(response.OrderFillTransaction)
+
 	return response, nil
 }
 

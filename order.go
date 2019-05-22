@@ -1300,35 +1300,36 @@ type AnOrderRequest interface {
 } //todo
 
 type OrderRequest struct {
-	Type                   OrderType               `json:"type"`
-	Instrument             InstrumentName          `json:"instrument"`
-	Units                  DecimalNumber           `json:"units"`
-	TimeInForce            TimeInForce             `json:"timeInForce"`
-	PriceBound             PriceValue              `json:"priceBound"`
-	PositionFill           OrderPositionFill       `json:"positionFill"`
-	ClientExtensions       ClientExtensions        `json:"clientExtensions"`
-	TakeProfitOnFill       TakeProfitDetails       `json:"takeProfitOnFill"`
-	StopLossOnFill         StopLossDetails         `json:"stopLossOnFill"`
-	TrailingStopLossOnFill TrailingStopLossDetails `json:"trailingStopLossOnFill"`
-	TradeClientExtensions  ClientExtensions        `json:"tradeClientExtensions"`
+	Type                   OrderType                `json:"type"`
+	Instrument             InstrumentName           `json:"instrument"`
+	Units                  DecimalNumber            `json:"units"`
+	TimeInForce            TimeInForce              `json:"timeInForce,omitempty"`
+	PriceBound             PriceValue               `json:"priceBound,omitempty"`
+	PositionFill           *OrderPositionFill       `json:"positionFill,omitempty"`
+	ClientExtensions       *ClientExtensions        `json:"clientExtensions,omitempty"`
+	TakeProfitOnFill       *TakeProfitDetails       `json:"takeProfitOnFill,omitempty"`
+	StopLossOnFill         *StopLossDetails         `json:"stopLossOnFill,omitempty"`
+	TrailingStopLossOnFill *TrailingStopLossDetails `json:"trailingStopLossOnFill,omitempty"`
+	TradeClientExtensions  *ClientExtensions        `json:"tradeClientExtensions,omitempty"`
 }
 
 type MarketOrderRequest struct {
-	Type                   OrderType               `json:"type"`
-	Instrument             InstrumentName          `json:"instrument"`
-	Units                  DecimalNumber           `json:"units"`
-	TimeInForce            TimeInForce             `json:"timeInForce"`
-	PriceBound             PriceValue              `json:"priceBound"`
-	PositionFill           OrderPositionFill       `json:"positionFill"`
-	ClientExtensions       ClientExtensions        `json:"clientExtensions"`
-	TakeProfitOnFill       TakeProfitDetails       `json:"takeProfitOnFill"`
-	StopLossOnFill         StopLossDetails         `json:"stopLossOnFill"`
-	TrailingStopLossOnFill TrailingStopLossDetails `json:"trailingStopLossOnFill"`
-	TradeClientExtensions  ClientExtensions        `json:"tradeClientExtensions"`
+	Type                   OrderType                `json:"type"`
+	Instrument             InstrumentName           `json:"instrument"`
+	Units                  DecimalNumber            `json:"units"`
+	TimeInForce            TimeInForce              `json:"timeInForce"`
+	PriceBound             PriceValue               `json:"priceBound"`
+	PositionFill           OrderPositionFill        `json:"positionFill"`
+	ClientExtensions       *ClientExtensions        `json:"clientExtensions"`
+	TakeProfitOnFill       *TakeProfitDetails       `json:"takeProfitOnFill"`
+	StopLossOnFill         *StopLossDetails         `json:"stopLossOnFill"`
+	TrailingStopLossOnFill *TrailingStopLossDetails `json:"trailingStopLossOnFill"`
+	TradeClientExtensions  *ClientExtensions        `json:"tradeClientExtensions"`
 }
 
 // TODO
 func (m *MarketOrderRequest) ToOrderRequest() OrderRequest {
+
 	return OrderRequest{
 		Type:                   ORDER_TYPE_MARKET,
 		Instrument:             m.Instrument,

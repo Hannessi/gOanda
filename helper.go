@@ -43,8 +43,6 @@ func HttpRequestWrapper(method method, url string, requestBody interface{}, resp
 		httpRequest.Header.Add("Authorization", "Bearer "+token)
 	}
 
-	fmt.Println("Sending request: ", httpRequest.URL, httpRequest.Body)
-
 	httpResponse, err := http.DefaultClient.Do(httpRequest)
 	if err != nil {
 		return errors.New("could not send HTTP request: " + err.Error())

@@ -1305,7 +1305,7 @@ type OrderRequest struct {
 	Units                  DecimalNumber            `json:"units"`
 	TimeInForce            TimeInForce              `json:"timeInForce,omitempty"`
 	PriceBound             PriceValue               `json:"priceBound,omitempty"`
-	PositionFill           *OrderPositionFill       `json:"positionFill,omitempty"`
+	PositionFill           OrderPositionFill       `json:"positionFill,omitempty"`
 	ClientExtensions       *ClientExtensions        `json:"clientExtensions,omitempty"`
 	TakeProfitOnFill       *TakeProfitDetails       `json:"takeProfitOnFill,omitempty"`
 	StopLossOnFill         *StopLossDetails         `json:"stopLossOnFill,omitempty"`

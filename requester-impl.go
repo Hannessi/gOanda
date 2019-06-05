@@ -30,6 +30,9 @@ func (r *HttpRequester) GetAccounts(request GetAccountsRequest) (*GetAccountsRes
 	if err := HttpRequestWrapper(GET, r.UrlManager.GetAccounts(), nil, response, r.Token); err != nil {
 		return nil, err
 	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
 	return response, nil
 }
 
@@ -37,6 +40,9 @@ func (r *HttpRequester) GetAccount(request GetAccountRequest) (*GetAccountRespon
 	response := &GetAccountResponse{}
 	if err := HttpRequestWrapper(GET, r.UrlManager.GetAccount(), nil, response, r.Token); err != nil {
 		return nil, err
+	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 	return response, nil
 }
@@ -46,6 +52,9 @@ func (r *HttpRequester) GetAccountSummary(request GetAccountSummaryRequest) (*Ge
 	if err := HttpRequestWrapper(GET, r.UrlManager.GetAccountSummary(), nil, response, r.Token); err != nil {
 		return nil, err
 	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
 	return response, nil
 }
 
@@ -53,6 +62,9 @@ func (r *HttpRequester) GetAccountInstruments(request GetAccountInstrumentsReque
 	response := &GetAccountInstrumentsResponse{}
 	if err := HttpRequestWrapper(GET, r.UrlManager.GetAccountInstruments(), nil, response, r.Token); err != nil {
 		return nil, err
+	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 	return response, nil
 }
@@ -71,6 +83,9 @@ func (r *HttpRequester) GetInstrumentCandles(request GetInstrumentCandlesRequest
 	})
 	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
 		return nil, err
+	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 	return response, nil
 }
@@ -94,8 +109,11 @@ func (r *HttpRequester) PostOrder(request PostOrderRequest) (*PostOrderResponse,
 		Order: request.Order.ToOrderRequest(),
 	}
 
-	if err := HttpRequestWrapper(POST, requestUrl, order, response, r.Token); err != nil {
+	if err := HttpRequestWrapper(POST, requestUrl, order, &response, r.Token); err != nil {
 		return nil, err
+	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
 	return response, nil
@@ -139,6 +157,9 @@ func (r *HttpRequester) GetTrades(request GetTradesRequest) (*GetTradesResponse,
 	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
 		return nil, err
 	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
 
 	return response, nil
 }
@@ -150,12 +171,27 @@ func (r *HttpRequester) GetOpenTrades(request GetOpenTradesRequest) (*GetOpenTra
 	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
 		return nil, err
 	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
 
 	return response, nil
 }
 
 func (r *HttpRequester) GetTrade(request GetTradeRequest) (*GetTradeResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &GetTradeResponse{}
+	requestUrl := r.UrlManager.GetTrade(GetTradeRequestParameters{
+		TradeSpecifier: request.TradeSpecifier,
+	})
+
+	if err := HttpRequestWrapper(GET, requestUrl, nil, &response, r.Token); err != nil {
+		return nil, err
+	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
+
+	return response, nil
 }
 
 func (r *HttpRequester) PutCloseTrade(request PutCloseTradeRequest) (*PutCloseTradeResponse, error) {
@@ -197,7 +233,20 @@ func (r *HttpRequester) GetTransaction(request GetTransactionRequest) (*GetTrans
 }
 
 func (r *HttpRequester) GetRangeOfTransactions(request GetRangeOfTransactionsRequest) (*GetRangeOfTransactionsResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &GetRangeOfTransactionsResponse{}
+	requestUrl := r.UrlManager.GetRangeOfTransactions(GetRangeOfTransactionsParameters{
+		From: request.From,
+		To:   request.To,
+	})
+
+	if err := HttpRequestWrapper(GET, requestUrl, nil, &response, r.Token); err != nil {
+		return nil, err
+	}
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
+
+	return response, nil
 }
 
 func (r *HttpRequester) GetTransactionsAfterTransaction(request GetTransactionsAfterTransactionRequest) (*GetTransactionsAfterTransactionResponse, error) {

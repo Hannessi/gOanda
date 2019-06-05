@@ -123,8 +123,14 @@ func (m *UrlManager) GetTrades(request GetTradesRequestParameters) string {
 func (m *UrlManager) GetOpenTrades() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/openTrades"
 }
-func (m *UrlManager) GetTrade() string {
-	return "" // todo
+
+// trades
+type GetTradeRequestParameters struct {
+	TradeSpecifier TradeSpecifier
+}
+
+func (m *UrlManager) GetTrade(request GetTradeRequestParameters) string {
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/trades/" + request.TradeSpecifier.String()
 }
 func (m *UrlManager) PutCloseTrade() string {
 	return "" // todo
@@ -157,8 +163,14 @@ func (m *UrlManager) GetTransactions() string {
 func (m *UrlManager) GetTransaction() string {
 	return "" // todo
 }
-func (m *UrlManager) GetRangeOfTransactions() string {
-	return "" // todo
+
+type GetRangeOfTransactionsParameters struct {
+	From TransactionID
+	To   TransactionID
+}
+
+func (m *UrlManager) GetRangeOfTransactions(request GetRangeOfTransactionsParameters) string {
+	return m.BaseUrl + "/accounts/"+m.AccountId+"/transactions/idrange?to="+request.To.String()+"&from="+request.From.String()
 }
 func (m *UrlManager) GetTransactionsAfterTransaction() string {
 	return "" // todo
@@ -181,7 +193,7 @@ func (m *UrlManager) GetInstrumentPricing(params GetInstrumentPricingParameters)
 	additionalParameters := make([]string, 0)
 	if len(params.Instruments) > 0 {
 		instrumentStrings := func(is []InstrumentName) []string {
-			s := make([]string,0)
+			s := make([]string, 0)
 			for _, i := range is {
 				s = append(s, i.String())
 			}

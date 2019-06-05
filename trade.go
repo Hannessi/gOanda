@@ -26,6 +26,8 @@ func (t TradeStateFilter) String() string { return string(t) }
 
 type TradeSpecifier string
 
+func (t TradeSpecifier) String () string { return string(t)}
+
 type Trade struct {
 	Id                    TradeID               `json:"id"`
 	Instrument            InstrumentName        `json:"instrument"`

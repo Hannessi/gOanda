@@ -228,9 +228,17 @@ type GetTransactionRequest struct{}
 
 type GetTransactionResponse struct{}
 
-type GetRangeOfTransactionsRequest struct{}
+type GetRangeOfTransactionsRequest struct {
+	To   TransactionID
+	From TransactionID
+}
 
-type GetRangeOfTransactionsResponse struct{}
+type GetRangeOfTransactionsResponse struct {
+	Transactions      []Transaction `json:"transactions"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
 
 type GetTransactionsAfterTransactionRequest struct{}
 

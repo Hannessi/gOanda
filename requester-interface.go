@@ -240,9 +240,16 @@ type GetRangeOfTransactionsResponse struct {
 	ErrorMessage      string        `json:"errorMessage"`
 }
 
-type GetTransactionsAfterTransactionRequest struct{}
+type GetTransactionsAfterTransactionRequest struct {
+	Id TransactionID
+}
 
-type GetTransactionsAfterTransactionResponse struct{}
+type GetTransactionsAfterTransactionResponse struct {
+	Transactions      []Transaction `json:"transactions"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
 
 type GetTransactionsStreamRequest struct{}
 

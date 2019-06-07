@@ -170,16 +170,13 @@ func (c *Client) GetOpenTrades() (*GetOpenTradesResponse, error) {
 }
 
 func (c *Client) GetTrade(request GetTradeRequest) (*GetTradeResponse, error) {
-	getTradeResponse, err := c.requester.GetTrade(GetTradeRequest{
+	response, err := c.requester.GetTrade(GetTradeRequest{
 		TradeSpecifier: request.TradeSpecifier,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &GetTradeResponse{
-		Trade:             getTradeResponse.Trade,
-		LastTransactionID: getTradeResponse.LastTransactionID,
-	}, nil
+	return response, nil
 }
 
 func (c *Client) PutCloseTrade(request PutCloseTradeRequest) (*PutCloseTradeResponse, error) {

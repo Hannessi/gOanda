@@ -31,7 +31,7 @@ func (r *HttpRequester) GetAccounts(request GetAccountsRequest) (*GetAccountsRes
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 	return response, nil
 }
@@ -42,7 +42,7 @@ func (r *HttpRequester) GetAccount(request GetAccountRequest) (*GetAccountRespon
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 	return response, nil
 }
@@ -53,7 +53,7 @@ func (r *HttpRequester) GetAccountSummary(request GetAccountSummaryRequest) (*Ge
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 	return response, nil
 }
@@ -64,7 +64,7 @@ func (r *HttpRequester) GetAccountInstruments(request GetAccountInstrumentsReque
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 	return response, nil
 }
@@ -85,7 +85,7 @@ func (r *HttpRequester) GetInstrumentCandles(request GetInstrumentCandlesRequest
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 	return response, nil
 }
@@ -113,7 +113,7 @@ func (r *HttpRequester) PostOrder(request PostOrderRequest) (*PostOrderResponse,
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
 	return response, nil
@@ -158,7 +158,7 @@ func (r *HttpRequester) GetTrades(request GetTradesRequest) (*GetTradesResponse,
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
 	return response, nil
@@ -172,7 +172,7 @@ func (r *HttpRequester) GetOpenTrades(request GetOpenTradesRequest) (*GetOpenTra
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
 	return response, nil
@@ -188,7 +188,7 @@ func (r *HttpRequester) GetTrade(request GetTradeRequest) (*GetTradeResponse, er
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
 	return response, nil
@@ -243,14 +243,26 @@ func (r *HttpRequester) GetRangeOfTransactions(request GetRangeOfTransactionsReq
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
 	return response, nil
 }
 
 func (r *HttpRequester) GetTransactionsAfterTransaction(request GetTransactionsAfterTransactionRequest) (*GetTransactionsAfterTransactionResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &GetTransactionsAfterTransactionResponse{}
+	requestUrl := r.UrlManager.GetTransactionsAfterTransaction(GetTransactionsAfterTransactionParameters{
+		Id: request.Id,
+	})
+
+	if err := HttpRequestWrapper(GET, requestUrl, nil, &response, r.Token); err != nil {
+		return nil, err
+	}
+	if response.ErrorCode != "" {
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
+	return response, nil
+
 }
 
 func (r *HttpRequester) GetTransactionsStream(request GetTransactionsStreamRequest) (*GetTransactionsStreamResponse, error) {

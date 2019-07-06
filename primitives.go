@@ -1,7 +1,8 @@
 package gOanda
 
 import (
-	log "github.com/sirupsen/logrus"
+	"errors"
+	"fmt"
 	"strconv"
 )
 
@@ -9,33 +10,30 @@ import (
 
 type DecimalNumber string
 
-func (d *DecimalNumber) ToFloat() float64 {
+func (d *DecimalNumber) ToFloat() (float64, error) {
 	float, err := strconv.ParseFloat(string(*d), 10)
 	if err != nil {
-		log.Error("tried to convert '", *d, "' to a float:", err)
-		return 0
+		return 0, errors.New("tried to convert '"+ fmt.Sprintf("%.4f",*d)+ "' to a float:"+err.Error())
 	}
-	return float
+	return float, nil
 }
 
-func (d *DecimalNumber) ToInt() int64 {
+func (d *DecimalNumber) ToInt() (int64, error) {
 	integer, err := strconv.ParseInt(string(*d), 10, 64)
 	if err != nil {
-		log.Error("tried to convert '", *d, "' to an int:", err)
-		return 0
+		return 0, errors.New("tried to convert '"+fmt.Sprintf("%.4f", *d)+ "' to an int:"+ err.Error())
 	}
-	return integer
+	return integer, nil
 }
 
 type AccountUnits string
 
-func (d *AccountUnits) ToFloat() float64 {
+func (d *AccountUnits) ToFloat() (float64, error) {
 	float, err := strconv.ParseFloat(string(*d), 10)
 	if err != nil {
-		log.Error("tried to convert '", *d, "' to a float:", err)
-		return 0
+		return 0, errors.New("tried to convert '"+ fmt.Sprintf("%.4f",*d)+ "' to a float:"+ err.Error())
 	}
-	return float
+	return float, nil
 }
 
 type Currency string

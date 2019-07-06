@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -56,7 +55,7 @@ func HttpRequestWrapper(method method, url string, requestBody interface{}, resp
 
 	err = json.Unmarshal(responseBody, response)
 
-	fmt.Println("Response: ",httpResponse.Body)
+	//fmt.Println("Response: ",httpResponse.Body)
 	if err != nil {
 		return errors.New("could not unmarshal the body of the response: " + err.Error())
 	}

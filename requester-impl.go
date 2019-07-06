@@ -120,7 +120,24 @@ func (r *HttpRequester) PostOrder(request PostOrderRequest) (*PostOrderResponse,
 }
 
 func (r *HttpRequester) GetOrders(request GetOrdersRequest) (*GetOrdersResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &GetOrdersResponse{}
+	requestUrl := r.UrlManager.GetOrders(GetOrdersRequestParameters{
+		Ids:            request.Ids,
+		State:          request.State,
+		InstrumentName: request.InstrumentName,
+		Count:          request.Count,
+		BeforeID:       request.BeforeID,
+	})
+
+	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
+		return nil, err
+	}
+
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
+
+	return response, nil
 }
 
 func (r *HttpRequester) GetPendingOrders(request GetPendingOrdersRequest) (*GetPendingOrdersResponse, error) {

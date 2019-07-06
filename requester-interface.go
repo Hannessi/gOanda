@@ -122,9 +122,20 @@ type PostOrderResponse struct {
 	ErrorMessage                  string                 `json:"errorMessage"`
 }
 
-type GetOrdersRequest struct{}
+type GetOrdersRequest struct {
+	Ids            []OrderID
+	State          OrderStateFilter
+	InstrumentName InstrumentName
+	Count          int
+	BeforeID       OrderID
+}
 
-type GetOrdersResponse struct{}
+type GetOrdersResponse struct {
+	Orders            []Order       `json:"orders"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
 
 type GetPendingOrdersRequest struct{}
 

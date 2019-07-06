@@ -66,9 +66,46 @@ func (m *UrlManager) GetInstrumentPositionBook(instrumentName InstrumentName) st
 func (m *UrlManager) PostOrder() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders"
 }
-func (m *UrlManager) GetOrders() string {
-	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders"
+
+type GetOrdersRequestParameters struct {
+	Ids            []OrderID
+	State          OrderStateFilter
+	InstrumentName InstrumentName
+	Count          int
+	BeforeID       OrderID
 }
+
+func (m *UrlManager) GetOrders(request GetOrdersRequestParameters) string {
+	url :=  m.BaseUrl + "/accounts/" + m.AccountId + "/orders"
+
+	additionalParameters := make([]string, 0)
+	if len(request.Ids) > 0 {
+		stringIds := make([]string,0)
+		for _, id := range request.Ids {
+			stringIds = append(stringIds, id.String())
+		}
+		additionalParameters = append(additionalParameters, "ids="+strings.Join(stringIds, ","))
+	}
+	if request.State != "" {
+		additionalParameters = append(additionalParameters, "state="+request.State.String())
+	}
+	if request.InstrumentName != "" {
+		additionalParameters = append(additionalParameters, "instrument="+request.InstrumentName.String())
+	}
+	if request.Count > 0 {
+		additionalParameters = append(additionalParameters, "count="+string(request.Count))
+	}
+	if request.BeforeID != "" {
+		additionalParameters = append(additionalParameters, "beforeID"+request.BeforeID.String())
+	}
+
+	if len(additionalParameters) > 0 {
+		url = url + "?" + strings.Join(additionalParameters, "&")
+	}
+
+	return url
+}
+
 func (m *UrlManager) GetPendingOrders() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/pendingOrders"
 }
@@ -99,7 +136,11 @@ func (m *UrlManager) GetTrades(request GetTradesRequestParameters) string {
 
 	additionalParameters := make([]string, 0)
 	if len(request.Ids) > 0 {
-		additionalParameters = append(additionalParameters, "ids="+strings.Join(additionalParameters, ","))
+		stringIds := make([]string,0)
+		for _, id := range request.Ids {
+			stringIds = append(stringIds, id.String())
+		}
+		additionalParameters = append(additionalParameters, "ids="+strings.Join(stringIds, ","))
 	}
 	if request.State != "" {
 		additionalParameters = append(additionalParameters, "state="+request.State.String())
@@ -170,14 +211,16 @@ type GetRangeOfTransactionsParameters struct {
 }
 
 func (m *UrlManager) GetRangeOfTransactions(request GetRangeOfTransactionsParameters) string {
-	return m.BaseUrl + "/accounts/"+m.AccountId+"/transactions/idrange?to="+request.To.String()+"&from="+request.From.String()
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/transactions/idrange?to=" + request.To.String() + "&from=" + request.From.String()
 }
 
-type GetTransactionsAfterTransactionParameters struct { // todo rename to TransactionsSince
+type GetTransactionsAfterTransactionParameters struct {
+	// todo rename to TransactionsSince
 	Id TransactionID
 }
+
 func (m *UrlManager) GetTransactionsAfterTransaction(request GetTransactionsAfterTransactionParameters) string {
-	return m.BaseUrl + "/account/"+m.AccountId+"/transactions/sinceid?id="+request.Id.String()
+	return m.BaseUrl + "/account/" + m.AccountId + "/transactions/sinceid?id=" + request.Id.String()
 }
 func (m *UrlManager) GetTransactionsStream() string {
 	return "" // todo

@@ -1305,7 +1305,7 @@ type OrderRequest struct {
 	Units                  DecimalNumber            `json:"units"`
 	TimeInForce            TimeInForce              `json:"timeInForce,omitempty"`
 	PriceBound             PriceValue               `json:"priceBound,omitempty"`
-	PositionFill           OrderPositionFill       `json:"positionFill,omitempty"`
+	PositionFill           OrderPositionFill        `json:"positionFill,omitempty"`
 	ClientExtensions       *ClientExtensions        `json:"clientExtensions,omitempty"`
 	TakeProfitOnFill       *TakeProfitDetails       `json:"takeProfitOnFill,omitempty"`
 	StopLossOnFill         *StopLossDetails         `json:"stopLossOnFill,omitempty"`
@@ -1359,6 +1359,8 @@ type TrailingStopLossOrderRequest struct{} // todo
 
 type OrderID string
 
+func (o OrderID) String() string { return string(o) }
+
 type OrderType string // todo do consts
 
 type CancellableOrderType string // todo do consts
@@ -1366,6 +1368,23 @@ type CancellableOrderType string // todo do consts
 type OrderState string // todo consts
 
 type OrderStateFilter string // todo consts
+
+//The Orders that are currently pending execution
+const PENDING OrderStateFilter = "PENDING"
+
+//The Orders that have been filled
+const FILLED OrderStateFilter = "FILLED"
+
+//The Orders that have been triggered
+const TRIGGERED OrderStateFilter = "TRIGGERED"
+
+//The Orders that have been cancelled
+const CANCELLED OrderStateFilter = "CANCELLED"
+
+//The Orders that are in any of the possible states listed above
+const ALL OrderStateFilter = "ALL"
+
+func (o OrderStateFilter) String() string { return string(o) }
 
 type OrderIdentifier struct{} // todo
 

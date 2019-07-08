@@ -105,8 +105,8 @@ func (c *Client) PostOrder(request PostOrderRequest) (*PostOrderResponse, error)
 	return response, nil
 }
 
-func (c *Client) GetOrders() (*GetOrdersResponse, error) {
-	_, err := c.requester.GetOrders(GetOrdersRequest{})
+func (c *Client) GetOrders(request GetOrdersRequest) (*GetOrdersResponse, error) {
+	_, err := c.requester.GetOrders(request)
 	if err != nil {
 		return nil, err
 	}

@@ -1528,7 +1528,7 @@ func (l *LimitOrderRequest) ToOrderRequest() OrderRequest {
 		TimeInForce:            l.TimeInForce,
 		//PriceBound:             l.PriceBound,
 		PositionFill:           l.PositionFill,
-		ClientExtensions:       &l.ClientExtensions,
+		ClientExtensions:       l.ClientExtensions,
 		TakeProfitOnFill:       l.TakeProfitOnFill,
 		StopLossOnFill:         l.StopLossOnFill,
 		TrailingStopLossOnFill: l.TrailingStopLossOnFill,

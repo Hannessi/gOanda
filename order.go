@@ -1303,6 +1303,7 @@ type OrderRequest struct {
 	Type                   OrderType                `json:"type"`
 	Instrument             InstrumentName           `json:"instrument"`
 	Units                  DecimalNumber            `json:"units"`
+	Price                  *PriceValue              `json:"price,omitempty"`
 	TimeInForce            TimeInForce              `json:"timeInForce,omitempty"`
 	PriceBound             PriceValue               `json:"priceBound,omitempty"`
 	PositionFill           OrderPositionFill        `json:"positionFill,omitempty"`
@@ -1345,7 +1346,7 @@ func (m *MarketOrderRequest) ToOrderRequest() OrderRequest {
 	}
 }
 
-type LimitOrderRequest struct{
+type LimitOrderRequest struct {
 	//
 	// The Order’s identifier, unique within the Order’s Account.
 	//
@@ -1526,7 +1527,7 @@ func (l *LimitOrderRequest) ToOrderRequest() OrderRequest {
 		Instrument:             l.Instrument,
 		Units:                  l.Units,
 		TimeInForce:            l.TimeInForce,
-		//PriceBound:             l.PriceBound,
+		Price:                  &l.Price,
 		PositionFill:           l.PositionFill,
 		ClientExtensions:       l.ClientExtensions,
 		TakeProfitOnFill:       l.TakeProfitOnFill,

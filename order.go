@@ -1537,7 +1537,133 @@ func (l *LimitOrderRequest) ToOrderRequest() OrderRequest {
 	}
 }
 
-type StopOrderRequest struct{} // todo
+type StopOrderRequest struct{
+	//
+	// The type of the Order to Create. Must be set to “STOP” when creating a
+	// Stop Order.
+	//
+	Type OrderType
+
+	//
+	// The Stop Order’s Instrument.
+	//
+	Instrument InstrumentName
+
+	//
+	// The quantity requested to be filled by the Stop Order. A positive number
+	// of units results in a long Order, and a negative number of units results
+	// in a short Order.
+	//
+	Units DecimalNumber
+
+	//
+	// The price threshold specified for the Stop Order. The Stop Order will
+	// only be filled by a market price that is equal to or worse than this
+	// price.
+	//
+	Price PriceValue
+
+	//
+	// The worst market price that may be used to fill this Stop Order. If the
+	// market gaps and crosses through both the price and the priceBound, the
+	// Stop Order will be cancelled instead of being filled.
+	//
+	PriceBound PriceValue
+
+	//
+	// The time-in-force requested for the Stop Order.
+	//
+	TimeInForce TimeInForce
+
+	//
+	// The date/time when the Stop Order will be cancelled if its timeInForce is
+	// “GTD”.
+	//
+	GtdTime DateTime
+
+	//
+	// Specification of how Positions in the Account are modified when the Order
+	// is filled.
+	//
+	PositionFill OrderPositionFill
+
+	//
+	// Specification of which price component should be used when determining if
+	// an Order should be triggered and filled. This allows Orders to be
+	// triggered based on the bid, ask, mid, default (ask for buy, bid for sell)
+	// or inverse (ask for sell, bid for buy) price depending on the desired
+	// behaviour. Orders are always filled using their default price component.
+	// This feature is only provided through the REST API. Clients who choose to
+	// specify a non-default trigger condition will not see it reflected in any
+	// of OANDA’s proprietary or partner trading platforms, their transaction
+	// history or their account statements. OANDA platforms always assume that
+	// an Order’s trigger condition is set to the default value when indicating
+	// the distance from an Order’s trigger price, and will always provide the
+	// default trigger condition when creating or modifying an Order. A special
+	// restriction applies when creating a guaranteed Stop Loss Order. In this
+	// case the TriggerCondition value must either be “DEFAULT”, or the
+	// “natural” trigger side “DEFAULT” results in. So for a Stop Loss Order for
+	// a long trade valid values are “DEFAULT” and “BID”, and for short trades
+	// “DEFAULT” and “ASK” are valid.
+	//
+	TriggerCondition OrderTriggerCondition
+
+	//
+	// The client extensions to add to the Order. Do not set, modify, or delete
+	// clientExtensions if your account is associated with MT4.
+	//
+	ClientExtensions *ClientExtensions
+
+	//
+	// TakeProfitDetails specifies the details of a Take Profit Order to be
+	// created on behalf of a client. This may happen when an Order is filled
+	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
+	// Take Profit Order is modified directly through the Trade.
+	//
+	TakeProfitOnFill *TakeProfitDetails
+
+	//
+	// StopLossDetails specifies the details of a Stop Loss Order to be created
+	// on behalf of a client. This may happen when an Order is filled that opens
+	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
+	// Order is modified directly through the Trade.
+	//
+	StopLossOnFill *StopLossDetails
+
+	//
+	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
+	// Order to be created on behalf of a client. This may happen when an Order
+	// is filled that opens a Trade requiring a Trailing Stop Loss, or when a
+	// Trade’s dependent Trailing Stop Loss Order is modified directly through
+	// the Trade.
+	//
+	TrailingStopLossOnFill *TrailingStopLossDetails
+
+	//
+	// Client Extensions to add to the Trade created when the Order is filled
+	// (if such a Trade is created). Do not set, modify, or delete
+	// tradeClientExtensions if your account is associated with MT4.
+	//
+	TradeClientExtensions *ClientExtensions
+
+}
+
+func (s *StopOrderRequest) ToOrderRequest() OrderRequest {
+
+	return OrderRequest{
+		Type:                   ORDER_TYPE_LIMIT,
+		Instrument:             s.Instrument,
+		Units:                  s.Units,
+		TimeInForce:            s.TimeInForce,
+		Price:                  &s.Price,
+		PositionFill:           s.PositionFill,
+		ClientExtensions:       s.ClientExtensions,
+		TakeProfitOnFill:       s.TakeProfitOnFill,
+		StopLossOnFill:         s.StopLossOnFill,
+		TrailingStopLossOnFill: s.TrailingStopLossOnFill,
+		TradeClientExtensions:  s.TradeClientExtensions,
+	}
+}
 
 type MarketIfTouchedOrderRequest struct{} //  todo
 

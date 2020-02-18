@@ -1365,7 +1365,7 @@ type LimitOrderRequest struct{
 	// The client extensions of the Order. Do not set, modify, or delete
 	// clientExtensions if your account is associated with MT4.
 	//
-	ClientExtensions ClientExtensions
+	ClientExtensions *ClientExtensions
 
 	//
 	// The type of the Order. Always set to “LIMIT” for Limit Orders.

@@ -1651,7 +1651,7 @@ type StopOrderRequest struct{
 func (s *StopOrderRequest) ToOrderRequest() OrderRequest {
 
 	return OrderRequest{
-		Type:                   ORDER_TYPE_LIMIT,
+		Type:                   ORDER_TYPE_STOP,
 		Instrument:             s.Instrument,
 		Units:                  s.Units,
 		TimeInForce:            s.TimeInForce,

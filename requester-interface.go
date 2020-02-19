@@ -1,5 +1,7 @@
 package gOanda
 
+import "github.com/sirupsen/logrus"
+
 type Requester interface {
 	// account
 	GetAccounts(GetAccountsRequest) (*GetAccountsResponse, error)
@@ -130,6 +132,13 @@ type GetOrdersRequest struct {
 	BeforeID       OrderID
 }
 
+type GetRawOrdersResponse struct {
+	Orders            []RawOrder    `json:"orders"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
+
 type GetOrdersResponse struct {
 	Orders            []Order       `json:"orders"`
 	LastTransactionID TransactionID `json:"lastTransactionID"`
@@ -137,9 +146,56 @@ type GetOrdersResponse struct {
 	ErrorMessage      string        `json:"errorMessage"`
 }
 
+func (g *GetRawOrdersResponse) Unmarshal() (*GetOrdersResponse, error) {
+	unmarshalledOrders := make([]Order, 0)
+
+	for _, marshalledOrder := range g.Orders {
+		unmarshalledOrder, err := marshalledOrder.ToOrder()
+		if err != nil {
+			logrus.Error("Could not unmarshal order: ", marshalledOrder)
+			return nil, err
+		}
+		unmarshalledOrders = append(unmarshalledOrders, unmarshalledOrder)
+	}
+
+	return &GetOrdersResponse{
+		Orders:            unmarshalledOrders,
+		LastTransactionID: g.LastTransactionID,
+		ErrorCode:         g.ErrorCode,
+		ErrorMessage:      g.ErrorMessage,
+	}, nil
+}
+
 type GetPendingOrdersRequest struct{}
 
-type GetPendingOrdersResponse struct{
+type GetRawPendingOrdersResponse struct {
+	Orders            []RawOrder    `json:"orders"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
+
+func (g *GetRawPendingOrdersResponse) Unmarshal() (*GetPendingOrdersResponse, error) {
+	unmarshalledOrders := make([]Order, 0)
+
+	for _, marshalledOrder := range g.Orders {
+		unmarshalledOrder, err := marshalledOrder.ToOrder()
+		if err != nil {
+			logrus.Error("Could not unmarshal order: ", marshalledOrder)
+			return nil, err
+		}
+		unmarshalledOrders = append(unmarshalledOrders, unmarshalledOrder)
+	}
+
+	return &GetPendingOrdersResponse{
+		Orders:            unmarshalledOrders,
+		LastTransactionID: g.LastTransactionID,
+		ErrorCode:         g.ErrorCode,
+		ErrorMessage:      g.ErrorMessage,
+	}, nil
+}
+
+type GetPendingOrdersResponse struct {
 	Orders            []Order       `json:"orders"`
 	LastTransactionID TransactionID `json:"lastTransactionID"`
 	ErrorCode         string        `json:"errorCode"`

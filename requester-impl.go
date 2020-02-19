@@ -2,6 +2,7 @@ package gOanda
 
 import (
 	"errors"
+	"github.com/sirupsen/logrus"
 )
 
 func NewHttpRequester(
@@ -120,7 +121,7 @@ func (r *HttpRequester) PostOrder(request PostOrderRequest) (*PostOrderResponse,
 }
 
 func (r *HttpRequester) GetOrders(request GetOrdersRequest) (*GetOrdersResponse, error) {
-	response := &GetOrdersResponse{}
+	response := &GetRawOrdersResponse{}
 	requestUrl := r.UrlManager.GetOrders(GetOrdersRequestParameters{
 		Ids:            request.Ids,
 		State:          request.State,
@@ -137,22 +138,34 @@ func (r *HttpRequester) GetOrders(request GetOrdersRequest) (*GetOrdersResponse,
 		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
-	return response, nil
+	unmarshalledResponse, err := response.Unmarshal()
+	if err != nil {
+		logrus.Error("Could not unmarshal order:", err.Error())
+		return nil, err
+	}
+
+	return unmarshalledResponse, nil
 }
 
 func (r *HttpRequester) GetPendingOrders(request GetPendingOrdersRequest) (*GetPendingOrdersResponse, error) {
-	response := &GetPendingOrdersResponse{}
+	response := &GetRawPendingOrdersResponse{}
 	requestUrl := r.UrlManager.GetPendingOrders()
 
-	if err := HttpRequestWrapper(GET, requestUrl,nil, response, r.Token); err != nil {
+	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
 		return nil, err
 	}
 
 	if response.ErrorCode != "" {
-		return nil, errors.New(response.ErrorCode + ": "+ response.ErrorMessage)
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
-	return response, nil
+	unmarshalledResponse, err := response.Unmarshal()
+	if err != nil {
+		logrus.Error("Could not unmarshal order:", err.Error())
+		return nil, err
+	}
+
+	return unmarshalledResponse, nil
 }
 
 func (r *HttpRequester) GetOrder(request GetOrderRequest) (*GetOrderResponse, error) {

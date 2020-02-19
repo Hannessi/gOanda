@@ -16,21 +16,21 @@ func main() {
 	// create new client
 	oandaClient := gOanda.New(*account, *token)
 
-	getAccountsResponse, err := oandaClient.GetAccounts()
-	if err != nil {
-		logrus.Error(err.Error())
-	}
-
-	for _, account := range getAccountsResponse.Accounts {
-		logrus.Info(account.String())
-	}
-
-	getAccountResponse, err := oandaClient.GetAccount()
-	if err != nil {
-		logrus.Error(err.Error())
-	}
-
-	logrus.Info(getAccountResponse.Account.String())
+	//getAccountsResponse, err := oandaClient.GetAccounts()
+	//if err != nil {
+	//	logrus.Error(err.Error())
+	//}
+	//
+	//for _, account := range getAccountsResponse.Accounts {
+	//	logrus.Info(account.String())
+	//}
+	//
+	//getAccountResponse, err := oandaClient.GetAccount()
+	//if err != nil {
+	//	logrus.Error(err.Error())
+	//}
+	//
+	//logrus.Info(getAccountResponse.Account.String())
 
 	getOrdersResponse, err := oandaClient.GetOrders(gOanda.GetOrdersRequest{
 		InstrumentName: gOanda.INSTRUMENT_NAME_USDCHF,

@@ -1,12 +1,197 @@
 package gOanda
 
+import "errors"
+
 // todo json tags
 
-type Order struct {
-	Id               OrderID
-	CreateTime       DateTime
-	State            OrderState
-	ClientExtensions ClientExtensions
+// todo get a more efficient way of unmarshalling and order
+type RawOrder struct {
+	Id                         OrderID                      `json:"id"`
+	CreateTime                 DateTime                     `json:"createTime"`
+	State                      OrderState                   `json:"state"`
+	Instrument                 InstrumentName               `json:"instrument"`
+	ClientExtensions           ClientExtensions             `json:"clientExtensions"`
+	Type                       OrderType                    `json:"type"`
+	TradeClose                 MarketOrderTradeClose        `json:"tradeClose"`
+	LongPositionCloseout       MarketOrderPositionCloseout  `json:"longPositionCloseout"`
+	ShortPositionCloseout      MarketOrderPositionCloseout  `json:"shortPositionCloseout"`
+	MarginCloseout             MarketOrderMarginCloseout    `json:"marginCloseout"`
+	DelayedTradeClose          MarketOrderDelayedTradeClose `json:"delayedTradeClose"`
+	Units                      DecimalNumber                `json:"units"`
+	Price                      PriceValue                   `json:"price"`
+	PriceBound                 PriceValue                   `json:"priceBound"`
+	TimeInForce                TimeInForce                  `json:"timeInForce"`
+	GtdTime                    DateTime                     `json:"gtdTime"`
+	PositionFill               OrderPositionFill            `json:"positionFill"`
+	TriggerCondition           OrderTriggerCondition        `json:"triggerCondition"`
+	TakeProfitOnFill           TakeProfitDetails            `json:"takeProfitOnFill"`
+	StopLossOnFill             StopLossDetails              `json:"stopLossOnFill"`
+	TrailingStopLossOnFill     TrailingStopLossDetails      `json:"trailingStopLossOnFill"`
+	TradeClientExtensions      ClientExtensions             `json:"tradeClientExtensions"`
+	FillingTransactionID       TransactionID                `json:"fillingTransactionID"`
+	FilledTime                 DateTime                     `json:"filledTime"`
+	TradeOpenedID              TradeID                      `json:"tradeOpenedID"`
+	TradeReducedID             TradeID                      `json:"tradeReducedID"`
+	TradeClosedIDs             []TradeID                    `json:"tradeClosedIDs"`
+	CancellingTransactionID    TransactionID                `json:"cancellingTransactionID"`
+	CancelledTime              DateTime                     `json:"cancelledTime"`
+	ReplacesOrderID            OrderID                      `json:"replacesOrderID"`
+	ReplacedByOrderID          OrderID                      `json:"replacedByOrderID"`
+	TradeID                    TradeID                      `json:"tradeID"`
+	ClientTradeID              ClientID                     `json:"clientTradeID"`
+	GuaranteedExecutionPremium DecimalNumber                `json:"guaranteedExecutionPremium"`
+	Distance                   DecimalNumber                `json:"distance"`
+	Guaranteed                 bool                         `json:"guaranteed"`
+}
+
+func (o *RawOrder) ToOrder() (Order, error) {
+	switch o.Type {
+	case ORDER_TYPE_STOP:
+		return &StopOrder{
+			id:                      o.Id,
+			createTime:              o.CreateTime,
+			state:                   o.State,
+			clientExtensions:        o.ClientExtensions,
+			Type:                    o.Type,
+			instrument:              o.Instrument,
+			units:                   o.Units,
+			price:                   o.Price,
+			priceBound:              o.PriceBound,
+			timeInForce:             o.TimeInForce,
+			gtdTime:                 o.GtdTime,
+			positionFill:            o.PositionFill,
+			triggerCondition:        o.TriggerCondition,
+			takeProfitOnFill:        o.TakeProfitOnFill,
+			stopLossOnFill:          o.StopLossOnFill,
+			trailingStopLossOnFill:  o.TrailingStopLossOnFill,
+			tradeClientExtensions:   o.TradeClientExtensions,
+			fillingTransactionID:    o.FillingTransactionID,
+			filledTime:              o.FilledTime,
+			tradeOpenedID:           o.TradeOpenedID,
+			tradeReducedID:          o.TradeReducedID,
+			tradeClosedIDs:          o.TradeClosedIDs,
+			cancellingTransactionID: o.CancellingTransactionID,
+			cancelledTime:           o.CancelledTime,
+			replacesOrderID:         o.ReplacesOrderID,
+			replacedByOrderID:       o.ReplacedByOrderID,
+		}, nil
+
+	case ORDER_TYPE_LIMIT:
+		return &LimitOrder{
+			id:                      o.Id,
+			createTime:              o.CreateTime,
+			state:                   o.State,
+			clientExtensions:        o.ClientExtensions,
+			Type:                    o.Type,
+			instrument:              o.Instrument,
+			units:                   o.Units,
+			price:                   o.Price,
+			timeInForce:             o.TimeInForce,
+			gtdTime:                 o.GtdTime,
+			positionFill:            o.PositionFill,
+			triggerCondition:        o.TriggerCondition,
+			takeProfitOnFill:        o.TakeProfitOnFill,
+			stopLossOnFill:          o.StopLossOnFill,
+			trailingStopLossOnFill:  o.TrailingStopLossOnFill,
+			tradeClientExtensions:   o.TradeClientExtensions,
+			fillingTransactionID:    o.FillingTransactionID,
+			filledTime:              o.FilledTime,
+			tradeOpenedID:           o.TradeOpenedID,
+			tradeReducedID:          o.TradeReducedID,
+			tradeClosedIDs:          o.TradeClosedIDs,
+			cancellingTransactionID: o.CancellingTransactionID,
+			cancelledTime:           o.CancelledTime,
+			replacesOrderID:         o.ReplacesOrderID,
+			replacedByOrderID:       o.ReplacedByOrderID,
+		}, nil
+
+	// TODO fix consistency between exported & non exported fields of order
+	case ORDER_TYPE_MARKET:
+		return &MarketOrder{
+			id:                      o.Id,
+			createTime:              o.CreateTime,
+			state:                   o.State,
+			clientExtensions:        o.ClientExtensions,
+			Type:                    o.Type,
+			instrument:              o.Instrument,
+			units:                   o.Units,
+			timeInForce:             o.TimeInForce,
+			priceBound:              o.PriceBound,
+			positionFill:            o.PositionFill,
+			tradeClose:              o.TradeClose,
+			longPositionCloseout:    o.LongPositionCloseout,
+			shortPositionCloseout:   o.ShortPositionCloseout,
+			marginCloseout:          o.MarginCloseout,
+			delayedTradeClose:       o.DelayedTradeClose,
+			takeProfitOnFill:        o.TakeProfitOnFill,
+			stopLossOnFill:          o.StopLossOnFill,
+			trailingStopLossOnFill:  o.TrailingStopLossOnFill,
+			tradeClientExtensions:   o.TradeClientExtensions,
+			fillingTransactionID:    o.FillingTransactionID,
+			filledTime:              o.FilledTime,
+			tradeOpenedID:           o.TradeOpenedID,
+			tradeReducedID:          o.TradeReducedID,
+			tradeClosedIDs:          o.TradeClosedIDs,
+			cancellingTransactionID: o.CancellingTransactionID,
+			cancelledTime:           o.CancelledTime,
+		}, nil
+
+	case ORDER_TYPE_TAKE_PROFIT:
+		return &TakeProfitOrder{
+			Id:                      o.Id,
+			CreateTime:              o.CreateTime,
+			State:                   o.State,
+			ClientExtensions:        o.ClientExtensions,
+			Type:                    o.Type,
+			TradeID:                 o.TradeID,
+			ClientTradeID:           o.ClientTradeID,
+			Price:                   o.Price,
+			TimeInForce:             o.TimeInForce,
+			GtdTime:                 o.GtdTime,
+			TriggerCondition:        o.TriggerCondition,
+			FillingTransactionID:    o.FillingTransactionID,
+			FilledTime:              o.FilledTime,
+			TradeOpenedID:           o.TradeOpenedID,
+			TradeReducedID:          o.TradeReducedID,
+			TradeClosedIDs:          o.TradeClosedIDs,
+			CancellingTransactionID: o.CancellingTransactionID,
+			CancelledTime:           o.CancelledTime,
+			ReplacesOrderID:         o.ReplacesOrderID,
+			ReplacedByOrderID:       o.ReplacedByOrderID,
+		}, nil
+
+	case ORDER_TYPE_STOP_LOSS:
+		return &StopLossOrder{
+			Id:                         o.Id,
+			CreateTime:                 o.CreateTime,
+			State:                      o.State,
+			ClientExtensions:           o.ClientExtensions,
+			Type:                       o.Type,
+			GuaranteedExecutionPremium: o.GuaranteedExecutionPremium,
+			TradeID:                    o.TradeID,
+			ClientTradeID:              o.ClientTradeID,
+			Price:                      o.Price,
+			Distance:                   o.Distance,
+			TimeInForce:                o.TimeInForce,
+			GtdTime:                    o.GtdTime,
+			TriggerCondition:           o.TriggerCondition,
+			Guaranteed:                 o.Guaranteed,
+			FillingTransactionID:       o.FillingTransactionID,
+			FilledTime:                 o.FilledTime,
+			TradeOpenedID:              o.TradeOpenedID,
+			TradeReducedID:             o.TradeReducedID,
+			TradeClosedIDs:             o.TradeClosedIDs,
+			CancellingTransactionID:    o.CancellingTransactionID,
+			CancelledTime:              o.CancelledTime,
+			ReplacesOrderID:            o.ReplacesOrderID,
+			ReplacedByOrderID:          o.ReplacedByOrderID,
+		}, nil
+	}
+	return nil, errors.New("OrderType not implemented for: " + string(o.Type))
+}
+
+type Order interface {
+	GetType() OrderType
 }
 
 type MarketOrder struct {
@@ -173,6 +358,10 @@ type MarketOrder struct {
 	cancelledTime DateTime
 }
 
+func (m *MarketOrder) GetType() OrderType {
+	return m.Type
+}
+
 type FixedPriceOrder struct {
 	//
 	// The Order’s identifier, unique within the Order’s Account.
@@ -307,6 +496,10 @@ type FixedPriceOrder struct {
 	// the Order is CANCELLED)
 	//
 	cancelledTime DateTime
+}
+
+func (f *FixedPriceOrder) GetType() OrderType {
+	return f.Type
 }
 
 type LimitOrder struct {
@@ -481,6 +674,10 @@ type LimitOrder struct {
 	// was cancelled as part of a cancel/replace).
 	//
 	replacedByOrderID OrderID
+}
+
+func (l *LimitOrder) GetType() OrderType {
+	return l.Type
 }
 
 type StopOrder struct {
@@ -662,6 +859,10 @@ type StopOrder struct {
 	// was cancelled as part of a cancel/replace).
 	//
 	replacedByOrderID OrderID
+}
+
+func (s *StopOrder) GetType() OrderType {
+	return s.Type
 }
 
 type MarketIfTouchedOrder struct {
@@ -854,6 +1055,10 @@ type MarketIfTouchedOrder struct {
 	replacedByOrderID OrderID
 }
 
+func (m *MarketIfTouchedOrder) GetType() OrderType {
+	return m.Type
+}
+
 type TakeProfitOrder struct {
 	//
 	// The Order’s identifier, unique within the Order’s Account.
@@ -989,6 +1194,10 @@ type TakeProfitOrder struct {
 	// was cancelled as part of a cancel/replace).
 	//
 	ReplacedByOrderID OrderID `json:"replacedByOrderID"`
+}
+
+func (t *TakeProfitOrder) GetType() OrderType {
+	return t.Type
 }
 
 type StopLossOrder struct {
@@ -1150,6 +1359,10 @@ type StopLossOrder struct {
 	ReplacedByOrderID OrderID `json:"replacedByOrderID"`
 }
 
+func (s *StopLossOrder) GetType() OrderType {
+	return s.Type
+}
+
 type TrailingStopLossOrder struct {
 	//
 	// The Order’s identifier, unique within the Order’s Account.
@@ -1293,6 +1506,10 @@ type TrailingStopLossOrder struct {
 	// was cancelled as part of a cancel/replace).
 	//
 	ReplacedByOrderID OrderID `json:"replacedByOrderID"`
+}
+
+func (t *TrailingStopLossOrder) GetType() OrderType {
+	return t.Type
 }
 
 type AnOrderRequest interface {
@@ -1536,7 +1753,7 @@ func (l *LimitOrderRequest) ToOrderRequest() OrderRequest {
 	}
 }
 
-type StopOrderRequest struct{
+type StopOrderRequest struct {
 	//
 	// The type of the Order to Create. Must be set to “STOP” when creating a
 	// Stop Order.
@@ -1644,7 +1861,6 @@ type StopOrderRequest struct{
 	// tradeClientExtensions if your account is associated with MT4.
 	//
 	TradeClientExtensions *ClientExtensions
-
 }
 
 func (s *StopOrderRequest) ToOrderRequest() OrderRequest {

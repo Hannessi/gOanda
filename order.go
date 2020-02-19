@@ -48,92 +48,92 @@ func (o *RawOrder) ToOrder() (Order, error) {
 	switch o.Type {
 	case ORDER_TYPE_STOP:
 		return &StopOrder{
-			id:                      o.Id,
-			createTime:              o.CreateTime,
-			state:                   o.State,
-			clientExtensions:        o.ClientExtensions,
+			Id:                      o.Id,
+			CreateTime:              o.CreateTime,
+			State:                   o.State,
+			ClientExtensions:        o.ClientExtensions,
 			Type:                    o.Type,
-			instrument:              o.Instrument,
-			units:                   o.Units,
-			price:                   o.Price,
-			priceBound:              o.PriceBound,
-			timeInForce:             o.TimeInForce,
-			gtdTime:                 o.GtdTime,
-			positionFill:            o.PositionFill,
-			triggerCondition:        o.TriggerCondition,
-			takeProfitOnFill:        o.TakeProfitOnFill,
-			stopLossOnFill:          o.StopLossOnFill,
-			trailingStopLossOnFill:  o.TrailingStopLossOnFill,
-			tradeClientExtensions:   o.TradeClientExtensions,
-			fillingTransactionID:    o.FillingTransactionID,
-			filledTime:              o.FilledTime,
-			tradeOpenedID:           o.TradeOpenedID,
-			tradeReducedID:          o.TradeReducedID,
-			tradeClosedIDs:          o.TradeClosedIDs,
-			cancellingTransactionID: o.CancellingTransactionID,
-			cancelledTime:           o.CancelledTime,
-			replacesOrderID:         o.ReplacesOrderID,
-			replacedByOrderID:       o.ReplacedByOrderID,
+			Instrument:              o.Instrument,
+			Units:                   o.Units,
+			Price:                   o.Price,
+			PriceBound:              o.PriceBound,
+			TimeInForce:             o.TimeInForce,
+			GtdTime:                 o.GtdTime,
+			PositionFill:            o.PositionFill,
+			TriggerCondition:        o.TriggerCondition,
+			TakeProfitOnFill:        o.TakeProfitOnFill,
+			StopLossOnFill:          o.StopLossOnFill,
+			TrailingStopLossOnFill:  o.TrailingStopLossOnFill,
+			TradeClientExtensions:   o.TradeClientExtensions,
+			FillingTransactionID:    o.FillingTransactionID,
+			FilledTime:              o.FilledTime,
+			TradeOpenedID:           o.TradeOpenedID,
+			TradeReducedID:          o.TradeReducedID,
+			TradeClosedIDs:          o.TradeClosedIDs,
+			CancellingTransactionID: o.CancellingTransactionID,
+			CancelledTime:           o.CancelledTime,
+			ReplacesOrderID:         o.ReplacesOrderID,
+			ReplacedByOrderID:       o.ReplacedByOrderID,
 		}, nil
 
 	case ORDER_TYPE_LIMIT:
 		return &LimitOrder{
-			id:                      o.Id,
-			createTime:              o.CreateTime,
-			state:                   o.State,
-			clientExtensions:        o.ClientExtensions,
+			Id:                      o.Id,
+			CreateTime:              o.CreateTime,
+			State:                   o.State,
+			ClientExtensions:        o.ClientExtensions,
 			Type:                    o.Type,
-			instrument:              o.Instrument,
-			units:                   o.Units,
-			price:                   o.Price,
-			timeInForce:             o.TimeInForce,
-			gtdTime:                 o.GtdTime,
-			positionFill:            o.PositionFill,
-			triggerCondition:        o.TriggerCondition,
-			takeProfitOnFill:        o.TakeProfitOnFill,
-			stopLossOnFill:          o.StopLossOnFill,
-			trailingStopLossOnFill:  o.TrailingStopLossOnFill,
-			tradeClientExtensions:   o.TradeClientExtensions,
-			fillingTransactionID:    o.FillingTransactionID,
-			filledTime:              o.FilledTime,
-			tradeOpenedID:           o.TradeOpenedID,
-			tradeReducedID:          o.TradeReducedID,
-			tradeClosedIDs:          o.TradeClosedIDs,
-			cancellingTransactionID: o.CancellingTransactionID,
-			cancelledTime:           o.CancelledTime,
-			replacesOrderID:         o.ReplacesOrderID,
-			replacedByOrderID:       o.ReplacedByOrderID,
+			Instrument:              o.Instrument,
+			Units:                   o.Units,
+			Price:                   o.Price,
+			TimeInForce:             o.TimeInForce,
+			GtdTime:                 o.GtdTime,
+			PositionFill:            o.PositionFill,
+			TriggerCondition:        o.TriggerCondition,
+			TakeProfitOnFill:        o.TakeProfitOnFill,
+			StopLossOnFill:          o.StopLossOnFill,
+			TrailingStopLossOnFill:  o.TrailingStopLossOnFill,
+			TradeClientExtensions:   o.TradeClientExtensions,
+			FillingTransactionID:    o.FillingTransactionID,
+			FilledTime:              o.FilledTime,
+			TradeOpenedID:           o.TradeOpenedID,
+			TradeReducedID:          o.TradeReducedID,
+			TradeClosedIDs:          o.TradeClosedIDs,
+			CancellingTransactionID: o.CancellingTransactionID,
+			CancelledTime:           o.CancelledTime,
+			ReplacesOrderID:         o.ReplacesOrderID,
+			ReplacedByOrderID:       o.ReplacedByOrderID,
 		}, nil
 
 	// TODO fix consistency between exported & non exported fields of order
 	case ORDER_TYPE_MARKET:
 		return &MarketOrder{
-			id:                      o.Id,
-			createTime:              o.CreateTime,
-			state:                   o.State,
-			clientExtensions:        o.ClientExtensions,
+			Id:                      o.Id,
+			CreateTime:              o.CreateTime,
+			State:                   o.State,
+			ClientExtensions:        o.ClientExtensions,
 			Type:                    o.Type,
-			instrument:              o.Instrument,
-			units:                   o.Units,
-			timeInForce:             o.TimeInForce,
-			priceBound:              o.PriceBound,
-			positionFill:            o.PositionFill,
-			tradeClose:              o.TradeClose,
-			longPositionCloseout:    o.LongPositionCloseout,
-			shortPositionCloseout:   o.ShortPositionCloseout,
-			marginCloseout:          o.MarginCloseout,
-			delayedTradeClose:       o.DelayedTradeClose,
-			takeProfitOnFill:        o.TakeProfitOnFill,
-			stopLossOnFill:          o.StopLossOnFill,
-			trailingStopLossOnFill:  o.TrailingStopLossOnFill,
-			tradeClientExtensions:   o.TradeClientExtensions,
-			fillingTransactionID:    o.FillingTransactionID,
-			filledTime:              o.FilledTime,
-			tradeOpenedID:           o.TradeOpenedID,
-			tradeReducedID:          o.TradeReducedID,
-			tradeClosedIDs:          o.TradeClosedIDs,
-			cancellingTransactionID: o.CancellingTransactionID,
-			cancelledTime:           o.CancelledTime,
+			Instrument:              o.Instrument,
+			Units:                   o.Units,
+			TimeInForce:             o.TimeInForce,
+			PriceBound:              o.PriceBound,
+			PositionFill:            o.PositionFill,
+			TradeClose:              o.TradeClose,
+			LongPositionCloseout:    o.LongPositionCloseout,
+			ShortPositionCloseout:   o.ShortPositionCloseout,
+			MarginCloseout:          o.MarginCloseout,
+			DelayedTradeClose:       o.DelayedTradeClose,
+			TakeProfitOnFill:        o.TakeProfitOnFill,
+			StopLossOnFill:          o.StopLossOnFill,
+			TrailingStopLossOnFill:  o.TrailingStopLossOnFill,
+			TradeClientExtensions:   o.TradeClientExtensions,
+			FillingTransactionID:    o.FillingTransactionID,
+			FilledTime:              o.FilledTime,
+			TradeOpenedID:           o.TradeOpenedID,
+			TradeReducedID:          o.TradeReducedID,
+			TradeClosedIDs:          o.TradeClosedIDs,
+			CancellingTransactionID: o.CancellingTransactionID,
+			CancelledTime:           o.CancelledTime,
 		}, nil
 
 	case ORDER_TYPE_TAKE_PROFIT:
@@ -198,23 +198,23 @@ type MarketOrder struct {
 	//
 	// The Order’s identifier, unique within the Order’s Account.
 	//
-	id OrderID
+	Id OrderID
 
 	//
 	// The time when the Order was created.
 	//
-	createTime DateTime
+	CreateTime DateTime
 
 	//
 	// The current state of the Order.
 	//
-	state OrderState
+	State OrderState
 
 	//
 	// The client extensions of the Order. Do not set, modify, or delete
 	// clientExtensions if your account is associated with MT4.
 	//
-	clientExtensions ClientExtensions
+	ClientExtensions ClientExtensions
 
 	//
 	// The type of the Order. Always set to “MARKET” for Market Orders.
@@ -224,61 +224,61 @@ type MarketOrder struct {
 	//
 	// The Market Order’s Instrument.
 	//
-	instrument InstrumentName
+	Instrument InstrumentName
 
 	//
 	// The quantity requested to be filled by the Market Order. A posititive
 	// number of units results in a long Order, and a negative number of units
 	// results in a short Order.
 	//
-	units DecimalNumber
+	Units DecimalNumber
 
 	//
 	// The time-in-force requested for the Market Order. Restricted to FOK or
 	// IOC for a MarketOrder.
 	//
-	timeInForce TimeInForce
+	TimeInForce TimeInForce
 
 	//
 	// The worst price that the client is willing to have the Market Order
 	// filled at.
 	//
-	priceBound PriceValue
+	PriceBound PriceValue
 
 	//
 	// Specification of how Positions in the Account are modified when the Order
 	// is filled.
 	//
-	positionFill OrderPositionFill
+	PositionFill OrderPositionFill
 
 	//
 	// Details of the Trade requested to be closed, only provided when the
 	// Market Order is being used to explicitly close a Trade.
 	//
-	tradeClose MarketOrderTradeClose
+	TradeClose MarketOrderTradeClose
 
 	//
 	// Details of the long Position requested to be closed out, only provided
 	// when a Market Order is being used to explicitly closeout a long Position.
 	//
-	longPositionCloseout MarketOrderPositionCloseout
+	LongPositionCloseout MarketOrderPositionCloseout
 
 	//
 	// Details of the short Position requested to be closed out, only provided
 	// when a Market Order is being used to explicitly closeout a short
 	// Position.
 	//
-	shortPositionCloseout MarketOrderPositionCloseout
+	ShortPositionCloseout MarketOrderPositionCloseout
 
 	//
 	// Details of the Margin Closeout that this Market Order was created for
 	//
-	marginCloseout MarketOrderMarginCloseout
+	MarginCloseout MarketOrderMarginCloseout
 
 	//
 	// Details of the delayed Trade close that this Market Order was created for
 	//
-	delayedTradeClose MarketOrderDelayedTradeClose
+	DelayedTradeClose MarketOrderDelayedTradeClose
 
 	//
 	// TakeProfitDetails specifies the details of a Take Profit Order to be
@@ -286,7 +286,7 @@ type MarketOrder struct {
 	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
 	// Take Profit Order is modified directly through the Trade.
 	//
-	takeProfitOnFill TakeProfitDetails
+	TakeProfitOnFill TakeProfitDetails
 
 	//
 	// StopLossDetails specifies the details of a Stop Loss Order to be created
@@ -294,7 +294,7 @@ type MarketOrder struct {
 	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
 	// Order is modified directly through the Trade.
 	//
-	stopLossOnFill StopLossDetails
+	StopLossOnFill StopLossDetails
 
 	//
 	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
@@ -303,59 +303,59 @@ type MarketOrder struct {
 	// Trade’s dependent Trailing Stop Loss Order is modified directly through
 	// the Trade.
 	//
-	trailingStopLossOnFill TrailingStopLossDetails
+	TrailingStopLossOnFill TrailingStopLossDetails
 
 	//
 	// Client Extensions to add to the Trade created when the Order is filled
 	// (if such a Trade is created). Do not set, modify, or delete
 	// tradeClientExtensions if your account is associated with MT4.
 	//
-	tradeClientExtensions ClientExtensions
+	TradeClientExtensions ClientExtensions
 
 	//
 	// ID of the Transaction that filled this Order (only provided when the
 	// Order’s state is FILLED)
 	//
-	fillingTransactionID TransactionID
+	FillingTransactionID TransactionID
 
 	//
 	// Date/time when the Order was filled (only provided when the Order’s state
 	// is FILLED)
 	//
-	filledTime DateTime
+	FilledTime DateTime
 
 	//
 	// Trade ID of Trade opened when the Order was filled (only provided when
 	// the Order’s state is FILLED and a Trade was opened as a result of the
 	// fill)
 	//
-	tradeOpenedID TradeID
+	TradeOpenedID TradeID
 
 	//
 	// Trade ID of Trade reduced when the Order was filled (only provided when
 	// the Order’s state is FILLED and a Trade was reduced as a result of the
 	// fill)
 	//
-	tradeReducedID TradeID
+	TradeReducedID TradeID
 
 	//
 	// Trade IDs of Trades closed when the Order was filled (only provided when
 	// the Order’s state is FILLED and one or more Trades were closed as a
 	// result of the fill)
 	//
-	tradeClosedIDs []TradeID
+	TradeClosedIDs []TradeID
 
 	//
 	// ID of the Transaction that cancelled the Order (only provided when the
 	// Order’s state is CANCELLED)
 	//
-	cancellingTransactionID TransactionID
+	CancellingTransactionID TransactionID
 
 	//
 	// Date/time when the Order was cancelled (only provided when the state of
 	// the Order is CANCELLED)
 	//
-	cancelledTime DateTime
+	CancelledTime DateTime
 }
 
 func (m *MarketOrder) GetType() OrderType {
@@ -366,7 +366,7 @@ type FixedPriceOrder struct {
 	//
 	// The Order’s identifier, unique within the Order’s Account.
 	//
-	id OrderID
+	Id OrderID
 
 	//
 	// The time when the Order was created.
@@ -382,7 +382,7 @@ type FixedPriceOrder struct {
 	// The client extensions of the Order. Do not set, modify, or delete
 	// clientExtensions if your account is associated with MT4.
 	//
-	clientExtensions ClientExtensions
+	ClientExtensions ClientExtensions
 
 	//
 	// The type of the Order. Always set to “FIXED_PRICE” for Fixed Price
@@ -393,32 +393,32 @@ type FixedPriceOrder struct {
 	//
 	// The Fixed Price Order’s Instrument.
 	//
-	instrument InstrumentName
+	Instrument InstrumentName
 
 	//
 	// The quantity requested to be filled by the Fixed Price Order. A
 	// posititive number of units results in a long Order, and a negative number
 	// of units results in a short Order.
 	//
-	units DecimalNumber
+	Units DecimalNumber
 
 	//
 	// The price specified for the Fixed Price Order. This price is the exact
 	// price that the Fixed Price Order will be filled at.
 	//
-	price PriceValue
+	Price PriceValue
 
 	//
 	// Specification of how Positions in the Account are modified when the Order
 	// is filled.
 	//
-	positionFill OrderPositionFill
+	PositionFill OrderPositionFill
 
 	//
 	// The state that the trade resulting from the Fixed Price Order should be
 	// set to.
 	//
-	tradeState string
+	TradeState string
 
 	//
 	// TakeProfitDetails specifies the details of a Take Profit Order to be
@@ -426,7 +426,7 @@ type FixedPriceOrder struct {
 	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
 	// Take Profit Order is modified directly through the Trade.
 	//
-	takeProfitOnFill TakeProfitDetails
+	TakeProfitOnFill TakeProfitDetails
 
 	//
 	// StopLossDetails specifies the details of a Stop Loss Order to be created
@@ -434,7 +434,7 @@ type FixedPriceOrder struct {
 	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
 	// Order is modified directly through the Trade.
 	//
-	stopLossOnFill StopLossDetails
+	StopLossOnFill StopLossDetails
 
 	//
 	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
@@ -443,59 +443,59 @@ type FixedPriceOrder struct {
 	// Trade’s dependent Trailing Stop Loss Order is modified directly through
 	// the Trade.
 	//
-	trailingStopLossOnFill TrailingStopLossDetails
+	TrailingStopLossOnFill TrailingStopLossDetails
 
 	//
 	// Client Extensions to add to the Trade created when the Order is filled
 	// (if such a Trade is created). Do not set, modify, or delete
 	// tradeClientExtensions if your account is associated with MT4.
 	//
-	tradeClientExtensions ClientExtensions
+	TradeClientExtensions ClientExtensions
 
 	//
 	// ID of the Transaction that filled this Order (only provided when the
 	// Order’s state is FILLED)
 	//
-	fillingTransactionID TransactionID
+	FillingTransactionID TransactionID
 
 	//
 	// Date/time when the Order was filled (only provided when the Order’s state
 	// is FILLED)
 	//
-	filledTime DateTime
+	FilledTime DateTime
 
 	//
 	// Trade ID of Trade opened when the Order was filled (only provided when
 	// the Order’s state is FILLED and a Trade was opened as a result of the
 	// fill)
 	//
-	tradeOpenedID TradeID
+	TradeOpenedID TradeID
 
 	//
 	// Trade ID of Trade reduced when the Order was filled (only provided when
 	// the Order’s state is FILLED and a Trade was reduced as a result of the
 	// fill)
 	//
-	tradeReducedID TradeID
+	TradeReducedID TradeID
 
 	//
 	// Trade IDs of Trades closed when the Order was filled (only provided when
 	// the Order’s state is FILLED and one or more Trades were closed as a
 	// result of the fill)
 	//
-	tradeClosedIDs []TradeID
+	TradeClosedIDs []TradeID
 
 	//
 	// ID of the Transaction that cancelled the Order (only provided when the
 	// Order’s state is CANCELLED)
 	//
-	cancellingTransactionID TransactionID
+	CancellingTransactionID TransactionID
 
 	//
 	// Date/time when the Order was cancelled (only provided when the state of
 	// the Order is CANCELLED)
 	//
-	cancelledTime DateTime
+	CancelledTime DateTime
 }
 
 func (f *FixedPriceOrder) GetType() OrderType {
@@ -506,23 +506,23 @@ type LimitOrder struct {
 	//
 	// The Order’s identifier, unique within the Order’s Account.
 	//
-	id OrderID
+	Id OrderID
 
 	//
 	// The time when the Order was created.
 	//
-	createTime DateTime
+	CreateTime DateTime
 
 	//
 	// The current state of the Order.
 	//
-	state OrderState
+	State OrderState
 
 	//
 	// The client extensions of the Order. Do not set, modify, or delete
 	// clientExtensions if your account is associated with MT4.
 	//
-	clientExtensions ClientExtensions
+	ClientExtensions ClientExtensions
 
 	//
 	// The type of the Order. Always set to “LIMIT” for Limit Orders.
@@ -532,38 +532,38 @@ type LimitOrder struct {
 	//
 	// The Limit Order’s Instrument.
 	//
-	instrument InstrumentName
+	Instrument InstrumentName
 
 	//
 	// The quantity requested to be filled by the Limit Order. A posititive
 	// number of units results in a long Order, and a negative number of units
 	// results in a short Order.
 	//
-	units DecimalNumber
+	Units DecimalNumber
 
 	//
 	// The price threshold specified for the Limit Order. The Limit Order will
 	// only be filled by a market price that is equal to or better than this
 	// price.
 	//
-	price PriceValue
+	Price PriceValue
 
 	//
 	// The time-in-force requested for the Limit Order.
 	//
-	timeInForce TimeInForce
+	TimeInForce TimeInForce
 
 	//
 	// The date/time when the Limit Order will be cancelled if its timeInForce
 	// is “GTD”.
 	//
-	gtdTime DateTime
+	GtdTime DateTime
 
 	//
 	// Specification of how Positions in the Account are modified when the Order
 	// is filled.
 	//
-	positionFill OrderPositionFill
+	PositionFill OrderPositionFill
 
 	//
 	// Specification of which price component should be used when determining if
@@ -584,7 +584,7 @@ type LimitOrder struct {
 	// a long trade valid values are “DEFAULT” and “BID”, and for short trades
 	// “DEFAULT” and “ASK” are valid.
 	//
-	triggerCondition OrderTriggerCondition
+	TriggerCondition OrderTriggerCondition
 
 	//
 	// TakeProfitDetails specifies the details of a Take Profit Order to be
@@ -592,7 +592,7 @@ type LimitOrder struct {
 	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
 	// Take Profit Order is modified directly through the Trade.
 	//
-	takeProfitOnFill TakeProfitDetails
+	TakeProfitOnFill TakeProfitDetails
 
 	//
 	// StopLossDetails specifies the details of a Stop Loss Order to be created
@@ -600,7 +600,7 @@ type LimitOrder struct {
 	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
 	// Order is modified directly through the Trade.
 	//
-	stopLossOnFill StopLossDetails
+	StopLossOnFill StopLossDetails
 
 	//
 	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
@@ -609,71 +609,71 @@ type LimitOrder struct {
 	// Trade’s dependent Trailing Stop Loss Order is modified directly through
 	// the Trade.
 	//
-	trailingStopLossOnFill TrailingStopLossDetails
+	TrailingStopLossOnFill TrailingStopLossDetails
 
 	//
 	// Client Extensions to add to the Trade created when the Order is filled
 	// (if such a Trade is created). Do not set, modify, or delete
 	// tradeClientExtensions if your account is associated with MT4.
 	//
-	tradeClientExtensions ClientExtensions
+	TradeClientExtensions ClientExtensions
 
 	//
 	// ID of the Transaction that filled this Order (only provided when the
 	// Order’s state is FILLED)
 	//
-	fillingTransactionID TransactionID
+	FillingTransactionID TransactionID
 
 	//
 	// Date/time when the Order was filled (only provided when the Order’s state
 	// is FILLED)
 	//
-	filledTime DateTime
+	FilledTime DateTime
 
 	//
 	// Trade ID of Trade opened when the Order was filled (only provided when
 	// the Order’s state is FILLED and a Trade was opened as a result of the
 	// fill)
 	//
-	tradeOpenedID TradeID
+	TradeOpenedID TradeID
 
 	//
 	// Trade ID of Trade reduced when the Order was filled (only provided when
 	// the Order’s state is FILLED and a Trade was reduced as a result of the
 	// fill)
 	//
-	tradeReducedID TradeID
+	TradeReducedID TradeID
 
 	//
 	// Trade IDs of Trades closed when the Order was filled (only provided when
 	// the Order’s state is FILLED and one or more Trades were closed as a
 	// result of the fill)
 	//
-	tradeClosedIDs []TradeID
+	TradeClosedIDs []TradeID
 
 	//
 	// ID of the Transaction that cancelled the Order (only provided when the
 	// Order’s state is CANCELLED)
 	//
-	cancellingTransactionID TransactionID
+	CancellingTransactionID TransactionID
 
 	//
 	// Date/time when the Order was cancelled (only provided when the state of
 	// the Order is CANCELLED)
 	//
-	cancelledTime DateTime
+	CancelledTime DateTime
 
 	//
 	// The ID of the Order that was replaced by this Order (only provided if
 	// this Order was created as part of a cancel/replace).
 	//
-	replacesOrderID OrderID
+	ReplacesOrderID OrderID
 
 	//
 	// The ID of the Order that replaced this Order (only provided if this Order
 	// was cancelled as part of a cancel/replace).
 	//
-	replacedByOrderID OrderID
+	ReplacedByOrderID OrderID
 }
 
 func (l *LimitOrder) GetType() OrderType {
@@ -684,23 +684,23 @@ type StopOrder struct {
 	//
 	// The Order’s identifier, unique within the Order’s Account.
 	//
-	id OrderID
+	Id OrderID
 
 	//
 	// The time when the Order was created.
 	//
-	createTime DateTime
+	CreateTime DateTime
 
 	//
 	// The current state of the Order.
 	//
-	state OrderState
+	State OrderState
 
 	//
 	// The client extensions of the Order. Do not set, modify, or delete
 	// clientExtensions if your account is associated with MT4.
 	//
-	clientExtensions ClientExtensions
+	ClientExtensions ClientExtensions
 
 	//
 	// The type of the Order. Always set to “STOP” for Stop Orders.
@@ -710,45 +710,45 @@ type StopOrder struct {
 	//
 	// The Stop Order’s Instrument.
 	//
-	instrument InstrumentName
+	Instrument InstrumentName
 
 	//
 	// The quantity requested to be filled by the Stop Order. A posititive
 	// number of units results in a long Order, and a negative number of units
 	// results in a short Order.
 	//
-	units DecimalNumber
+	Units DecimalNumber
 
 	//
 	// The price threshold specified for the Stop Order. The Stop Order will
 	// only be filled by a market price that is equal to or worse than this
 	// price.
 	//
-	price PriceValue
+	Price PriceValue
 
 	//
 	// The worst market price that may be used to fill this Stop Order. If the
 	// market gaps and crosses through both the price and the priceBound, the
 	// Stop Order will be cancelled instead of being filled.
 	//
-	priceBound PriceValue
+	PriceBound PriceValue
 
 	//
 	// The time-in-force requested for the Stop Order.
 	//
-	timeInForce TimeInForce
+	TimeInForce TimeInForce
 
 	//
 	// The date/time when the Stop Order will be cancelled if its timeInForce is
 	// “GTD”.
 	//
-	gtdTime DateTime
+	GtdTime DateTime
 
 	//
 	// Specification of how Positions in the Account are modified when the Order
 	// is filled.
 	//
-	positionFill OrderPositionFill
+	PositionFill OrderPositionFill
 
 	//
 	// Specification of which price component should be used when determining if
@@ -769,7 +769,7 @@ type StopOrder struct {
 	// a long trade valid values are “DEFAULT” and “BID”, and for short trades
 	// “DEFAULT” and “ASK” are valid.
 	//
-	triggerCondition OrderTriggerCondition
+	TriggerCondition OrderTriggerCondition
 
 	//
 	// TakeProfitDetails specifies the details of a Take Profit Order to be
@@ -777,7 +777,7 @@ type StopOrder struct {
 	// that opens a Trade requiring a Take Profit, or when a Trade’s dependent
 	// Take Profit Order is modified directly through the Trade.
 	//
-	takeProfitOnFill TakeProfitDetails
+	TakeProfitOnFill TakeProfitDetails
 
 	//
 	// StopLossDetails specifies the details of a Stop Loss Order to be created
@@ -785,7 +785,7 @@ type StopOrder struct {
 	// a Trade requiring a Stop Loss, or when a Trade’s dependent Stop Loss
 	// Order is modified directly through the Trade.
 	//
-	stopLossOnFill StopLossDetails
+	StopLossOnFill StopLossDetails
 
 	//
 	// TrailingStopLossDetails specifies the details of a Trailing Stop Loss
@@ -794,77 +794,78 @@ type StopOrder struct {
 	// Trade’s dependent Trailing Stop Loss Order is modified directly through
 	// the Trade.
 	//
-	trailingStopLossOnFill TrailingStopLossDetails
+	TrailingStopLossOnFill TrailingStopLossDetails
 
 	//
 	// Client Extensions to add to the Trade created when the Order is filled
 	// (if such a Trade is created). Do not set, modify, or delete
 	// tradeClientExtensions if your account is associated with MT4.
 	//
-	tradeClientExtensions ClientExtensions
+	TradeClientExtensions ClientExtensions
 
 	//
 	// ID of the Transaction that filled this Order (only provided when the
 	// Order’s state is FILLED)
 	//
-	fillingTransactionID TransactionID
+	FillingTransactionID TransactionID
 
 	//
 	// Date/time when the Order was filled (only provided when the Order’s state
 	// is FILLED)
 	//
-	filledTime DateTime
+	FilledTime DateTime
 
 	//
 	// Trade ID of Trade opened when the Order was filled (only provided when
 	// the Order’s state is FILLED and a Trade was opened as a result of the
 	// fill)
 	//
-	tradeOpenedID TradeID
+	TradeOpenedID TradeID
 
 	//
 	// Trade ID of Trade reduced when the Order was filled (only provided when
 	// the Order’s state is FILLED and a Trade was reduced as a result of the
 	// fill)
 	//
-	tradeReducedID TradeID
+	TradeReducedID TradeID
 
 	//
 	// Trade IDs of Trades closed when the Order was filled (only provided when
 	// the Order’s state is FILLED and one or more Trades were closed as a
 	// result of the fill)
 	//
-	tradeClosedIDs []TradeID
+	TradeClosedIDs []TradeID
 
 	//
 	// ID of the Transaction that cancelled the Order (only provided when the
 	// Order’s state is CANCELLED)
 	//
-	cancellingTransactionID TransactionID
+	CancellingTransactionID TransactionID
 
 	//
 	// Date/time when the Order was cancelled (only provided when the state of
 	// the Order is CANCELLED)
 	//
-	cancelledTime DateTime
+	CancelledTime DateTime
 
 	//
 	// The ID of the Order that was replaced by this Order (only provided if
 	// this Order was created as part of a cancel/replace).
 	//
-	replacesOrderID OrderID
+	ReplacesOrderID OrderID
 
 	//
 	// The ID of the Order that replaced this Order (only provided if this Order
 	// was cancelled as part of a cancel/replace).
 	//
-	replacedByOrderID OrderID
+	ReplacedByOrderID OrderID
 }
 
 func (s *StopOrder) GetType() OrderType {
 	return s.Type
 }
 
+// todo Capitalize order structs
 type MarketIfTouchedOrder struct {
 	//
 	// The Order’s identifier, unique within the Order’s Account.

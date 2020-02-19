@@ -32,4 +32,21 @@ func main() {
 
 	logrus.Info(getAccountResponse.Account.String())
 
+	getOrdersResponse, err := oandaClient.GetOrders(gOanda.GetOrdersRequest{
+		InstrumentName: gOanda.INSTRUMENT_NAME_USDCHF,
+	})
+	if err != nil {
+		logrus.Error(err.Error())
+	}
+
+	logrus.Info(getOrdersResponse)
+
+	getPendingOrderResponse, err := oandaClient.GetPendingOrders()
+	if err != nil {
+		logrus.Error(err.Error())
+	}
+
+	logrus.Info(getPendingOrderResponse)
+
+
 }

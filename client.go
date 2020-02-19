@@ -106,43 +106,43 @@ func (c *Client) PostOrder(request PostOrderRequest) (*PostOrderResponse, error)
 }
 
 func (c *Client) GetOrders(request GetOrdersRequest) (*GetOrdersResponse, error) {
-	_, err := c.requester.GetOrders(request)
+	response, err := c.requester.GetOrders(request)
 	if err != nil {
 		return nil, err
 	}
-	return &GetOrdersResponse{}, nil
+	return response, nil
 }
 
 func (c *Client) GetPendingOrders() (*GetPendingOrdersResponse, error) {
-	_, err := c.requester.GetPendingOrders(GetPendingOrdersRequest{})
+	response, err := c.requester.GetPendingOrders(GetPendingOrdersRequest{})
 	if err != nil {
 		return nil, err
 	}
-	return &GetPendingOrdersResponse{}, nil
+	return response, nil
 }
 
 func (c *Client) GetOrder() (*GetOrderResponse, error) {
-	_, err := c.requester.GetOrder(GetOrderRequest{})
+	response, err := c.requester.GetOrder(GetOrderRequest{})
 	if err != nil {
 		return nil, err
 	}
-	return &GetOrderResponse{}, nil
+	return response, nil
 }
 
 func (c *Client) PutReplaceOrder() (*PutReplaceOrderResponse, error) {
-	_, err := c.requester.PutReplaceOrder(PutReplaceOrderRequest{})
+	response, err := c.requester.PutReplaceOrder(PutReplaceOrderRequest{})
 	if err != nil {
 		return nil, err
 	}
-	return &PutReplaceOrderResponse{}, nil
+	return response, nil
 }
 
 func (c *Client) PutCancelOrder() (*PutCancelOrderResponse, error) {
-	_, err := c.requester.PutCancelOrder(PutCancelOrderRequest{})
+	response, err := c.requester.PutCancelOrder(PutCancelOrderRequest{})
 	if err != nil {
 		return nil, err
 	}
-	return &PutCancelOrderResponse{}, nil
+	return response, nil
 }
 
 func (c *Client) PutUpdateOrderClientExtensions() (*PutUpdateOrderClientExtensionsResponse, error) {

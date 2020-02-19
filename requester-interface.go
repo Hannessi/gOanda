@@ -139,7 +139,12 @@ type GetOrdersResponse struct {
 
 type GetPendingOrdersRequest struct{}
 
-type GetPendingOrdersResponse struct{}
+type GetPendingOrdersResponse struct{
+	Orders            []Order       `json:"orders"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
 
 type GetOrderRequest struct{}
 

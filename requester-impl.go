@@ -141,7 +141,18 @@ func (r *HttpRequester) GetOrders(request GetOrdersRequest) (*GetOrdersResponse,
 }
 
 func (r *HttpRequester) GetPendingOrders(request GetPendingOrdersRequest) (*GetPendingOrdersResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &GetPendingOrdersResponse{}
+	requestUrl := r.UrlManager.GetPendingOrders()
+
+	if err := HttpRequestWrapper(GET, requestUrl,nil, response, r.Token); err != nil {
+		return nil, err
+	}
+
+	if response.ErrorCode != "" {
+		return nil, errors.New(response.ErrorCode + ": "+ response.ErrorMessage)
+	}
+
+	return response, nil
 }
 
 func (r *HttpRequester) GetOrder(request GetOrderRequest) (*GetOrderResponse, error) {

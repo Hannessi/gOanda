@@ -1297,7 +1297,7 @@ type TrailingStopLossOrder struct {
 
 type AnOrderRequest interface {
 	ToOrderRequest() OrderRequest
-} //todo
+}
 
 type OrderRequest struct {
 	Type                   OrderType                `json:"type"`
@@ -1328,7 +1328,6 @@ type MarketOrderRequest struct {
 	TradeClientExtensions  *ClientExtensions        `json:"tradeClientExtensions"`
 }
 
-// TODO
 func (m *MarketOrderRequest) ToOrderRequest() OrderRequest {
 
 	return OrderRequest{

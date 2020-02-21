@@ -1,10 +1,15 @@
 package gOanda
 
-func New(accountNumber string, apiKey string) *Client {
+func New(accountNumber string, apiKey string, live bool) *Client {
+
+	url := V20_BASE_TRADE_URL
+	if !live {
+		url = V20_BASE_PRACTICE_URL
+	}
 
 	//instantiate URL Manager
 	urlManager := UrlManager{
-		BaseUrl:   V20_BASE_PRACTICE_URL,
+		BaseUrl:   url,
 		AccountId: accountNumber,
 	}
 

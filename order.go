@@ -1523,6 +1523,7 @@ type OrderRequest struct {
 	Units                  DecimalNumber            `json:"units"`
 	Price                  *PriceValue              `json:"price,omitempty"`
 	TimeInForce            TimeInForce              `json:"timeInForce,omitempty"`
+	GtdTime                DateTime                 `json:"gtdTime,omitempty"`
 	PriceBound             PriceValue               `json:"priceBound,omitempty"`
 	PositionFill           OrderPositionFill        `json:"positionFill,omitempty"`
 	ClientExtensions       *ClientExtensions        `json:"clientExtensions,omitempty"`
@@ -1743,8 +1744,9 @@ func (l *LimitOrderRequest) ToOrderRequest() OrderRequest {
 		Type:                   ORDER_TYPE_LIMIT,
 		Instrument:             l.Instrument,
 		Units:                  l.Units,
-		TimeInForce:            l.TimeInForce,
 		Price:                  &l.Price,
+		TimeInForce:            l.TimeInForce,
+		GtdTime:                l.GtdTime,
 		PositionFill:           l.PositionFill,
 		ClientExtensions:       l.ClientExtensions,
 		TakeProfitOnFill:       l.TakeProfitOnFill,
@@ -1871,6 +1873,7 @@ func (s *StopOrderRequest) ToOrderRequest() OrderRequest {
 		Instrument:             s.Instrument,
 		Units:                  s.Units,
 		TimeInForce:            s.TimeInForce,
+		GtdTime:                s.GtdTime,
 		Price:                  &s.Price,
 		PositionFill:           s.PositionFill,
 		ClientExtensions:       s.ClientExtensions,

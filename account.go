@@ -49,7 +49,7 @@ type Account struct {
 	LastTransactionID           TransactionID               `json:"lastTransactionID"`
 	Trades                      []TradeSummary              `json:"trades"`
 	Positions                   []Position                  `json:"positions"`
-	Orders                      []Order                     `json:"orders"`
+	Orders                      []RawOrder                  `json:"orders"`
 }
 
 func (a Account) String() string {
@@ -77,12 +77,12 @@ type AccountChangesState struct {
 
 type AccountProperties struct {
 	Id           AccountID `json:"id"`
-	Mt4AccountID int         `json:"mt4AccountID"`
-	Tags         []string    `json:"tags"`
+	Mt4AccountID int       `json:"mt4AccountID"`
+	Tags         []string  `json:"tags"`
 }
 
 func (a AccountProperties) String() string {
-	return fmt.Sprintf("{AccountId: %s, Mt4AccountId: %d, Tags:[%s]}", a.Id, a.Mt4AccountID, strings.Join(a.Tags,", "))
+	return fmt.Sprintf("{AccountId: %s, Mt4AccountId: %d, Tags:[%s]}", a.Id, a.Mt4AccountID, strings.Join(a.Tags, ", "))
 }
 
 type GuaranteedStopLossOrderMode string

@@ -3,6 +3,7 @@ package gOanda
 import (
 	"errors"
 	"fmt"
+	"github.com/hannessi/goConvenience"
 	"strconv"
 )
 
@@ -13,7 +14,7 @@ type DecimalNumber string
 func (d *DecimalNumber) ToFloat() (float64, error) {
 	float, err := strconv.ParseFloat(string(*d), 10)
 	if err != nil {
-		return 0, errors.New("tried to convert '"+ fmt.Sprintf("%.4f",*d)+ "' to a float:"+err.Error())
+		return 0, errors.New("tried to convert '" + fmt.Sprintf("%.4f", *d) + "' to a float:" + err.Error())
 	}
 	return float, nil
 }
@@ -21,7 +22,7 @@ func (d *DecimalNumber) ToFloat() (float64, error) {
 func (d *DecimalNumber) ToInt() (int64, error) {
 	integer, err := strconv.ParseInt(string(*d), 10, 64)
 	if err != nil {
-		return 0, errors.New("tried to convert '"+fmt.Sprintf("%.4f", *d)+ "' to an int:"+ err.Error())
+		return 0, errors.New("tried to convert '" + fmt.Sprintf("%.4f", *d) + "' to an int:" + err.Error())
 	}
 	return integer, nil
 }
@@ -31,7 +32,7 @@ type AccountUnits string
 func (d *AccountUnits) ToFloat() (float64, error) {
 	float, err := strconv.ParseFloat(string(*d), 10)
 	if err != nil {
-		return 0, errors.New("tried to convert '"+ fmt.Sprintf("%.4f",*d)+ "' to a float:"+ err.Error())
+		return 0, errors.New("tried to convert '" + fmt.Sprintf("%.4f", *d) + "' to a float:" + err.Error())
 	}
 	return float, nil
 }
@@ -40,7 +41,11 @@ type Currency string
 
 type InstrumentName string
 
-func (i InstrumentName) String() string {return string(i)}
+func (i InstrumentName) String() string { return string(i) }
+
+func (i InstrumentName) IsValid() bool {
+	return goConvenience.Contains(i.String(), GetAllInstrumentNames())
+}
 
 type InstrumentType string
 
@@ -62,7 +67,7 @@ type Instrument struct {
 
 type DateTime string
 
-func (d DateTime) String() string {return string(d)}
+func (d DateTime) String() string { return string(d) }
 
 type AcceptDatetimeFormat string
 

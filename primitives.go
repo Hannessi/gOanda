@@ -3,7 +3,6 @@ package gOanda
 import (
 	"errors"
 	"fmt"
-	"github.com/hannessi/goConvenience"
 	"strconv"
 )
 
@@ -44,7 +43,7 @@ type InstrumentName string
 func (i InstrumentName) String() string { return string(i) }
 
 func (i InstrumentName) IsValid() bool {
-	return goConvenience.Contains(i.String(), GetAllInstrumentNames())
+	return contains(i, GetAllInstrumentNames())
 }
 
 type InstrumentType string
@@ -83,3 +82,12 @@ type GuaranteedStopLossOrderLevelRestriction struct {
 }
 
 type Direction string
+
+func contains(value InstrumentName, list []InstrumentName) bool {
+	for _,listValue := range list {
+		if value == listValue {
+			return true
+		}
+	}
+	return false
+}

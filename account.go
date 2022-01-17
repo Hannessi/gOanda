@@ -1,16 +1,9 @@
 package gOanda
 
-import (
-	"fmt"
-	"strings"
-)
-
-// TODO COMMENTS
-
 // The string representation of an Account Identifier
 type AccountID string
 
-// The
+// The full details of a client’s Account. This includes full open Trade, open Position and pending Order representation.
 type Account struct {
 	Id                          AccountID                   `json:"id"`
 	Alias                       string                      `json:"alias"`
@@ -52,10 +45,7 @@ type Account struct {
 	Orders                      []RawOrder                  `json:"orders"`
 }
 
-func (a Account) String() string {
-	return fmt.Sprintf("{AccountId: %s, Currency: %s, NAV: %s}", a.Id, a.Currency, a.NAV)
-}
-
+// An AccountState Object is used to represent an Account’s current price-dependent state. Price-dependent Account state is dependent on OANDA’s current Prices, and includes things like unrealized PL, NAV and Trailing Stop Loss Order state. Fields will be omitted if their value has not changed since the specified transaction ID.
 type AccountChangesState struct {
 	UnrealizedPL                AccountUnits              `json:"unrealizedPL"`
 	Nav                         AccountUnits              `json:"NAV"`
@@ -75,18 +65,29 @@ type AccountChangesState struct {
 	Positions                   []CalculatedPositionState `json:"positions"`
 }
 
+// Properties related to an Account.
 type AccountProperties struct {
 	Id           AccountID `json:"id"`
 	Mt4AccountID int       `json:"mt4AccountID"`
 	Tags         []string  `json:"tags"`
 }
 
-func (a AccountProperties) String() string {
-	return fmt.Sprintf("{AccountId: %s, Mt4AccountId: %d, Tags:[%s]}", a.Id, a.Mt4AccountID, strings.Join(a.Tags, ", "))
+// The current mutability and hedging settings related to guaranteed Stop Loss orders.
+type GuaranteedStopLossOrderParameters struct {
+	//# The current guaranteed Stop Loss Order mutability setting of the Account when market is open.
+	MutabilityMarketOpen GuaranteedStopLossOrderMutability
+
+	//# The current guaranteed Stop Loss Order mutability setting of the Account when market is halted.
+	MutabilityMarketHalted GuaranteedStopLossOrderMutability
 }
 
+// For Accounts that support guaranteed Stop Loss Orders, describes the actions that can be be performed on guaranteed Stop Loss Orders.
+type GuaranteedStopLossOrderMutability string
+
+// The overall behaviour of the Account regarding guaranteed Stop Loss Orders.
 type GuaranteedStopLossOrderMode string
 
+// A summary representation of a client’s Account. The AccountSummary does not provide to full specification of pending Orders, open Trades and Positions.
 type AccountSummary struct {
 	Id                          AccountID                   `json:"id"`
 	Alias                       string                      `json:"alias"`
@@ -125,6 +126,7 @@ type AccountSummary struct {
 	LastTransactionID           TransactionID               `json:"lastTransactionID"`
 }
 
+// The dynamically calculated state of a client’s Account.
 type CalculatedAccountState struct {
 	UnrealizedPL                AccountUnits  `json:"unrealizedPL"`
 	NAV                         AccountUnits  `json:"NAV"`
@@ -141,10 +143,82 @@ type CalculatedAccountState struct {
 	MarginCallPercent           DecimalNumber `json:"marginCallPercent"`
 }
 
+// An AccountChanges Object is used to represent the changes to an Account’s Orders, Trades and Positions since a specified Account TransactionID in the past.
 type AccountChanges struct {
-	// todo
+	//# The Orders created. These Orders may have been filled, cancelled or triggered in the same period.
+	OrdersCreated []Order `json:"ordersCreated"`
+
+	//# The Orders cancelled.
+	OrdersCancelled []Order `json:"ordersCancelled"`
+
+	//# The Orders filled.
+	OrdersFilled []Order `json:"ordersFilled"`
+
+	//# The Orders triggered.
+	OrdersTriggered []Order `json:"ordersTriggered"`
+
+	//# The Trades opened.
+	TradesOpened []TradeSummary `json:"tradesOpened"`
+
+	//# The Trades reduced.
+	TradesReduced []TradeSummary `json:"tradesReduced"`
+
+	//# The Trades closed.
+	TradesClosed []TradeSummary `json:"tradesClosed"`
+
+	//# The Positions changed.
+	Positions []Position `json:"positions"`
+
+	//# The Transactions that have been generated.
+	Transactions []Transaction `json:"transactions"`
 }
 
+// The financing mode of an Account
 type AccountFinancingMode string
 
+// No financing is paid/charged for open Trades in the Account
+const ACCOUNT_FINANCING_MODE_NO_FINANCING AccountFinancingMode = "NO_FINANCING"
+
+// Second-by-second financing is paid/charged for open Trades in the Account, both daily and when the the Trade is closed
+const ACCOUNT_FINANCING_MODE_SECOND_BY_SECOND AccountFinancingMode = "SECOND_BY_SECOND"
+
+// A full day’s worth of financing is paid/charged for open Trades in the Account daily at 5pm New York time
+const ACCOUNT_FINANCING_MODE_DAILY AccountFinancingMode = "DAILY"
+
+type UserAttributes struct {
+	//# The user’s OANDA-assigned user ID.
+	UserID  int64 `json:"userID"`
+
+	//# The user-provided username.
+	Username  string `json:"username"`
+
+	//# The user’s title.
+	Title  string `json:"title"`
+
+	//# The user’s name.
+	Name  string `json:"name"`
+
+	//# The user’s email address.
+	Email  string `json:"email"`
+
+	//# The OANDA division the user belongs to.
+	DivisionAbbreviation  string `json:"divisionAbbreviation"`
+
+	//# The user’s preferred language.
+	LanguageAbbreviation  string `json:"languageAbbreviation"`
+
+	//# The home currency of the Account.
+	HomeCurrency  Currency `json:"homeCurrency"`
+}
+
+// The way that position values for an Account are calculated and aggregated.
 type PositionAggregationMode string
+
+// The Position value or margin for each side (long and short) of the Position are computed independently and added together.
+const POSITION_AGGREGATION_MODE_ABSOLUTE_SUM PositionAggregationMode = "ABSOLUTE_SUM"
+
+// The Position value or margin for each side (long and short) of the Position are computed independently. The Position value or margin chosen is the maximal absolute value of the two.
+const POSITION_AGGREGATION_MODE_MAXIMAL_SIDE PositionAggregationMode = "MAXIMAL_SIDE"
+
+// The units for each side (long and short) of the Position are netted together and the resulting value (long or short) is used to compute the Position value or margin.
+const POSITION_AGGREGATION_MODE_NET_SUM PositionAggregationMode = "NET_SUM"

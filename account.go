@@ -126,6 +126,38 @@ type AccountSummary struct {
 	LastTransactionID           TransactionID               `json:"lastTransactionID"`
 }
 
+type AccumulatedAccountState struct {
+	//# The current balance of the account.
+	Balance AccountUnits `json:"balance"`
+
+	//# The total profit/loss realized over the lifetime of the Account.
+	Pl AccountUnits `json:"pl"`
+
+	//# The total realized profit/loss for the account since it was last reset by the client.
+	ResettablePL AccountUnits `json:"resettablePL"`
+
+	//# The total amount of financing paid/collected over the lifetime of the account.
+	Financing AccountUnits `json:"financing"`
+
+	//# The total amount of commission paid over the lifetime of the Account.
+	Commission AccountUnits `json:"commission"`
+
+	//# The total amount of dividend adjustment paid over the lifetime of the Account in the Account’s home currency.
+	DividendAdjustment AccountUnits `json:"dividendAdjustment"`
+
+	//# The total amount of fees charged over the lifetime of the Account for the execution of guaranteed Stop Loss Orders.
+	GuaranteedExecutionFees AccountUnits `json:"guaranteedExecutionFees"`
+
+	//# The date/time when the Account entered a margin call state. Only provided if the Account is in a margin call.
+	MarginCallEnterTime DateTime `json:"marginCallEnterTime"`
+
+	//# The number of times that the Account’s current margin call was extended.
+	MarginCallExtensionCount int64 `json:"marginCallExtensionCount"`
+
+	//# The date/time of the Account’s last margin call extension.
+	LastMarginCallExtensionTime DateTime `json:"lastMarginCallExtensionTime"`
+}
+
 // The dynamically calculated state of a client’s Account.
 type CalculatedAccountState struct {
 	UnrealizedPL                AccountUnits  `json:"unrealizedPL"`
@@ -187,28 +219,28 @@ const ACCOUNT_FINANCING_MODE_DAILY AccountFinancingMode = "DAILY"
 
 type UserAttributes struct {
 	//# The user’s OANDA-assigned user ID.
-	UserID  int64 `json:"userID"`
+	UserID int64 `json:"userID"`
 
 	//# The user-provided username.
-	Username  string `json:"username"`
+	Username string `json:"username"`
 
 	//# The user’s title.
-	Title  string `json:"title"`
+	Title string `json:"title"`
 
 	//# The user’s name.
-	Name  string `json:"name"`
+	Name string `json:"name"`
 
 	//# The user’s email address.
-	Email  string `json:"email"`
+	Email string `json:"email"`
 
 	//# The OANDA division the user belongs to.
-	DivisionAbbreviation  string `json:"divisionAbbreviation"`
+	DivisionAbbreviation string `json:"divisionAbbreviation"`
 
 	//# The user’s preferred language.
-	LanguageAbbreviation  string `json:"languageAbbreviation"`
+	LanguageAbbreviation string `json:"languageAbbreviation"`
 
 	//# The home currency of the Account.
-	HomeCurrency  Currency `json:"homeCurrency"`
+	HomeCurrency Currency `json:"homeCurrency"`
 }
 
 // The way that position values for an Account are calculated and aggregated.

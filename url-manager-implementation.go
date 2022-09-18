@@ -36,6 +36,8 @@ type GetInstrumentCandlesRequestParameters struct {
 	InstrumentName InstrumentName
 	Count          int
 	Granularity    CandlestickGranularity
+	From           DateTime
+	To             DateTime
 }
 
 func (m *UrlManager) GetInstrumentCandles(parameters GetInstrumentCandlesRequestParameters) string {
@@ -47,6 +49,12 @@ func (m *UrlManager) GetInstrumentCandles(parameters GetInstrumentCandlesRequest
 	}
 	if parameters.Granularity != "" {
 		additionalParameters = append(additionalParameters, "granularity="+parameters.Granularity.String())
+	}
+	if parameters.From != "" {
+		additionalParameters = append(additionalParameters, "from="+parameters.From.String())
+	}
+	if parameters.To != "" {
+		additionalParameters = append(additionalParameters, "to="+parameters.To.String())
 	}
 
 	if len(additionalParameters) > 0 {
@@ -76,11 +84,11 @@ type GetOrdersRequestParameters struct {
 }
 
 func (m *UrlManager) GetOrders(request GetOrdersRequestParameters) string {
-	url :=  m.BaseUrl + "/accounts/" + m.AccountId + "/orders"
+	url := m.BaseUrl + "/accounts/" + m.AccountId + "/orders"
 
 	additionalParameters := make([]string, 0)
 	if len(request.Ids) > 0 {
-		stringIds := make([]string,0)
+		stringIds := make([]string, 0)
 		for _, id := range request.Ids {
 			stringIds = append(stringIds, id.String())
 		}
@@ -136,7 +144,7 @@ func (m *UrlManager) GetTrades(request GetTradesRequestParameters) string {
 
 	additionalParameters := make([]string, 0)
 	if len(request.Ids) > 0 {
-		stringIds := make([]string,0)
+		stringIds := make([]string, 0)
 		for _, id := range request.Ids {
 			stringIds = append(stringIds, id.String())
 		}

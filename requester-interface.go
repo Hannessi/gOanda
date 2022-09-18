@@ -53,9 +53,7 @@ type Requester interface {
 type GetAccountsRequest struct{}
 
 type GetAccountsResponse struct {
-	Accounts     []AccountProperties `json:"accounts"`
-	ErrorCode    string              `json:"errorCode"`
-	ErrorMessage string              `json:"errorMessage"`
+	Accounts []AccountProperties
 }
 
 type GetAccountRequest struct{}
@@ -90,14 +88,14 @@ type GetInstrumentCandlesRequest struct {
 	InstrumentName InstrumentName
 	Count          int
 	Granularity    CandlestickGranularity
+	From           DateTime
+	To             DateTime
 }
 
 type GetInstrumentCandlesResponse struct {
-	Instrument   InstrumentName         `json:"instrument"`
-	Granularity  CandlestickGranularity `json:"granularity"`
-	Candles      []Candlestick          `json:"candles"`
-	ErrorCode    string                 `json:"errorCode"`
-	ErrorMessage string                 `json:"errorMessage"`
+	Instrument  InstrumentName
+	Granularity CandlestickGranularity
+	Candles     []Candlestick
 }
 
 type GetInstrumentOrderBookRequest struct{}

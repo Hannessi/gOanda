@@ -23,18 +23,24 @@ type HttpRequester struct {
 	UrlManager UrlManager
 }
 
-// help
+type getAccountsResponse struct {
+	Accounts     []AccountProperties `json:"accounts"`
+	ErrorCode    string              `json:"errorCode"`
+	ErrorMessage string              `json:"errorMessage"`
+}
 
 // accounts
 func (r *HttpRequester) GetAccounts(request GetAccountsRequest) (*GetAccountsResponse, error) {
-	response := &GetAccountsResponse{}
+	response := &getAccountsResponse{}
 	if err := HttpRequestWrapper(GET, r.UrlManager.GetAccounts(), nil, response, r.Token); err != nil {
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
-	return response, nil
+	return &GetAccountsResponse{
+		Accounts: response.Accounts,
+	}, nil
 }
 
 func (r *HttpRequester) GetAccount(request GetAccountRequest) (*GetAccountResponse, error) {
@@ -75,8 +81,17 @@ func (r *HttpRequester) PatchAccountConfiguration(request PatchAccountConfigurat
 }
 
 // instruments
+
+type getInstrumentCandlesResponse struct {
+	Instrument   InstrumentName         `json:"instrument"`
+	Granularity  CandlestickGranularity `json:"granularity"`
+	Candles      []Candlestick          `json:"candles"`
+	ErrorCode    string                 `json:"errorCode"`
+	ErrorMessage string                 `json:"errorMessage"`
+}
+
 func (r *HttpRequester) GetInstrumentCandles(request GetInstrumentCandlesRequest) (*GetInstrumentCandlesResponse, error) {
-	response := &GetInstrumentCandlesResponse{}
+	response := &getInstrumentCandlesResponse{}
 	requestUrl := r.UrlManager.GetInstrumentCandles(GetInstrumentCandlesRequestParameters{
 		InstrumentName: request.InstrumentName,
 		Count:          request.Count,
@@ -86,9 +101,13 @@ func (r *HttpRequester) GetInstrumentCandles(request GetInstrumentCandlesRequest
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
-	return response, nil
+	return &GetInstrumentCandlesResponse{
+		Instrument:  response.Instrument,
+		Granularity: response.Granularity,
+		Candles:     response.Candles,
+	}, nil
 }
 
 func (r *HttpRequester) GetInstrumentOrderBook(request GetInstrumentOrderBookRequest) (*GetInstrumentOrderBookResponse, error) {

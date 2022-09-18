@@ -83,8 +83,36 @@ type GuaranteedStopLossOrderLevelRestriction struct {
 
 type Direction string
 
+type ConversionFactor struct {
+	// The factor by which to multiply the amount in the given currency to
+	// obtain the amount in the home currency of the Account.
+	Factor DecimalNumber `json:"factor"`
+}
+
+type HomeConversionFactors struct {
+	// The ConversionFactor in effect for the Account for converting any gains
+	// realized in Instrument quote units into units of the Account’s home
+	// currency.
+	GainQuoteHome ConversionFactor `json:"gainQuoteHome"`
+
+	// The ConversionFactor in effect for the Account for converting any losses
+	// realized in Instrument quote units into units of the Account’s home
+	// currency.
+	LossQuoteHome ConversionFactor `json:"lossQuoteHome"`
+
+	// The ConversionFactor in effect for the Account for converting any gains
+	// realized in Instrument base units into units of the Account’s home
+	// currency.
+	GainBaseHome ConversionFactor `json:"gainBaseHome"`
+
+	// The ConversionFactor in effect for the Account for converting any losses
+	// realized in Instrument base units into units of the Account’s home
+	// currency.
+	LossBaseHome ConversionFactor `json:"lossBaseHome"`
+}
+
 func contains(value InstrumentName, list []InstrumentName) bool {
-	for _,listValue := range list {
+	for _, listValue := range list {
 		if value == listValue {
 			return true
 		}

@@ -96,6 +96,8 @@ func (r *HttpRequester) GetInstrumentCandles(request GetInstrumentCandlesRequest
 		InstrumentName: request.InstrumentName,
 		Count:          request.Count,
 		Granularity:    request.Granularity,
+		From:           request.From,
+		To:             request.To,
 	})
 	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
 		return nil, err

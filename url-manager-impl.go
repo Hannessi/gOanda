@@ -222,12 +222,11 @@ func (m *UrlManager) GetRangeOfTransactions(request GetRangeOfTransactionsParame
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/transactions/idrange?to=" + request.To.String() + "&from=" + request.From.String()
 }
 
-type GetTransactionsAfterTransactionParameters struct {
-	// todo rename to TransactionsSince
+type GetTransactionsSinceIdParameters struct {
 	Id TransactionID
 }
 
-func (m *UrlManager) GetTransactionsAfterTransaction(request GetTransactionsAfterTransactionParameters) string {
+func (m *UrlManager) GetTransactionsSinceId(request GetTransactionsSinceIdParameters) string {
 	return m.BaseUrl + "/account/" + m.AccountId + "/transactions/sinceid?id=" + request.Id.String()
 }
 func (m *UrlManager) GetTransactionsStream() string {

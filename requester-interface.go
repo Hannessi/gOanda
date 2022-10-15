@@ -42,7 +42,7 @@ type Requester interface {
 	GetTransactions(GetTransactionsRequest) (*GetTransactionsResponse, error)
 	GetTransaction(GetTransactionRequest) (*GetTransactionResponse, error)
 	GetRangeOfTransactions(GetRangeOfTransactionsRequest) (*GetRangeOfTransactionsResponse, error)
-	GetTransactionsAfterTransaction(GetTransactionsAfterTransactionRequest) (*GetTransactionsAfterTransactionResponse, error)
+	GetTransactionsSinceId(GetTransactionsSinceIdRequest) (*GetTransactionsSinceIdResponse, error)
 	GetTransactionsStream(GetTransactionsStreamRequest) (*GetTransactionsStreamResponse, error)
 
 	// pricing
@@ -306,11 +306,11 @@ type GetRangeOfTransactionsResponse struct {
 	ErrorMessage      string        `json:"errorMessage"`
 }
 
-type GetTransactionsAfterTransactionRequest struct {
+type GetTransactionsSinceIdRequest struct {
 	Id TransactionID
 }
 
-type GetTransactionsAfterTransactionResponse struct {
+type GetTransactionsSinceIdResponse struct {
 	Transactions      []Transaction `json:"transactions"`
 	LastTransactionID TransactionID `json:"lastTransactionID"`
 	ErrorCode         string        `json:"errorCode"`

@@ -339,9 +339,9 @@ func (r *HttpRequester) GetRangeOfTransactions(request GetRangeOfTransactionsReq
 	return response, nil
 }
 
-func (r *HttpRequester) GetTransactionsAfterTransaction(request GetTransactionsAfterTransactionRequest) (*GetTransactionsAfterTransactionResponse, error) {
-	response := &GetTransactionsAfterTransactionResponse{}
-	requestUrl := r.UrlManager.GetTransactionsAfterTransaction(GetTransactionsAfterTransactionParameters{
+func (r *HttpRequester) GetTransactionsSinceId(request GetTransactionsSinceIdRequest) (*GetTransactionsSinceIdResponse, error) {
+	response := &GetTransactionsSinceIdResponse{}
+	requestUrl := r.UrlManager.GetTransactionsSinceId(GetTransactionsSinceIdParameters{
 		Id: request.Id,
 	})
 

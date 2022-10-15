@@ -43,37 +43,65 @@ func (r *HttpRequester) GetAccounts(request GetAccountsRequest) (*GetAccountsRes
 	}, nil
 }
 
+type getAccountResponse struct {
+	Account      Account `json:"account"`
+	ErrorCode    string  `json:"errorCode"`
+	ErrorMessage string  `json:"errorMessage"`
+}
+
 func (r *HttpRequester) GetAccount(request GetAccountRequest) (*GetAccountResponse, error) {
-	response := &GetAccountResponse{}
+	response := &getAccountResponse{}
 	if err := HttpRequestWrapper(GET, r.UrlManager.GetAccount(), nil, response, r.Token); err != nil {
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
-	return response, nil
+	return &GetAccountResponse{
+		Account: response.Account,
+	}, nil
+}
+
+type getAccountSummaryResponse struct {
+	Account           AccountSummary `json:"account"`
+	LastTransactionID TransactionID  `json:"lastTransactionID"`
+	ErrorCode         string         `json:"errorCode"`
+	ErrorMessage      string         `json:"errorMessage"`
 }
 
 func (r *HttpRequester) GetAccountSummary(request GetAccountSummaryRequest) (*GetAccountSummaryResponse, error) {
-	response := &GetAccountSummaryResponse{}
+	response := &getAccountSummaryResponse{}
 	if err := HttpRequestWrapper(GET, r.UrlManager.GetAccountSummary(), nil, response, r.Token); err != nil {
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
-	return response, nil
+	return &GetAccountSummaryResponse{
+		Account:           response.Account,
+		LastTransactionID: response.LastTransactionID,
+	}, nil
+}
+
+type getAccountInstrumentsResponse struct {
+	Instruments       []Instrument  `json:"instruments"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
 }
 
 func (r *HttpRequester) GetAccountInstruments(request GetAccountInstrumentsRequest) (*GetAccountInstrumentsResponse, error) {
-	response := &GetAccountInstrumentsResponse{}
+	response := &getAccountInstrumentsResponse{}
 	if err := HttpRequestWrapper(GET, r.UrlManager.GetAccountInstruments(), nil, response, r.Token); err != nil {
 		return nil, err
 	}
 	if response.ErrorCode != "" {
-		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
-	return response, nil
+	return &GetAccountInstrumentsResponse{
+		Instruments:       response.Instruments,
+		LastTransactionID: response.LastTransactionID,
+	}, nil
 }
 
 func (r *HttpRequester) PatchAccountConfiguration(request PatchAccountConfigurationRequest) (*PatchAccountConfigurationResponse, error) {

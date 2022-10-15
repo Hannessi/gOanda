@@ -59,25 +59,21 @@ type GetAccountsResponse struct {
 type GetAccountRequest struct{}
 
 type GetAccountResponse struct {
-	Account      Account `json:"account"`
-	ErrorCode    string  `json:"errorCode"`
-	ErrorMessage string  `json:"errorMessage"`
+	Account Account
 }
 
 type GetAccountSummaryRequest struct{}
 
 type GetAccountSummaryResponse struct {
-	Account           AccountSummary `json:"account"`
-	LastTransactionID TransactionID  `json:"lastTransactionID"`
-	ErrorCode         string         `json:"errorCode"`
-	ErrorMessage      string         `json:"errorMessage"`
+	Account           AccountSummary
+	LastTransactionID TransactionID
 }
 
 type GetAccountInstrumentsRequest struct{}
 
 type GetAccountInstrumentsResponse struct {
-	ErrorCode    string `json:"errorCode"`
-	ErrorMessage string `json:"errorMessage"`
+	Instruments       []Instrument
+	LastTransactionID TransactionID
 }
 
 type PatchAccountConfigurationRequest struct{}

@@ -311,10 +311,8 @@ type GetTransactionsSinceIdRequest struct {
 }
 
 type GetTransactionsSinceIdResponse struct {
-	Transactions      []Transaction `json:"transactions"`
-	LastTransactionID TransactionID `json:"lastTransactionID"`
-	ErrorCode         string        `json:"errorCode"`
-	ErrorMessage      string        `json:"errorMessage"`
+	Transactions      []Transaction
+	LastTransactionID TransactionID
 }
 
 type GetTransactionsStreamRequest struct{}

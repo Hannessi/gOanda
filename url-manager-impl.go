@@ -227,7 +227,7 @@ type GetTransactionsSinceIdParameters struct {
 }
 
 func (m *UrlManager) GetTransactionsSinceId(request GetTransactionsSinceIdParameters) string {
-	return m.BaseUrl + "/account/" + m.AccountId + "/transactions/sinceid?id=" + request.TransactionId.String()
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/transactions/sinceid?id=" + request.TransactionId.String()
 }
 func (m *UrlManager) GetTransactionsStream() string {
 	return "" // todo

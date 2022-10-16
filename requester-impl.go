@@ -349,7 +349,7 @@ type getTransactionsSinceIdResponse struct {
 func (r *HttpRequester) GetTransactionsSinceId(request GetTransactionsSinceIdRequest) (*GetTransactionsSinceIdResponse, error) {
 	response := &getTransactionsSinceIdResponse{}
 	requestUrl := r.UrlManager.GetTransactionsSinceId(GetTransactionsSinceIdParameters{
-		Id: request.Id,
+		TransactionId: request.TransactionId,
 	})
 
 	if err := HttpRequestWrapper(GET, requestUrl, nil, &response, r.Token); err != nil {

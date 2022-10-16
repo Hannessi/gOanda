@@ -1,6 +1,135 @@
 package gOanda
 
-type Transaction struct{} //todo
+import "errors"
+
+type RawTransaction struct {
+	Type TransactionType `json:"type"`
+}
+
+func (t *RawTransaction) ToTransaction() (Transaction, error) {
+	switch t.Type {
+	case TRANSACTION_TYPE_CREATE_ACCOUNT:
+		//todo
+		return &CreateTransaction{}, nil
+	case TRANSACTION_TYPE_CLOSE_ACCOUNT:
+		//todo
+		return &CloseTransaction{}, nil
+	case TRANSACTION_TYPE_REOPEN_ACCOUNT:
+		//todo
+		return &ReopenTransaction{}, nil
+	case TRANSACTION_TYPE_CLIENT_CONFIGURE:
+		return &ClientConfigureTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_CLIENT_CONFIGURE_REJECT:
+		return &ClientConfigureRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_TRANSFER_FUNDS:
+		return &TransferFundsTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_TRANSFER_FUNDS_REJECT:
+		return &TransferFundsRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_MARKET_ORDER:
+		return &MarketOrderTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_MARKET_ORDER_REJECT:
+		return &MarketOrderRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_FIXED_PRICE_ORDER:
+		return &FixedPriceOrderTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_LIMIT_ORDER:
+		//todo
+		return &LimitOrderTransaction{}, nil
+	case TRANSACTION_TYPE_LIMIT_ORDER_REJECT:
+		return &LimitOrderRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_STOP_ORDER:
+		return &StopOrderTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_STOP_ORDER_REJECT:
+		//todo
+		return &StopOrderRejectTransaction{}, nil
+	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER:
+		//todo
+		return &MarketIfTouchedOrderTransaction{}, nil
+	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER_REJECT:
+		return &MarketIfTouchedOrderRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_TAKE_PROFIT_ORDER:
+		return &TakeProfitOrderTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_TAKE_PROFIT_ORDER_REJECT:
+		return &TakeProfitOrderRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_STOP_LOSS_ORDER:
+		return &StopLossOrderTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_STOP_LOSS_ORDER_REJECT:
+		return &StopLossOrderRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_GUARANTEED_STOP_LOSS_ORDER:
+		return &GuaranteedStopLossOrderTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_GUARANTEED_STOP_LOSS_ORDER_REJECT:
+		return &GuaranteedStopLossOrderRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_TRAILING_STOP_LOSS_ORDER:
+		return &TrailingStopLossOrderTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_TRAILING_STOP_LOSS_ORDER_REJECT:
+		return &TrailingStopLossOrderRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_ORDER_FILL:
+		return &OrderFillTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_ORDER_CANCEL:
+		return &OrderCancelTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_ORDER_CANCEL_REJECT:
+		return &OrderCancelRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_ORDER_CLIENT_EXTENSIONS_MODIFY:
+		return &OrderClientExtensionsModifyTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_ORDER_CLIENT_EXTENSIONS_MODIFY_REJECT:
+		return &OrderClientExtensionsModifyRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_TRADE_CLIENT_EXTENSIONS_MODIFY:
+		return &TradeClientExtensionsModifyTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_TRADE_CLIENT_EXTENSIONS_MODIFY_REJECT:
+		return &TradeClientExtensionsModifyRejectTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_MARGIN_CALL_ENTER:
+		return &MarginCallEnterTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_MARGIN_CALL_EXTEND:
+		return &MarginCallExtendTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_MARGIN_CALL_EXIT:
+		return &MarginCallExitTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_DELAYED_TRADE_CLOSURE:
+		return &DelayedTradeClosureTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_DAILY_FINANCING:
+		return &DailyFinancingTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_DIVIDEND_ADJUSTMENT:
+		return &DividendAdjustmentTransaction{}, nil
+		//todo
+	case TRANSACTION_TYPE_RESET_RESETTABLE_PL:
+		return &ResetResettablePLTransaction{}, nil
+	}
+
+	return nil, errors.New("Invalid transaction type: " + string(t.Type))
+
+}
+
+type Transaction interface {
+	GetType() TransactionType
+}
 
 type CreateTransaction struct {
 	// The Transaction’s Identifier.
@@ -42,6 +171,10 @@ type CreateTransaction struct {
 	homeCurrency Currency
 }
 
+func (c *CreateTransaction) GetType() TransactionType {
+	return c.Type
+}
+
 type CloseTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -64,6 +197,10 @@ type CloseTransaction struct {
 
 	// The Type of the Transaction. Always set to “CLOSE” in a CloseTransaction.
 	Type TransactionType
+}
+
+func (c *CloseTransaction) GetType() TransactionType {
+	return c.Type
 }
 
 type ReopenTransaction struct {
@@ -89,6 +226,10 @@ type ReopenTransaction struct {
 	// The Type of the Transaction. Always set to “REOPEN” in a
 	// ReopenTransaction.
 	Type TransactionType
+}
+
+func (r *ReopenTransaction) GetType() TransactionType {
+	return r.Type
 }
 
 type ClientConfigureTransaction struct {
@@ -120,6 +261,10 @@ type ClientConfigureTransaction struct {
 
 	// The margin rate override for the Account.
 	marginRate DecimalNumber
+}
+
+func (c *ClientConfigureTransaction) GetType() TransactionType {
+	return c.Type
 }
 
 type ClientConfigureRejectTransaction struct {
@@ -154,6 +299,10 @@ type ClientConfigureRejectTransaction struct {
 
 	// The reason that the Reject Transaction was created
 	rejectReason TransactionRejectReason
+}
+
+func (c *ClientConfigureRejectTransaction) GetType() TransactionType {
+	return c.Type
 }
 
 type TransferFundsTransaction struct {
@@ -196,6 +345,10 @@ type TransferFundsTransaction struct {
 	accountBalance AccountUnits
 }
 
+func (t *TransferFundsTransaction) GetType() TransactionType {
+	return t.Type
+}
+
 type TransferFundsRejectTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -236,6 +389,10 @@ type TransferFundsRejectTransaction struct {
 	rejectReason TransactionRejectReason
 }
 
+func (t *TransferFundsRejectTransaction) GetType() TransactionType {
+	return t.Type
+}
+
 type MarketOrderTransaction struct {
 	Id                     TransactionID                `json:"id"`
 	Time                   DateTime                     `json:"time"`
@@ -260,6 +417,10 @@ type MarketOrderTransaction struct {
 	StopLossOnFill         StopLossDetails              `json:"stopLossOnFill"`
 	TrailingStopLossOnFill TrailingStopLossDetails      `json:"trailingStopLossOnFill"`
 	TradeClientExtensions  ClientExtensions             `json:"tradeClientExtensions"`
+}
+
+func (m *MarketOrderTransaction) GetType() TransactionType {
+	return m.Type
 }
 
 type MarketOrderRejectTransaction struct {
@@ -287,6 +448,10 @@ type MarketOrderRejectTransaction struct {
 	TrailingStopLossOnFill TrailingStopLossDetails      `json:"trailingStopLossOnFill"`
 	TradeClientExtensions  ClientExtensions             `json:"tradeClientExtensions"`
 	RejectReason           TransactionRejectReason      `json:"rejectReason"`
+}
+
+func (m *MarketOrderRejectTransaction) GetType() TransactionType {
+	return m.Type
 }
 
 type FixedPriceOrderTransaction struct {
@@ -361,6 +526,10 @@ type FixedPriceOrderTransaction struct {
 	// (if such a Trade is created).  Do not set, modify, delete
 	// tradeClientExtensions if your account is associated with MT4.
 	tradeClientExtensions ClientExtensions
+}
+
+func (f *FixedPriceOrderTransaction) GetType() TransactionType {
+	return f.Type
 }
 
 type LimitOrderTransaction struct {
@@ -469,6 +638,10 @@ type LimitOrderTransaction struct {
 	cancellingTransactionID TransactionID
 }
 
+func (l *LimitOrderTransaction) GetType() TransactionType {
+	return l.Type
+}
+
 type LimitOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -572,6 +745,10 @@ type LimitOrderRejectTransaction struct {
 
 	// The reason that the Reject Transaction was created
 	rejectReason TransactionRejectReason
+}
+
+func (l *LimitOrderRejectTransaction) GetType() TransactionType {
+	return l.Type
 }
 
 type StopOrderTransaction struct {
@@ -685,6 +862,10 @@ type StopOrderTransaction struct {
 	cancellingTransactionID TransactionID
 }
 
+func (s *StopOrderTransaction) GetType() TransactionType {
+	return s.Type
+}
+
 type StopOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -793,6 +974,10 @@ type StopOrderRejectTransaction struct {
 
 	// The reason that the Reject Transaction was created
 	rejectReason TransactionRejectReason
+}
+
+func (s *StopOrderRejectTransaction) GetType() TransactionType {
+	return s.Type
 }
 
 type MarketIfTouchedOrderTransaction struct {
@@ -909,6 +1094,10 @@ type MarketIfTouchedOrderTransaction struct {
 	cancellingTransactionID TransactionID
 }
 
+func (m *MarketIfTouchedOrderTransaction) GetType() TransactionType {
+	return m.Type
+}
+
 type MarketIfTouchedOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -1023,6 +1212,10 @@ type MarketIfTouchedOrderRejectTransaction struct {
 	rejectReason TransactionRejectReason
 }
 
+func (m *MarketIfTouchedOrderRejectTransaction) GetType() TransactionType {
+	return m.Type
+}
+
 type TakeProfitOrderTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -1107,6 +1300,10 @@ type TakeProfitOrderTransaction struct {
 	cancellingTransactionID TransactionID
 }
 
+func (t *TakeProfitOrderTransaction) GetType() TransactionType {
+	return t.Type
+}
+
 type TakeProfitOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -1188,6 +1385,10 @@ type TakeProfitOrderRejectTransaction struct {
 
 	// The reason that the Reject Transaction was created
 	rejectReason TransactionRejectReason
+}
+
+func (t *TakeProfitOrderRejectTransaction) GetType() TransactionType {
+	return t.Type
 }
 
 type StopLossOrderTransaction struct {
@@ -1293,6 +1494,10 @@ type StopLossOrderTransaction struct {
 	cancellingTransactionID TransactionID
 }
 
+func (s *StopLossOrderTransaction) GetType() TransactionType {
+	return s.Type
+}
+
 type StopLossOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -1388,6 +1593,10 @@ type StopLossOrderRejectTransaction struct {
 	rejectReason TransactionRejectReason
 }
 
+func (s *StopLossOrderRejectTransaction) GetType() TransactionType {
+	return s.Type
+}
+
 type GuaranteedStopLossOrderTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -1481,6 +1690,10 @@ type GuaranteedStopLossOrderTransaction struct {
 	cancellingTransactionID TransactionID
 }
 
+func (g *GuaranteedStopLossOrderTransaction) GetType() TransactionType {
+	return g.Type
+}
+
 type GuaranteedStopLossOrderReason string
 
 type GuaranteedStopLossOrderRejectTransaction struct {
@@ -1571,6 +1784,10 @@ type GuaranteedStopLossOrderRejectTransaction struct {
 	rejectReason TransactionRejectReason
 }
 
+func (g *GuaranteedStopLossOrderRejectTransaction) GetType() TransactionType {
+	return g.Type
+}
+
 type TrailingStopLossOrderTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -1652,6 +1869,10 @@ type TrailingStopLossOrderTransaction struct {
 	// The ID of the Transaction that cancels the replaced Order (only provided
 	// if this Order replaces an existing Order).
 	cancellingTransactionID TransactionID
+}
+
+func (t *TrailingStopLossOrderTransaction) GetType() TransactionType {
+	return t.Type
 }
 
 type TrailingStopLossOrderRejectTransaction struct {
@@ -1737,6 +1958,10 @@ type TrailingStopLossOrderRejectTransaction struct {
 	rejectReason TransactionRejectReason
 }
 
+func (t *TrailingStopLossOrderRejectTransaction) GetType() TransactionType {
+	return t.Type
+}
+
 type OrderFillTransaction struct {
 	Id                            TransactionID   `json:"id"`
 	Time                          DateTime        `json:"time"`
@@ -1765,6 +1990,10 @@ type OrderFillTransaction struct {
 	HalfSpreadCost                AccountUnits    `json:"halfSpreadCost"`
 }
 
+func (o *OrderFillTransaction) GetType() TransactionType {
+	return o.Type
+}
+
 type OrderCancelTransaction struct {
 	Id                TransactionID     `json:"id"`
 	Time              DateTime          `json:"time"`
@@ -1777,6 +2006,10 @@ type OrderCancelTransaction struct {
 	ClientOrderID     OrderID           `json:"clientOrderID"`
 	Reason            OrderCancelReason `json:"reason"`
 	ReplacedByOrderID OrderID           `json:"replacedByOrderID"`
+}
+
+func (o *OrderCancelTransaction) GetType() TransactionType {
+	return o.Type
 }
 
 type OrderCancelRejectTransaction struct {
@@ -1812,6 +2045,10 @@ type OrderCancelRejectTransaction struct {
 
 	// The reason that the Reject Transaction was created
 	rejectReason TransactionRejectReason
+}
+
+func (o *OrderCancelRejectTransaction) GetType() TransactionType {
+	return o.Type
 }
 
 type OrderClientExtensionsModifyTransaction struct {
@@ -1851,6 +2088,10 @@ type OrderClientExtensionsModifyTransaction struct {
 
 	// The new Client Extensions for the Order’s Trade on fill.
 	tradeClientExtensionsModify ClientExtensions
+}
+
+func (o *OrderClientExtensionsModifyTransaction) GetType() TransactionType {
+	return o.Type
 }
 
 type OrderClientExtensionsModifyRejectTransaction struct {
@@ -1895,6 +2136,10 @@ type OrderClientExtensionsModifyRejectTransaction struct {
 	rejectReason TransactionRejectReason
 }
 
+func (o *OrderClientExtensionsModifyRejectTransaction) GetType() TransactionType {
+	return o.Type
+}
+
 type TradeClientExtensionsModifyTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -1929,6 +2174,10 @@ type TradeClientExtensionsModifyTransaction struct {
 
 	// The new Client Extensions for the Trade.
 	tradeClientExtensionsModify ClientExtensions
+}
+
+func (t *TradeClientExtensionsModifyTransaction) GetType() TransactionType {
+	return t.Type
 }
 
 type TradeClientExtensionsModifyRejectTransaction struct {
@@ -1970,6 +2219,10 @@ type TradeClientExtensionsModifyRejectTransaction struct {
 	rejectReason TransactionRejectReason
 }
 
+func (t *TradeClientExtensionsModifyRejectTransaction) GetType() TransactionType {
+	return t.Type
+}
+
 type MarginCallEnterTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -1993,6 +2246,10 @@ type MarginCallEnterTransaction struct {
 	// The Type of the Transaction. Always set to “MARGIN_CALL_ENTER” for an
 	// MarginCallEnterTransaction.
 	Type TransactionType
+}
+
+func (m *MarginCallEnterTransaction) GetType() TransactionType {
+	return m.Type
 }
 
 type MarginCallExtendTransaction struct {
@@ -2025,6 +2282,10 @@ type MarginCallExtendTransaction struct {
 	extensionNumber int64
 }
 
+func (m *MarginCallExtendTransaction) GetType() TransactionType {
+	return m.Type
+}
+
 type MarginCallExitTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID
@@ -2048,6 +2309,10 @@ type MarginCallExitTransaction struct {
 	// The Type of the Transaction. Always set to “MARGIN_CALL_EXIT” for an
 	// MarginCallExitTransaction.
 	Type TransactionType
+}
+
+func (m *MarginCallExitTransaction) GetType() TransactionType {
+	return m.Type
 }
 
 type DelayedTradeClosureTransaction struct {
@@ -2080,6 +2345,10 @@ type DelayedTradeClosureTransaction struct {
 	// List of Trade ID’s identifying the open trades that will be closed when
 	// their respective instruments become tradeable
 	tradeIDs TradeID
+}
+
+func (d *DelayedTradeClosureTransaction) GetType() TransactionType {
+	return d.Type
 }
 
 type DailyFinancingTransaction struct {
@@ -2121,6 +2390,10 @@ type DailyFinancingTransaction struct {
 
 	// The financing paid/collected for each Position in the Account.
 	positionFinancings []PositionFinancing
+}
+
+func (d *DailyFinancingTransaction) GetType() TransactionType {
+	return d.Type
 }
 
 type DividendAdjustmentTransaction struct {
@@ -2177,6 +2450,10 @@ type DividendAdjustmentTransaction struct {
 	openTradeDividendAdjustments []OpenTradeDividendAdjustment
 }
 
+func (d *DividendAdjustmentTransaction) GetType() TransactionType {
+	return d.Type
+}
+
 type ResetResettablePLTransaction struct {
 	// The Transaction’s Identifier.
 	id TransactionID `json:"id"`
@@ -2202,124 +2479,128 @@ type ResetResettablePLTransaction struct {
 	Type TransactionType `json:"type"`
 }
 
+func (r *ResetResettablePLTransaction) GetType() TransactionType {
+	return r.Type
+}
+
 type TransactionID string
 
 func (t TransactionID) String() string { return string(t) }
 
-type TransactionType string // todo
+type TransactionType string
 
-//Create Transaction
+// Create Transaction
 const TRANSACTION_TYPE_CREATE_ACCOUNT TransactionType = "CREATE_ACCOUNT"
 
-//Close Transaction
+// Close Transaction
 const TRANSACTION_TYPE_CLOSE_ACCOUNT TransactionType = "CLOSE_ACCOUNT"
 
-//Reopen Transaction
+// Reopen Transaction
 const TRANSACTION_TYPE_REOPEN_ACCOUNT TransactionType = "REOPEN_ACCOUNT"
 
-//Client Configuration Transaction
+// Client Configuration Transaction
 const TRANSACTION_TYPE_CLIENT_CONFIGURE TransactionType = "CLIENT_CONFIGURE"
 
-//Client Configuration Reject Transaction
+// Client Configuration Reject Transaction
 const TRANSACTION_TYPE_CLIENT_CONFIGURE_REJECT TransactionType = "CLIENT_CONFIGURE_REJECT"
 
-//Funds Transaction
-const TRANSACTION_TYPE_TRANSFER_FUNDSTransfer TransactionType = "TRANSFER_FUNDSTransfer"
+// Funds Transaction
+const TRANSACTION_TYPE_TRANSFER_FUNDS TransactionType = "TRANSFER_FUNDS"
 
-//Transfer Funds Reject Transaction
+// Transfer Funds Reject Transaction
 const TRANSACTION_TYPE_TRANSFER_FUNDS_REJECT TransactionType = "TRANSFER_FUNDS_REJECT"
 
-//Order Transaction
-const TRANSACTION_TYPE_MARKET_ORDERMarket TransactionType = "MARKET_ORDERMarket"
+// Order Transaction
+const TRANSACTION_TYPE_MARKET_ORDER TransactionType = "MARKET_ORDER"
 
-//Market Order Reject Transaction
+// Market Order Reject Transaction
 const TRANSACTION_TYPE_MARKET_ORDER_REJECT TransactionType = "MARKET_ORDER_REJECT"
 
-//Fixed Price Order Transaction
+// Fixed Price Order Transaction
 const TRANSACTION_TYPE_FIXED_PRICE_ORDER TransactionType = "FIXED_PRICE_ORDER"
 
-//Order Transaction
-const TRANSACTION_TYPE_LIMIT_ORDERLimit TransactionType = "LIMIT_ORDERLimit"
+// Order Transaction
+const TRANSACTION_TYPE_LIMIT_ORDER TransactionType = "LIMIT_ORDER"
 
-//Limit Order Reject Transaction
+// Limit Order Reject Transaction
 const TRANSACTION_TYPE_LIMIT_ORDER_REJECT TransactionType = "LIMIT_ORDER_REJECT"
 
-//Stop Order Transaction
+// Stop Order Transaction
 const TRANSACTION_TYPE_STOP_ORDER TransactionType = "STOP_ORDER"
 
-//Stop Order Reject Transaction
+// Stop Order Reject Transaction
 const TRANSACTION_TYPE_STOP_ORDER_REJECT TransactionType = "STOP_ORDER_REJECT"
 
-//Market if Touched Order Transaction
+// Market if Touched Order Transaction
 const TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER TransactionType = "MARKET_IF_TOUCHED_ORDER"
 
-//Market if Touched Order Reject Transaction
+// Market if Touched Order Reject Transaction
 const TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER_REJECT TransactionType = "MARKET_IF_TOUCHED_ORDER_REJECT"
 
-//Take Profit Order Transaction
+// Take Profit Order Transaction
 const TRANSACTION_TYPE_TAKE_PROFIT_ORDER TransactionType = "TAKE_PROFIT_ORDER"
 
-//Take Profit Order Reject Transaction
+// Take Profit Order Reject Transaction
 const TRANSACTION_TYPE_TAKE_PROFIT_ORDER_REJECT TransactionType = "TAKE_PROFIT_ORDER_REJECT"
 
-//Stop Loss Order Transaction
+// Stop Loss Order Transaction
 const TRANSACTION_TYPE_STOP_LOSS_ORDER TransactionType = "STOP_LOSS_ORDER"
 
-//Stop Loss Order Reject Transaction
+// Stop Loss Order Reject Transaction
 const TRANSACTION_TYPE_STOP_LOSS_ORDER_REJECT TransactionType = "STOP_LOSS_ORDER_REJECT"
 
-//Guaranteed Stop Loss Order Transaction
+// Guaranteed Stop Loss Order Transaction
 const TRANSACTION_TYPE_GUARANTEED_STOP_LOSS_ORDER TransactionType = "GUARANTEED_STOP_LOSS_ORDER"
 
-//Guaranteed Stop Loss Order Reject Transaction
+// Guaranteed Stop Loss Order Reject Transaction
 const TRANSACTION_TYPE_GUARANTEED_STOP_LOSS_ORDER_REJECT TransactionType = "GUARANTEED_STOP_LOSS_ORDER_REJECT"
 
-//Trailing Stop Loss Order Transaction
+// Trailing Stop Loss Order Transaction
 const TRANSACTION_TYPE_TRAILING_STOP_LOSS_ORDER TransactionType = "TRAILING_STOP_LOSS_ORDER"
 
-//Trailing Stop Loss Order Reject Transaction
+// Trailing Stop Loss Order Reject Transaction
 const TRANSACTION_TYPE_TRAILING_STOP_LOSS_ORDER_REJECT TransactionType = "TRAILING_STOP_LOSS_ORDER_REJECT"
 
-//Order Fill Transaction
+// Order Fill Transaction
 const TRANSACTION_TYPE_ORDER_FILL TransactionType = "ORDER_FILL"
 
-//Order Cancel Transaction
+// Order Cancel Transaction
 const TRANSACTION_TYPE_ORDER_CANCEL TransactionType = "ORDER_CANCEL"
 
-//Order Cancel Reject Transaction
+// Order Cancel Reject Transaction
 const TRANSACTION_TYPE_ORDER_CANCEL_REJECT TransactionType = "ORDER_CANCEL_REJECT"
 
-//Order Client Extensions Modify Transaction
+// Order Client Extensions Modify Transaction
 const TRANSACTION_TYPE_ORDER_CLIENT_EXTENSIONS_MODIFY TransactionType = "ORDER_CLIENT_EXTENSIONS_MODIFY"
 
-//Order Client Extensions Modify Reject Transaction
+// Order Client Extensions Modify Reject Transaction
 const TRANSACTION_TYPE_ORDER_CLIENT_EXTENSIONS_MODIFY_REJECT TransactionType = "ORDER_CLIENT_EXTENSIONS_MODIFY_REJECT"
 
-//Trade Client Extensions Modify Transaction
+// Trade Client Extensions Modify Transaction
 const TRANSACTION_TYPE_TRADE_CLIENT_EXTENSIONS_MODIFY TransactionType = "TRADE_CLIENT_EXTENSIONS_MODIFY"
 
-//Trade Client Extensions Modify Reject Transaction
+// Trade Client Extensions Modify Reject Transaction
 const TRANSACTION_TYPE_TRADE_CLIENT_EXTENSIONS_MODIFY_REJECT TransactionType = "TRADE_CLIENT_EXTENSIONS_MODIFY_REJECT"
 
-//Margin Call Enter Transaction
+// Margin Call Enter Transaction
 const TRANSACTION_TYPE_MARGIN_CALL_ENTER TransactionType = "MARGIN_CALL_ENTER"
 
-//Margin Call Extend Transaction
+// Margin Call Extend Transaction
 const TRANSACTION_TYPE_MARGIN_CALL_EXTEND TransactionType = "MARGIN_CALL_EXTEND"
 
-//Margin Call Exit Transaction
+// Margin Call Exit Transaction
 const TRANSACTION_TYPE_MARGIN_CALL_EXIT TransactionType = "MARGIN_CALL_EXIT"
 
-//Delayed Trade Closure Transaction
+// Delayed Trade Closure Transaction
 const TRANSACTION_TYPE_DELAYED_TRADE_CLOSURE TransactionType = "DELAYED_TRADE_CLOSURE"
 
-//Daily Financing Transaction
+// Daily Financing Transaction
 const TRANSACTION_TYPE_DAILY_FINANCING TransactionType = "DAILY_FINANCING"
 
-//Dividend Adjustment Transaction
+// Dividend Adjustment Transaction
 const TRANSACTION_TYPE_DIVIDEND_ADJUSTMENT TransactionType = "DIVIDEND_ADJUSTMENT"
 
-//Reset Resettable PL Transaction
+// Reset Resettable PL Transaction
 const TRANSACTION_TYPE_RESET_RESETTABLE_PL TransactionType = "RESET_RESETTABLE_PL"
 
 type FundingReason string // todo

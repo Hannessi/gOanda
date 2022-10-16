@@ -307,7 +307,7 @@ type GetRangeOfTransactionsResponse struct {
 }
 
 type GetTransactionsSinceIdRequest struct {
-	Id TransactionID
+	TransactionId TransactionID
 }
 
 type GetTransactionsSinceIdResponse struct {

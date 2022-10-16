@@ -273,12 +273,17 @@ func (c *Client) GetRangeOfTransactions() (*GetRangeOfTransactionsResponse, erro
 	return &GetRangeOfTransactionsResponse{}, nil
 }
 
-func (c *Client) GetTransactionsSinceId() (*GetTransactionsSinceIdResponse, error) {
-	_, err := c.requester.GetTransactionsSinceId(GetTransactionsSinceIdRequest{})
+func (c *Client) GetTransactionsSinceId(request GetTransactionsSinceIdRequest) (*GetTransactionsSinceIdResponse, error) {
+	response, err := c.requester.GetTransactionsSinceId(GetTransactionsSinceIdRequest{
+		TransactionId: request.TransactionId,
+	})
 	if err != nil {
 		return nil, err
 	}
-	return &GetTransactionsSinceIdResponse{}, nil
+	return &GetTransactionsSinceIdResponse{
+		Transactions:      response.Transactions,
+		LastTransactionID: response.LastTransactionID,
+	}, nil
 }
 
 func (c *Client) GetTransactionsStream() (*GetTransactionsStreamResponse, error) {

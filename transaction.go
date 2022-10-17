@@ -10,117 +10,193 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 	switch t.Type {
 	case TRANSACTION_TYPE_CREATE_ACCOUNT:
 		//todo
-		return &CreateTransaction{}, nil
+		return &CreateTransaction{
+			Type: t.Type,
+		}, nil
 	case TRANSACTION_TYPE_CLOSE_ACCOUNT:
 		//todo
-		return &CloseTransaction{}, nil
+		return &CloseTransaction{
+			Type: t.Type,
+		}, nil
 	case TRANSACTION_TYPE_REOPEN_ACCOUNT:
 		//todo
-		return &ReopenTransaction{}, nil
+		return &ReopenTransaction{
+			Type: t.Type,
+		}, nil
 	case TRANSACTION_TYPE_CLIENT_CONFIGURE:
-		return &ClientConfigureTransaction{}, nil
+		return &ClientConfigureTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_CLIENT_CONFIGURE_REJECT:
-		return &ClientConfigureRejectTransaction{}, nil
+		return &ClientConfigureRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_TRANSFER_FUNDS:
-		return &TransferFundsTransaction{}, nil
+		return &TransferFundsTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_TRANSFER_FUNDS_REJECT:
-		return &TransferFundsRejectTransaction{}, nil
+		return &TransferFundsRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_MARKET_ORDER:
-		return &MarketOrderTransaction{}, nil
+		return &MarketOrderTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_MARKET_ORDER_REJECT:
-		return &MarketOrderRejectTransaction{}, nil
+		return &MarketOrderRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_FIXED_PRICE_ORDER:
-		return &FixedPriceOrderTransaction{}, nil
+		return &FixedPriceOrderTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_LIMIT_ORDER:
 		//todo
-		return &LimitOrderTransaction{}, nil
+		return &LimitOrderTransaction{
+			Type: t.Type,
+		}, nil
 	case TRANSACTION_TYPE_LIMIT_ORDER_REJECT:
-		return &LimitOrderRejectTransaction{}, nil
+		return &LimitOrderRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_STOP_ORDER:
-		return &StopOrderTransaction{}, nil
+		return &StopOrderTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_STOP_ORDER_REJECT:
 		//todo
-		return &StopOrderRejectTransaction{}, nil
+		return &StopOrderRejectTransaction{
+			Type: t.Type,
+		}, nil
 	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER:
 		//todo
-		return &MarketIfTouchedOrderTransaction{}, nil
+		return &MarketIfTouchedOrderTransaction{
+			Type: t.Type,
+		}, nil
 	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER_REJECT:
-		return &MarketIfTouchedOrderRejectTransaction{}, nil
+		return &MarketIfTouchedOrderRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_TAKE_PROFIT_ORDER:
-		return &TakeProfitOrderTransaction{}, nil
+		return &TakeProfitOrderTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_TAKE_PROFIT_ORDER_REJECT:
-		return &TakeProfitOrderRejectTransaction{}, nil
+		return &TakeProfitOrderRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_STOP_LOSS_ORDER:
-		return &StopLossOrderTransaction{}, nil
+		return &StopLossOrderTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_STOP_LOSS_ORDER_REJECT:
-		return &StopLossOrderRejectTransaction{}, nil
+		return &StopLossOrderRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_GUARANTEED_STOP_LOSS_ORDER:
-		return &GuaranteedStopLossOrderTransaction{}, nil
+		return &GuaranteedStopLossOrderTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_GUARANTEED_STOP_LOSS_ORDER_REJECT:
-		return &GuaranteedStopLossOrderRejectTransaction{}, nil
+		return &GuaranteedStopLossOrderRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_TRAILING_STOP_LOSS_ORDER:
-		return &TrailingStopLossOrderTransaction{}, nil
+		return &TrailingStopLossOrderTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_TRAILING_STOP_LOSS_ORDER_REJECT:
-		return &TrailingStopLossOrderRejectTransaction{}, nil
+		return &TrailingStopLossOrderRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_ORDER_FILL:
-		return &OrderFillTransaction{}, nil
+		return &OrderFillTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_ORDER_CANCEL:
-		return &OrderCancelTransaction{}, nil
+		return &OrderCancelTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_ORDER_CANCEL_REJECT:
-		return &OrderCancelRejectTransaction{}, nil
+		return &OrderCancelRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_ORDER_CLIENT_EXTENSIONS_MODIFY:
-		return &OrderClientExtensionsModifyTransaction{}, nil
+		return &OrderClientExtensionsModifyTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_ORDER_CLIENT_EXTENSIONS_MODIFY_REJECT:
-		return &OrderClientExtensionsModifyRejectTransaction{}, nil
+		return &OrderClientExtensionsModifyRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_TRADE_CLIENT_EXTENSIONS_MODIFY:
-		return &TradeClientExtensionsModifyTransaction{}, nil
+		return &TradeClientExtensionsModifyTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_TRADE_CLIENT_EXTENSIONS_MODIFY_REJECT:
-		return &TradeClientExtensionsModifyRejectTransaction{}, nil
+		return &TradeClientExtensionsModifyRejectTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_MARGIN_CALL_ENTER:
-		return &MarginCallEnterTransaction{}, nil
+		return &MarginCallEnterTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_MARGIN_CALL_EXTEND:
-		return &MarginCallExtendTransaction{}, nil
+		return &MarginCallExtendTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_MARGIN_CALL_EXIT:
-		return &MarginCallExitTransaction{}, nil
+		return &MarginCallExitTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_DELAYED_TRADE_CLOSURE:
-		return &DelayedTradeClosureTransaction{}, nil
+		return &DelayedTradeClosureTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_DAILY_FINANCING:
-		return &DailyFinancingTransaction{}, nil
+		return &DailyFinancingTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_DIVIDEND_ADJUSTMENT:
-		return &DividendAdjustmentTransaction{}, nil
+		return &DividendAdjustmentTransaction{
+			Type: t.Type,
+		}, nil
 		//todo
 	case TRANSACTION_TYPE_RESET_RESETTABLE_PL:
-		return &ResetResettablePLTransaction{}, nil
+		return &ResetResettablePLTransaction{
+			Type: t.Type,
+		}, nil
 	}
 
 	return nil, errors.New("Invalid transaction type: " + string(t.Type))

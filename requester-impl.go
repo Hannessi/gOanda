@@ -340,10 +340,28 @@ func (r *HttpRequester) GetRangeOfTransactions(request GetRangeOfTransactionsReq
 }
 
 type getTransactionsSinceIdResponse struct {
-	Transactions      []Transaction `json:"transactions"`
-	LastTransactionID TransactionID `json:"lastTransactionID"`
-	ErrorCode         string        `json:"errorCode"`
-	ErrorMessage      string        `json:"errorMessage"`
+	Transactions      []RawTransaction `json:"transactions"`
+	LastTransactionID TransactionID    `json:"lastTransactionID"`
+	ErrorCode         string           `json:"errorCode"`
+	ErrorMessage      string           `json:"errorMessage"`
+}
+
+func (g *getTransactionsSinceIdResponse) unmarshal() (*GetTransactionsSinceIdResponse, error) {
+	transactions := make([]Transaction, 0)
+
+	for _, raw := range g.Transactions {
+		transaction, err := raw.ToTransaction()
+		if err != nil {
+			logrus.Error("Could not unmarshal transaction: ", raw)
+			return nil, err
+		}
+		transactions = append(transactions, transaction)
+	}
+
+	return &GetTransactionsSinceIdResponse{
+		Transactions:      transactions,
+		LastTransactionID: g.LastTransactionID,
+	}, nil
 }
 
 func (r *HttpRequester) GetTransactionsSinceId(request GetTransactionsSinceIdRequest) (*GetTransactionsSinceIdResponse, error) {
@@ -358,10 +376,13 @@ func (r *HttpRequester) GetTransactionsSinceId(request GetTransactionsSinceIdReq
 	if response.ErrorCode != "" || response.ErrorMessage != "" {
 		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
-	return &GetTransactionsSinceIdResponse{
-		Transactions:      response.Transactions,
-		LastTransactionID: response.LastTransactionID,
-	}, nil
+
+	unmarshalledResponse, err := response.unmarshal()
+	if err != nil {
+		logrus.Error("Could not unmarshal response:", err.Error())
+		return nil, err
+	}
+	return unmarshalledResponse, nil
 
 }
 

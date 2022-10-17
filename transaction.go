@@ -122,6 +122,13 @@ type RawTransaction struct {
 	// The ID of the Transaction that cancels the replaced Order (only provided
 	// if this Order replaces an existing Order).
 	CancellingTransactionID TransactionID `json:"cancellingTransactionID"`
+
+	PriceBound            PriceValue                   `json:"priceBound"`
+	TradeClose            MarketOrderTradeClose        `json:"tradeClose"`
+	LongPositionCloseout  MarketOrderPositionCloseout  `json:"longPositionCloseout"`
+	ShortPositionCloseout MarketOrderPositionCloseout  `json:"shortPositionCloseout"`
+	MarginCloseout        MarketOrderMarginCloseout    `json:"marginCloseout"`
+	DelayedTradeClose     MarketOrderDelayedTradeClose `json:"delayedTradeClose"`
 }
 
 func (t *RawTransaction) ToTransaction() (Transaction, error) {
@@ -163,7 +170,29 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 		//todo
 	case TRANSACTION_TYPE_MARKET_ORDER:
 		return &MarketOrderTransaction{
-			Type: t.Type,
+			Id:                     t.Id,
+			Time:                   t.Time,
+			UserID:                 t.UserID,
+			AccountID:              t.AccountID,
+			BatchID:                t.BatchID,
+			RequestID:              t.RequestID,
+			Type:                   t.Type,
+			Instrument:             t.Instrument,
+			Units:                  t.Units,
+			TimeInForce:            t.TimeInForce,
+			PriceBound:             t.PriceBound,
+			PositionFill:           t.PositionFill,
+			TradeClose:             t.TradeClose,
+			LongPositionCloseout:   t.LongPositionCloseout,
+			ShortPositionCloseout:  t.ShortPositionCloseout,
+			MarginCloseout:         t.MarginCloseout,
+			DelayedTradeClose:      t.DelayedTradeClose,
+			Reason:                 MarketOrderReason(t.Reason),
+			ClientExtensions:       t.ClientExtensions,
+			TakeProfitOnFill:       t.TakeProfitOnFill,
+			StopLossOnFill:         t.StopLossOnFill,
+			TrailingStopLossOnFill: t.TrailingStopLossOnFill,
+			TradeClientExtensions:  t.TradeClientExtensions,
 		}, nil
 		//todo
 	case TRANSACTION_TYPE_MARKET_ORDER_REJECT:
@@ -620,9 +649,9 @@ func (t *TransferFundsRejectTransaction) GetType() TransactionType {
 type MarketOrderTransaction struct {
 	Id                     TransactionID                `json:"id"`
 	Time                   DateTime                     `json:"time"`
-	UserID                 int                          `json:"userID"`
+	UserID                 int64                        `json:"userID"`
 	AccountID              AccountID                    `json:"accountID"`
-	BatchId                TransactionID                `json:"batchID"`
+	BatchID                TransactionID                `json:"batchID"`
 	RequestID              RequestID                    `json:"requestID"`
 	Type                   TransactionType              `json:"type"`
 	Instrument             InstrumentName               `json:"instrument"`

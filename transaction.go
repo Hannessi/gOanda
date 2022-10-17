@@ -41,6 +41,87 @@ type RawTransaction struct {
 
 	// The financing paid/collected for each Position in the Account.
 	PositionFinancings []PositionFinancing `json:"positionFinancings"`
+
+	// The Limit Order’s Instrument.
+	Instrument InstrumentName `json:"instrument"`
+
+	// The quantity requested to be filled by the Limit Order. A positive number
+	// of units results in a long Order, and a negative number of units results
+	// in a short Order.
+	Units DecimalNumber `json:"units"`
+
+	// The price threshold specified for the Limit Order. The Limit Order will
+	// only be filled by a market price that is equal to or better than this
+	// price.
+	Price PriceValue `json:"price"`
+
+	// The time-in-force requested for the Limit Order.
+	TimeInForce TimeInForce `json:"timeInForce"`
+
+	// The date/time when the Limit Order will be cancelled if its timeInForce
+	// is “GTD”.
+	GtdTime DateTime `json:"gtdTime"`
+
+	// Specification of how Positions in the Account are modified when the Order
+	// is filled.
+	PositionFill OrderPositionFill `json:"positionFill"`
+
+	// Specification of which price component should be used when determining if
+	// an Order should be triggered and filled. This allows Orders to be
+	// triggered based on the bid, ask, mid, default (ask for buy, bid for sell)
+	// or inverse (ask for sell, bid for buy) price depending on the desired
+	// behaviour. Orders are always filled using their default price component.
+	// This feature is only provided through the REST API. Clients who choose to
+	// specify a non-default trigger condition will not see it reflected in any
+	// of OANDA’s proprietary or partner trading platforms, their transaction
+	// history or their account statements. OANDA platforms always assume that
+	// an Order’s trigger condition is set to the default value when indicating
+	// the distance from an Order’s trigger price, and will always provide the
+	// default trigger condition when creating or modifying an Order. A special
+	// restriction applies when creating a Guaranteed Stop Loss Order. In this
+	// case the TriggerCondition value must either be “DEFAULT”, or the
+	// “natural” trigger side “DEFAULT” results in. So for a Guaranteed Stop
+	// Loss Order for a long trade valid values are “DEFAULT” and “BID”, and for
+	// short trades “DEFAULT” and “ASK” are valid.
+	TriggerCondition OrderTriggerCondition `json:"triggerCondition"`
+
+	// The reason that the Limit Order was initiated
+	Reason LimitOrderReason `json:"reason"`
+
+	// Client Extensions to add to the Order (only provided if the Order is
+	// being created with client extensions).
+	ClientExtensions ClientExtensions `json:"clientExtensions"`
+
+	// The specification of the Take Profit Order that should be created for a
+	// Trade opened when the Order is filled (if such a Trade is created).
+	TakeProfitOnFill TakeProfitDetails `json:"takeProfitOnFill"`
+
+	// The specification of the Stop Loss Order that should be created for a
+	// Trade opened when the Order is filled (if such a Trade is created).
+	StopLossOnFill StopLossDetails `json:"stopLossOnFill"`
+
+	// The specification of the Trailing Stop Loss Order that should be created
+	// for a Trade that is opened when the Order is filled (if such a Trade is
+	// created).
+	TrailingStopLossOnFill TrailingStopLossDetails `json:"trailingStopLossOnFill"`
+
+	// The specification of the Guaranteed Stop Loss Order that should be
+	// created for a Trade that is opened when the Order is filled (if such a
+	// Trade is created).
+	GuaranteedStopLossOnFill GuaranteedStopLossDetails `json:"guaranteedStopLossOnFill"`
+
+	// Client Extensions to add to the Trade created when the Order is filled
+	// (if such a Trade is created).  Do not set, modify, delete
+	// tradeClientExtensions if your account is associated with MT4.
+	TradeClientExtensions ClientExtensions `json:"tradeClientExtensions"`
+
+	// The ID of the Order that this Order replaces (only provided if this Order
+	// replaces an existing Order).
+	ReplacesOrderID OrderID `json:"replacesOrderID"`
+
+	// The ID of the Transaction that cancels the replaced Order (only provided
+	// if this Order replaces an existing Order).
+	CancellingTransactionID TransactionID `json:"cancellingTransactionID"`
 }
 
 func (t *RawTransaction) ToTransaction() (Transaction, error) {
@@ -96,9 +177,30 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 		}, nil
 		//todo
 	case TRANSACTION_TYPE_LIMIT_ORDER:
-		//todo
 		return &LimitOrderTransaction{
-			Type: t.Type,
+			id:                       t.Id,
+			time:                     t.Time,
+			userID:                   t.UserID,
+			accountID:                t.AccountID,
+			batchID:                  t.BatchID,
+			requestID:                t.RequestID,
+			Type:                     t.Type,
+			instrument:               t.Instrument,
+			units:                    t.Units,
+			price:                    t.Price,
+			timeInForce:              t.TimeInForce,
+			gtdTime:                  t.GtdTime,
+			positionFill:             t.PositionFill,
+			triggerCondition:         t.TriggerCondition,
+			reason:                   t.Reason,
+			clientExtensions:         t.ClientExtensions,
+			takeProfitOnFill:         t.TakeProfitOnFill,
+			stopLossOnFill:           t.StopLossOnFill,
+			trailingStopLossOnFill:   t.TrailingStopLossOnFill,
+			guaranteedStopLossOnFill: t.GuaranteedStopLossOnFill,
+			tradeClientExtensions:    t.TradeClientExtensions,
+			replacesOrderID:          t.ReplacesOrderID,
+			cancellingTransactionID:  t.CancellingTransactionID,
 		}, nil
 	case TRANSACTION_TYPE_LIMIT_ORDER_REJECT:
 		return &LimitOrderRejectTransaction{
@@ -234,7 +336,6 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			accountFinancingMode: t.AccountFinancingMode,
 			positionFinancings:   t.PositionFinancings,
 		}, nil
-		//todo
 	case TRANSACTION_TYPE_DIVIDEND_ADJUSTMENT:
 		return &DividendAdjustmentTransaction{
 			Type: t.Type,

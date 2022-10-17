@@ -3,7 +3,44 @@ package gOanda
 import "errors"
 
 type RawTransaction struct {
+	// The Transaction’s Identifier.
+	Id TransactionID `json:"id"`
+
+	// The date/time when the Transaction was created.
+	Time DateTime `json:"time"`
+
+	// The ID of the user that initiated the creation of the Transaction.
+	UserID int64 `json:"userID"`
+
+	// The ID of the Account the Transaction was created for.
+	AccountID AccountID `json:"accountID"`
+
+	// The ID of the “batch” that the Transaction belongs to. Transactions in
+	// the same batch are applied to the Account simultaneously.
+	BatchID TransactionID `json:"batchID"`
+
+	// The Request ID of the request which generated the transaction.
+	RequestID RequestID `json:"requestID"`
+
+	// The Type of the Transaction. Always set to “DAILY_FINANCING” for a
+	// DailyFinancingTransaction.
 	Type TransactionType `json:"type"`
+
+	// The amount of financing paid/collected for the Account.
+	Financing AccountUnits `json:"financing"`
+
+	// The Account’s balance after daily financing.
+	AccountBalance AccountUnits `json:"accountBalance"`
+
+	// The account financing mode at the time of the daily financing. This field
+	// is no longer in use moving forward and was replaced by
+	// accountFinancingMode in individual positionFinancings since the financing
+	// mode could differ between instruments.
+	// Deprecated: Will be removed in a future API update.
+	AccountFinancingMode AccountFinancingMode `json:"accountFinancingMode"`
+
+	// The financing paid/collected for each Position in the Account.
+	PositionFinancings []PositionFinancing `json:"positionFinancings"`
 }
 
 func (t *RawTransaction) ToTransaction() (Transaction, error) {
@@ -185,7 +222,17 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 		//todo
 	case TRANSACTION_TYPE_DAILY_FINANCING:
 		return &DailyFinancingTransaction{
-			Type: t.Type,
+			id:                   t.Id,
+			time:                 t.Time,
+			userID:               t.UserID,
+			accountID:            t.AccountID,
+			batchID:              t.BatchID,
+			requestID:            t.RequestID,
+			Type:                 t.Type,
+			financing:            t.Financing,
+			accountBalance:       t.AccountBalance,
+			accountFinancingMode: t.AccountFinancingMode,
+			positionFinancings:   t.PositionFinancings,
 		}, nil
 		//todo
 	case TRANSACTION_TYPE_DIVIDEND_ADJUSTMENT:

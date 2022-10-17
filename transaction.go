@@ -141,6 +141,37 @@ type RawTransaction struct {
 	TradesClosed                  []TradeReduce `json:"tradesClosed"`
 	TradeReduced                  TradeReduce   `json:"tradeReduced"`
 	HalfSpreadCost                AccountUnits  `json:"halfSpreadCost"`
+
+	// The ID of the Trade to close when the price threshold is breached.
+	TradeID TradeID `json:"tradeID"`
+
+	// The client ID of the Trade to be closed when the price threshold is
+	// breached.
+	ClientTradeID ClientID `json:"clientTradeID"`
+
+	// Specifies the distance (in price units) from the Account’s current price
+	// to use as the Stop Loss Order price. If the Trade is short the
+	// Instrument’s bid price is used, and for long Trades the ask is used.
+	Distance DecimalNumber `json:"distance"`
+
+	// Flag indicating that the Stop Loss Order is guaranteed. The default value
+	// depends on the GuaranteedStopLossOrderMode of the account, if it is
+	// REQUIRED, the default will be true, for DISABLED or ENABLED the default
+	// is false.
+	// Deprecated: Will be removed in a future API update.
+	Guaranteed bool `json:"guaranteed"`
+
+	// The fee that will be charged if the Stop Loss Order is guaranteed and the
+	// Order is filled at the guaranteed price. The value is determined at Order
+	// creation time. It is in price units and is charged for each unit of the
+	// Trade.
+	// Deprecated: Will be removed in a future API update.
+	GuaranteedExecutionPremium DecimalNumber `json:"guaranteedExecutionPremium"`
+
+	// The ID of the OrderFill Transaction that caused this Order to be created
+	// (only provided if this Order was created automatically when another Order
+	// was filled).
+	OrderFillTransactionID TransactionID `json:"orderFillTransactionID"`
 }
 
 func (t *RawTransaction) ToTransaction() (Transaction, error) {
@@ -295,9 +326,28 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 		}, nil
 		//todo
 	case TRANSACTION_TYPE_STOP_LOSS_ORDER:
-		return nil, errors.New("not implemented yet")
 		return &StopLossOrderTransaction{
-			Type: t.Type,
+			id:                         t.Id,
+			time:                       t.Time,
+			userID:                     t.UserID,
+			accountID:                  t.AccountID,
+			batchID:                    t.BatchID,
+			requestID:                  t.RequestID,
+			Type:                       t.Type,
+			tradeID:                    t.TradeID,
+			clientTradeID:              t.ClientTradeID,
+			price:                      t.Price,
+			distance:                   t.Distance,
+			timeInForce:                t.TimeInForce,
+			gtdTime:                    t.GtdTime,
+			triggerCondition:           t.TriggerCondition,
+			guaranteed:                 t.Guaranteed,
+			guaranteedExecutionPremium: t.GuaranteedExecutionPremium,
+			reason:                     StopLossOrderReason(t.Reason),
+			clientExtensions:           t.ClientExtensions,
+			orderFillTransactionID:     t.OrderFillTransactionID,
+			replacesOrderID:            t.ReplacesOrderID,
+			cancellingTransactionID:    t.CancellingTransactionID,
 		}, nil
 		//todo
 	case TRANSACTION_TYPE_STOP_LOSS_ORDER_REJECT:

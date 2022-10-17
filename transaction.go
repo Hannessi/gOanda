@@ -314,9 +314,25 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 		}, nil
 		//todo
 	case TRANSACTION_TYPE_TAKE_PROFIT_ORDER:
-		return nil, errors.New("not implemented yet")
 		return &TakeProfitOrderTransaction{
-			Type: t.Type,
+			id:                      t.Id,
+			time:                    t.Time,
+			userID:                  t.UserID,
+			accountID:               t.AccountID,
+			batchID:                 t.BatchID,
+			requestID:               t.RequestID,
+			Type:                    t.Type,
+			tradeID:                 t.TradeID,
+			clientTradeID:           t.ClientTradeID,
+			price:                   t.Price,
+			timeInForce:             t.TimeInForce,
+			gtdTime:                 t.GtdTime,
+			triggerCondition:        t.TriggerCondition,
+			reason:                  TakeProfitOrderReason(t.Reason),
+			clientExtensions:        t.ClientExtensions,
+			orderFillTransactionID:  t.OrderFillTransactionID,
+			replacesOrderID:         t.ReplacesOrderID,
+			cancellingTransactionID: t.CancellingTransactionID,
 		}, nil
 		//todo
 	case TRANSACTION_TYPE_TAKE_PROFIT_ORDER_REJECT:

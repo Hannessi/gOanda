@@ -3,175 +3,60 @@ package gOanda
 import "errors"
 
 type RawTransaction struct {
-	// The Transaction’s Identifier.
-	Id TransactionID `json:"id"`
-
-	// The date/time when the Transaction was created.
-	Time DateTime `json:"time"`
-
-	// The ID of the user that initiated the creation of the Transaction.
-	UserID int64 `json:"userID"`
-
-	// The ID of the Account the Transaction was created for.
-	AccountID AccountID `json:"accountID"`
-
-	// The ID of the “batch” that the Transaction belongs to. Transactions in
-	// the same batch are applied to the Account simultaneously.
-	BatchID TransactionID `json:"batchID"`
-
-	// The Request ID of the request which generated the transaction.
-	RequestID RequestID `json:"requestID"`
-
-	// The Type of the Transaction. Always set to “DAILY_FINANCING” for a
-	// DailyFinancingTransaction.
-	Type TransactionType `json:"type"`
-
-	// The amount of financing paid/collected for the Account.
-	Financing AccountUnits `json:"financing"`
-
-	// The Account’s balance after daily financing.
-	AccountBalance AccountUnits `json:"accountBalance"`
-
-	// The account financing mode at the time of the daily financing. This field
-	// is no longer in use moving forward and was replaced by
-	// accountFinancingMode in individual positionFinancings since the financing
-	// mode could differ between instruments.
-	// Deprecated: Will be removed in a future API update.
-	AccountFinancingMode AccountFinancingMode `json:"accountFinancingMode"`
-
-	// The financing paid/collected for each Position in the Account.
-	PositionFinancings []PositionFinancing `json:"positionFinancings"`
-
-	// The Limit Order’s Instrument.
-	Instrument InstrumentName `json:"instrument"`
-
-	// The quantity requested to be filled by the Limit Order. A positive number
-	// of units results in a long Order, and a negative number of units results
-	// in a short Order.
-	Units DecimalNumber `json:"units"`
-
-	// The price threshold specified for the Limit Order. The Limit Order will
-	// only be filled by a market price that is equal to or better than this
-	// price.
-	Price PriceValue `json:"price"`
-
-	// The time-in-force requested for the Limit Order.
-	TimeInForce TimeInForce `json:"timeInForce"`
-
-	// The date/time when the Limit Order will be cancelled if its timeInForce
-	// is “GTD”.
-	GtdTime DateTime `json:"gtdTime"`
-
-	// Specification of how Positions in the Account are modified when the Order
-	// is filled.
-	PositionFill OrderPositionFill `json:"positionFill"`
-
-	// Specification of which price component should be used when determining if
-	// an Order should be triggered and filled. This allows Orders to be
-	// triggered based on the bid, ask, mid, default (ask for buy, bid for sell)
-	// or inverse (ask for sell, bid for buy) price depending on the desired
-	// behaviour. Orders are always filled using their default price component.
-	// This feature is only provided through the REST API. Clients who choose to
-	// specify a non-default trigger condition will not see it reflected in any
-	// of OANDA’s proprietary or partner trading platforms, their transaction
-	// history or their account statements. OANDA platforms always assume that
-	// an Order’s trigger condition is set to the default value when indicating
-	// the distance from an Order’s trigger price, and will always provide the
-	// default trigger condition when creating or modifying an Order. A special
-	// restriction applies when creating a Guaranteed Stop Loss Order. In this
-	// case the TriggerCondition value must either be “DEFAULT”, or the
-	// “natural” trigger side “DEFAULT” results in. So for a Guaranteed Stop
-	// Loss Order for a long trade valid values are “DEFAULT” and “BID”, and for
-	// short trades “DEFAULT” and “ASK” are valid.
-	TriggerCondition OrderTriggerCondition `json:"triggerCondition"`
-
-	Reason string `json:"reason"`
-
-	// Client Extensions to add to the Order (only provided if the Order is
-	// being created with client extensions).
-	ClientExtensions ClientExtensions `json:"clientExtensions"`
-
-	// The specification of the Take Profit Order that should be created for a
-	// Trade opened when the Order is filled (if such a Trade is created).
-	TakeProfitOnFill TakeProfitDetails `json:"takeProfitOnFill"`
-
-	// The specification of the Stop Loss Order that should be created for a
-	// Trade opened when the Order is filled (if such a Trade is created).
-	StopLossOnFill StopLossDetails `json:"stopLossOnFill"`
-
-	// The specification of the Trailing Stop Loss Order that should be created
-	// for a Trade that is opened when the Order is filled (if such a Trade is
-	// created).
-	TrailingStopLossOnFill TrailingStopLossDetails `json:"trailingStopLossOnFill"`
-
-	// The specification of the Guaranteed Stop Loss Order that should be
-	// created for a Trade that is opened when the Order is filled (if such a
-	// Trade is created).
-	GuaranteedStopLossOnFill GuaranteedStopLossDetails `json:"guaranteedStopLossOnFill"`
-
-	// Client Extensions to add to the Trade created when the Order is filled
-	// (if such a Trade is created).  Do not set, modify, delete
-	// tradeClientExtensions if your account is associated with MT4.
-	TradeClientExtensions ClientExtensions `json:"tradeClientExtensions"`
-
-	// The ID of the Order that this Order replaces (only provided if this Order
-	// replaces an existing Order).
-	ReplacesOrderID OrderID `json:"replacesOrderID"`
-
-	// The ID of the Transaction that cancels the replaced Order (only provided
-	// if this Order replaces an existing Order).
-	CancellingTransactionID TransactionID `json:"cancellingTransactionID"`
-
-	PriceBound            PriceValue                   `json:"priceBound"`
-	TradeClose            MarketOrderTradeClose        `json:"tradeClose"`
-	LongPositionCloseout  MarketOrderPositionCloseout  `json:"longPositionCloseout"`
-	ShortPositionCloseout MarketOrderPositionCloseout  `json:"shortPositionCloseout"`
-	MarginCloseout        MarketOrderMarginCloseout    `json:"marginCloseout"`
-	DelayedTradeClose     MarketOrderDelayedTradeClose `json:"delayedTradeClose"`
-
-	OrderID                       OrderID       `json:"orderID"`
-	ClientOrderID                 ClientID      `json:"clientOrderID"`
-	GainQuoteHomeConversionFactor DecimalNumber `json:"gainQuoteHomeConversionFactor"`
-	LossQuoteHomeConversionFactor DecimalNumber `json:"lossQuoteHomeConversionFactor"`
-	FullPrice                     ClientPrice   `json:"fullPrice"`
-	Pl                            AccountUnits  `json:"pl"`
-	Commission                    AccountUnits  `json:"commission"`
-	GuaranteedExecutionFee        AccountUnits  `json:"guaranteedExecutionFee"`
-	TradeOpened                   TradeOpen     `json:"tradeOpened"`
-	TradesClosed                  []TradeReduce `json:"tradesClosed"`
-	TradeReduced                  TradeReduce   `json:"tradeReduced"`
-	HalfSpreadCost                AccountUnits  `json:"halfSpreadCost"`
-
-	// The ID of the Trade to close when the price threshold is breached.
-	TradeID TradeID `json:"tradeID"`
-
-	// The client ID of the Trade to be closed when the price threshold is
-	// breached.
-	ClientTradeID ClientID `json:"clientTradeID"`
-
-	// Specifies the distance (in price units) from the Account’s current price
-	// to use as the Stop Loss Order price. If the Trade is short the
-	// Instrument’s bid price is used, and for long Trades the ask is used.
-	Distance DecimalNumber `json:"distance"`
-
-	// Flag indicating that the Stop Loss Order is guaranteed. The default value
-	// depends on the GuaranteedStopLossOrderMode of the account, if it is
-	// REQUIRED, the default will be true, for DISABLED or ENABLED the default
-	// is false.
-	// Deprecated: Will be removed in a future API update.
-	Guaranteed bool `json:"guaranteed"`
-
-	// The fee that will be charged if the Stop Loss Order is guaranteed and the
-	// Order is filled at the guaranteed price. The value is determined at Order
-	// creation time. It is in price units and is charged for each unit of the
-	// Trade.
-	// Deprecated: Will be removed in a future API update.
-	GuaranteedExecutionPremium DecimalNumber `json:"guaranteedExecutionPremium"`
-
-	// The ID of the OrderFill Transaction that caused this Order to be created
-	// (only provided if this Order was created automatically when another Order
-	// was filled).
-	OrderFillTransactionID TransactionID `json:"orderFillTransactionID"`
+	Id                            TransactionID                `json:"id"`
+	Time                          DateTime                     `json:"time"`
+	UserID                        int64                        `json:"userID"`
+	AccountID                     AccountID                    `json:"accountID"`
+	BatchID                       TransactionID                `json:"batchID"`
+	RequestID                     RequestID                    `json:"requestID"`
+	Type                          TransactionType              `json:"type"`
+	Financing                     AccountUnits                 `json:"financing"`
+	AccountBalance                AccountUnits                 `json:"accountBalance"`
+	AccountFinancingMode          AccountFinancingMode         `json:"accountFinancingMode"`
+	PositionFinancings            []PositionFinancing          `json:"positionFinancings"`
+	Instrument                    InstrumentName               `json:"instrument"`
+	Units                         DecimalNumber                `json:"units"`
+	Price                         PriceValue                   `json:"price"`
+	TimeInForce                   TimeInForce                  `json:"timeInForce"`
+	GtdTime                       DateTime                     `json:"gtdTime"`
+	PositionFill                  OrderPositionFill            `json:"positionFill"`
+	TriggerCondition              OrderTriggerCondition        `json:"triggerCondition"`
+	Reason                        string                       `json:"reason"`
+	ClientExtensions              ClientExtensions             `json:"clientExtensions"`
+	TakeProfitOnFill              TakeProfitDetails            `json:"takeProfitOnFill"`
+	StopLossOnFill                StopLossDetails              `json:"stopLossOnFill"`
+	TrailingStopLossOnFill        TrailingStopLossDetails      `json:"trailingStopLossOnFill"`
+	GuaranteedStopLossOnFill      GuaranteedStopLossDetails    `json:"guaranteedStopLossOnFill"`
+	TradeClientExtensions         ClientExtensions             `json:"tradeClientExtensions"`
+	ReplacesOrderID               OrderID                      `json:"replacesOrderID"`
+	CancellingTransactionID       TransactionID                `json:"cancellingTransactionID"`
+	PriceBound                    PriceValue                   `json:"priceBound"`
+	TradeClose                    MarketOrderTradeClose        `json:"tradeClose"`
+	LongPositionCloseout          MarketOrderPositionCloseout  `json:"longPositionCloseout"`
+	ShortPositionCloseout         MarketOrderPositionCloseout  `json:"shortPositionCloseout"`
+	MarginCloseout                MarketOrderMarginCloseout    `json:"marginCloseout"`
+	DelayedTradeClose             MarketOrderDelayedTradeClose `json:"delayedTradeClose"`
+	OrderID                       OrderID                      `json:"orderID"`
+	ClientOrderID                 ClientID                     `json:"clientOrderID"`
+	GainQuoteHomeConversionFactor DecimalNumber                `json:"gainQuoteHomeConversionFactor"`
+	LossQuoteHomeConversionFactor DecimalNumber                `json:"lossQuoteHomeConversionFactor"`
+	FullPrice                     ClientPrice                  `json:"fullPrice"`
+	Pl                            AccountUnits                 `json:"pl"`
+	Commission                    AccountUnits                 `json:"commission"`
+	GuaranteedExecutionFee        AccountUnits                 `json:"guaranteedExecutionFee"`
+	TradeOpened                   TradeOpen                    `json:"tradeOpened"`
+	TradesClosed                  []TradeReduce                `json:"tradesClosed"`
+	TradeReduced                  TradeReduce                  `json:"tradeReduced"`
+	HalfSpreadCost                AccountUnits                 `json:"halfSpreadCost"`
+	TradeID                       TradeID                      `json:"tradeID"`
+	ClientTradeID                 ClientID                     `json:"clientTradeID"`
+	Distance                      DecimalNumber                `json:"distance"`
+	Guaranteed                    bool                         `json:"guaranteed"`
+	GuaranteedExecutionPremium    DecimalNumber                `json:"guaranteedExecutionPremium"`
+	OrderFillTransactionID        TransactionID                `json:"orderFillTransactionID"`
+	Amount                        AccountUnits                 `json:"amount"`
+	FundingReason                 FundingReason                `json:"fundingReason"`
+	Comment                       string                       `json:"comment"`
 }
 
 func (t *RawTransaction) ToTransaction() (Transaction, error) {
@@ -207,9 +92,18 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 		}, nil
 		//todo
 	case TRANSACTION_TYPE_TRANSFER_FUNDS:
-		return nil, errors.New("not implemented yet")
 		return &TransferFundsTransaction{
-			Type: t.Type,
+			id:             t.Id,
+			time:           t.Time,
+			userID:         t.UserID,
+			accountID:      t.AccountID,
+			batchID:        t.BatchID,
+			requestID:      t.RequestID,
+			Type:           t.Type,
+			amount:         t.Amount,
+			fundingReason:  t.FundingReason,
+			comment:        t.Comment,
+			accountBalance: t.AccountBalance,
 		}, nil
 		//todo
 	case TRANSACTION_TYPE_TRANSFER_FUNDS_REJECT:

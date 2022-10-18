@@ -93,19 +93,18 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 		//todo
 	case TRANSACTION_TYPE_TRANSFER_FUNDS:
 		return &TransferFundsTransaction{
-			id:             t.Id,
-			time:           t.Time,
-			userID:         t.UserID,
-			accountID:      t.AccountID,
-			batchID:        t.BatchID,
-			requestID:      t.RequestID,
+			Id:             t.Id,
+			Time:           t.Time,
+			UserID:         t.UserID,
+			AccountID:      t.AccountID,
+			BatchID:        t.BatchID,
+			RequestID:      t.RequestID,
 			Type:           t.Type,
-			amount:         t.Amount,
-			fundingReason:  t.FundingReason,
-			comment:        t.Comment,
-			accountBalance: t.AccountBalance,
+			Amount:         t.Amount,
+			FundingReason:  t.FundingReason,
+			Comment:        t.Comment,
+			AccountBalance: t.AccountBalance,
 		}, nil
-		//todo
 	case TRANSACTION_TYPE_TRANSFER_FUNDS_REJECT:
 		return nil, errors.New("not implemented yet")
 		return &TransferFundsRejectTransaction{
@@ -318,7 +317,6 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			TradeReduced:                  t.TradeReduced,
 			HalfSpreadCost:                t.HalfSpreadCost,
 		}, nil
-		//todo
 	case TRANSACTION_TYPE_ORDER_CANCEL:
 		return &OrderCancelTransaction{
 			Id:                t.Id,
@@ -390,17 +388,17 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 		//todo
 	case TRANSACTION_TYPE_DAILY_FINANCING:
 		return &DailyFinancingTransaction{
-			id:                   t.Id,
-			time:                 t.Time,
-			userID:               t.UserID,
-			accountID:            t.AccountID,
-			batchID:              t.BatchID,
-			requestID:            t.RequestID,
+			Id:                   t.Id,
+			Time:                 t.Time,
+			UserID:               t.UserID,
+			AccountID:            t.AccountID,
+			BatchID:              t.BatchID,
+			RequestID:            t.RequestID,
 			Type:                 t.Type,
-			financing:            t.Financing,
-			accountBalance:       t.AccountBalance,
-			accountFinancingMode: t.AccountFinancingMode,
-			positionFinancings:   t.PositionFinancings,
+			Financing:            t.Financing,
+			AccountBalance:       t.AccountBalance,
+			AccountFinancingMode: t.AccountFinancingMode,
+			PositionFinancings:   t.PositionFinancings,
 		}, nil
 	case TRANSACTION_TYPE_DIVIDEND_ADJUSTMENT:
 		return nil, errors.New("not implemented yet")
@@ -599,23 +597,23 @@ func (c *ClientConfigureRejectTransaction) GetType() TransactionType {
 
 type TransferFundsTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
-	accountID AccountID
+	AccountID AccountID
 
 	// The ID of the “batch” that the Transaction belongs to. Transactions in
 	// the same batch are applied to the Account simultaneously.
-	batchID TransactionID
+	BatchID TransactionID
 
 	// The Request ID of the request which generated the transaction.
-	requestID RequestID
+	RequestID RequestID
 
 	// The Type of the Transaction. Always set to “TRANSFER_FUNDS” in a
 	// TransferFundsTransaction.
@@ -624,17 +622,17 @@ type TransferFundsTransaction struct {
 	// The amount to deposit/withdraw from the Account in the Account’s home
 	// currency. A positive value indicates a deposit, a negative value
 	// indicates a withdrawal.
-	amount AccountUnits
+	Amount AccountUnits
 
 	// The reason that an Account is being funded.
-	fundingReason FundingReason
+	FundingReason FundingReason
 
 	// An optional comment that may be attached to a fund transfer for audit
 	// purposes
-	comment string
+	Comment string
 
 	// The Account’s balance after funds are transferred.
-	accountBalance AccountUnits
+	AccountBalance AccountUnits
 }
 
 func (t *TransferFundsTransaction) GetType() TransactionType {
@@ -2645,43 +2643,43 @@ func (d *DelayedTradeClosureTransaction) GetType() TransactionType {
 
 type DailyFinancingTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
-	accountID AccountID
+	AccountID AccountID
 
 	// The ID of the “batch” that the Transaction belongs to. Transactions in
 	// the same batch are applied to the Account simultaneously.
-	batchID TransactionID
+	BatchID TransactionID
 
 	// The Request ID of the request which generated the transaction.
-	requestID RequestID
+	RequestID RequestID
 
 	// The Type of the Transaction. Always set to “DAILY_FINANCING” for a
 	// DailyFinancingTransaction.
 	Type TransactionType
 
 	// The amount of financing paid/collected for the Account.
-	financing AccountUnits
+	Financing AccountUnits
 
 	// The Account’s balance after daily financing.
-	accountBalance AccountUnits
+	AccountBalance AccountUnits
 
 	// The account financing mode at the time of the daily financing. This field
 	// is no longer in use moving forward and was replaced by
 	// accountFinancingMode in individual positionFinancings since the financing
 	// mode could differ between instruments.
 	// Deprecated: Will be removed in a future API update.
-	accountFinancingMode AccountFinancingMode
+	AccountFinancingMode AccountFinancingMode
 
 	// The financing paid/collected for each Position in the Account.
-	positionFinancings []PositionFinancing
+	PositionFinancings []PositionFinancing
 }
 
 func (d *DailyFinancingTransaction) GetType() TransactionType {

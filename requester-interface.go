@@ -118,6 +118,32 @@ type PostOrderResponse struct {
 	ErrorMessage                  string                 `json:"errorMessage"`
 }
 
+type PostOrderRawResponse struct {
+	OrderCreateTransaction        RawTransaction         `json:"orderCreateTransaction"`
+	OrderFillTransaction          OrderFillTransaction   `json:"orderFillTransaction"`
+	OrderCancelTransaction        OrderCancelTransaction `json:"orderCancelTransaction"`
+	OrderReissueTransaction       RawTransaction         `json:"orderReissueTransaction"`
+	OrderReissueRejectTransaction RawTransaction         `json:"orderReissueRejectTransaction"`
+	RelatedTransactionIDs         []TransactionID        `json:"relatedTransactionIDs"`
+	LastTransactionID             TransactionID          `json:"lastTransactionID"`
+	ErrorCode                     string                 `json:"errorCode"`
+	ErrorMessage                  string                 `json:"errorMessage"`
+}
+
+func (p *PostOrderRawResponse) ToPostOrderResponse() PostOrderResponse {
+	return PostOrderResponse{
+		OrderCreateTransaction:        p.OrderCreateTransaction.ToTransaction(),
+		OrderFillTransaction:          p.OrderFillTransaction,
+		OrderCancelTransaction:        p.OrderCancelTransaction,
+		OrderReissueTransaction:       p.OrderReissueTransaction.ToTransaction(),
+		OrderReissueRejectTransaction: p.OrderReissueRejectTransaction.ToTransaction(),
+		RelatedTransactionIDs:         p.RelatedTransactionIDs,
+		LastTransactionID:             p.LastTransactionID,
+		ErrorCode:                     p.ErrorCode,
+		ErrorMessage:                  p.ErrorMessage,
+	}
+}
+
 type GetOrdersRequest struct {
 	Ids            []OrderID
 	State          OrderStateFilter

@@ -150,7 +150,7 @@ func (r *HttpRequester) GetInstrumentPositionBook(request GetInstrumentPositionB
 
 // orders
 func (r *HttpRequester) PostOrder(request PostOrderRequest) (*PostOrderResponse, error) {
-	response := &PostOrderResponse{}
+	rawResponse := &PostOrderRawResponse{}
 	requestUrl := r.UrlManager.PostOrder()
 
 	order := struct {
@@ -159,14 +159,15 @@ func (r *HttpRequester) PostOrder(request PostOrderRequest) (*PostOrderResponse,
 		Order: request.Order.ToOrderRequest(),
 	}
 
-	if err := HttpRequestWrapper(POST, requestUrl, order, &response, r.Token); err != nil {
+	if err := HttpRequestWrapper(POST, requestUrl, order, &rawResponse, r.Token); err != nil {
 		return nil, err
 	}
+	response := rawResponse.ToPostOrderResponse()
 	if response.ErrorCode != "" || response.ErrorMessage != "" {
-		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return &response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
-	return response, nil
+	return &response, nil
 }
 
 func (r *HttpRequester) GetOrders(request GetOrdersRequest) (*GetOrdersResponse, error) {
@@ -350,11 +351,7 @@ func (g *getTransactionsSinceIdResponse) unmarshal() (*GetTransactionsSinceIdRes
 	transactions := make([]Transaction, 0)
 
 	for _, raw := range g.Transactions {
-		transaction, err := raw.ToTransaction()
-		if err != nil {
-			logrus.Error("Could not unmarshal transaction: ", raw)
-			return nil, err
-		}
+		transaction := raw.ToTransaction()
 		transactions = append(transactions, transaction)
 	}
 

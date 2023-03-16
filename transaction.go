@@ -1,7 +1,5 @@
 package gOanda
 
-import "errors"
-
 type RawTransaction struct {
 	Id                            TransactionID                `json:"id"`
 	Time                          DateTime                     `json:"time"`
@@ -59,37 +57,37 @@ type RawTransaction struct {
 	Comment                       string                       `json:"comment"`
 }
 
-func (t *RawTransaction) ToTransaction() (Transaction, error) {
+func (t *RawTransaction) ToTransaction() Transaction {
 	switch t.Type {
 	case TRANSACTION_TYPE_CREATE_ACCOUNT:
 		//todo
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &CreateTransaction{
 			Type: t.Type,
-		}, nil
+		}
 	case TRANSACTION_TYPE_CLOSE_ACCOUNT:
 		//todo
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &CloseTransaction{
 			Type: t.Type,
-		}, nil
+		}
 	case TRANSACTION_TYPE_REOPEN_ACCOUNT:
 		//todo
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &ReopenTransaction{
 			Type: t.Type,
-		}, nil
+		}
 	case TRANSACTION_TYPE_CLIENT_CONFIGURE:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &ClientConfigureTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_CLIENT_CONFIGURE_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &ClientConfigureRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_TRANSFER_FUNDS:
 		return &TransferFundsTransaction{
@@ -104,12 +102,12 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			FundingReason:  t.FundingReason,
 			Comment:        t.Comment,
 			AccountBalance: t.AccountBalance,
-		}, nil
+		}
 	case TRANSACTION_TYPE_TRANSFER_FUNDS_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &TransferFundsRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_MARKET_ORDER:
 		return &MarketOrderTransaction{
@@ -136,19 +134,19 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			StopLossOnFill:         t.StopLossOnFill,
 			TrailingStopLossOnFill: t.TrailingStopLossOnFill,
 			TradeClientExtensions:  t.TradeClientExtensions,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_MARKET_ORDER_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &MarketOrderRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_FIXED_PRICE_ORDER:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &FixedPriceOrderTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_LIMIT_ORDER:
 		return &LimitOrderTransaction{
@@ -175,36 +173,36 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			tradeClientExtensions:    t.TradeClientExtensions,
 			replacesOrderID:          t.ReplacesOrderID,
 			cancellingTransactionID:  t.CancellingTransactionID,
-		}, nil
+		}
 	case TRANSACTION_TYPE_LIMIT_ORDER_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &LimitOrderRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_STOP_ORDER:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &StopOrderTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_STOP_ORDER_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		//todo
 		return &StopOrderRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER:
-		return nil, errors.New("not implemented yet")
+		return nil
 		//todo
 		return &MarketIfTouchedOrderTransaction{
 			Type: t.Type,
-		}, nil
+		}
 	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &MarketIfTouchedOrderRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_TAKE_PROFIT_ORDER:
 		return &TakeProfitOrderTransaction{
@@ -226,13 +224,13 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			orderFillTransactionID:  t.OrderFillTransactionID,
 			replacesOrderID:         t.ReplacesOrderID,
 			cancellingTransactionID: t.CancellingTransactionID,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_TAKE_PROFIT_ORDER_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &TakeProfitOrderRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_STOP_LOSS_ORDER:
 		return &StopLossOrderTransaction{
@@ -257,37 +255,37 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			orderFillTransactionID:     t.OrderFillTransactionID,
 			replacesOrderID:            t.ReplacesOrderID,
 			cancellingTransactionID:    t.CancellingTransactionID,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_STOP_LOSS_ORDER_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &StopLossOrderRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_GUARANTEED_STOP_LOSS_ORDER:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &GuaranteedStopLossOrderTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_GUARANTEED_STOP_LOSS_ORDER_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &GuaranteedStopLossOrderRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_TRAILING_STOP_LOSS_ORDER:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &TrailingStopLossOrderTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_TRAILING_STOP_LOSS_ORDER_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &TrailingStopLossOrderRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_ORDER_FILL:
 		return &OrderFillTransaction{
@@ -316,7 +314,7 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			TradesClosed:                  t.TradesClosed,
 			TradeReduced:                  t.TradeReduced,
 			HalfSpreadCost:                t.HalfSpreadCost,
-		}, nil
+		}
 	case TRANSACTION_TYPE_ORDER_CANCEL:
 		return &OrderCancelTransaction{
 			Id:                t.Id,
@@ -330,61 +328,61 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			ClientOrderID:     t.ClientOrderID,
 			Reason:            OrderCancelReason(t.Reason),
 			ReplacedByOrderID: t.ReplacesOrderID,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_ORDER_CANCEL_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &OrderCancelRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_ORDER_CLIENT_EXTENSIONS_MODIFY:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &OrderClientExtensionsModifyTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_ORDER_CLIENT_EXTENSIONS_MODIFY_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &OrderClientExtensionsModifyRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_TRADE_CLIENT_EXTENSIONS_MODIFY:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &TradeClientExtensionsModifyTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_TRADE_CLIENT_EXTENSIONS_MODIFY_REJECT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &TradeClientExtensionsModifyRejectTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_MARGIN_CALL_ENTER:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &MarginCallEnterTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_MARGIN_CALL_EXTEND:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &MarginCallExtendTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_MARGIN_CALL_EXIT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &MarginCallExitTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_DELAYED_TRADE_CLOSURE:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &DelayedTradeClosureTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_DAILY_FINANCING:
 		return &DailyFinancingTransaction{
@@ -399,22 +397,21 @@ func (t *RawTransaction) ToTransaction() (Transaction, error) {
 			AccountBalance:       t.AccountBalance,
 			AccountFinancingMode: t.AccountFinancingMode,
 			PositionFinancings:   t.PositionFinancings,
-		}, nil
+		}
 	case TRANSACTION_TYPE_DIVIDEND_ADJUSTMENT:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &DividendAdjustmentTransaction{
 			Type: t.Type,
-		}, nil
+		}
 		//todo
 	case TRANSACTION_TYPE_RESET_RESETTABLE_PL:
-		return nil, errors.New("not implemented yet")
+		return nil
 		return &ResetResettablePLTransaction{
 			Type: t.Type,
-		}, nil
+		}
 	}
 
-	return nil, errors.New("Invalid transaction type: " + string(t.Type))
-
+	return nil
 }
 
 type Transaction interface {

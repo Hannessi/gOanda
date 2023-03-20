@@ -1,5 +1,6 @@
 package gOanda
 
+
 type RawTransaction struct {
 	Id                            TransactionID                `json:"id"`
 	Time                          DateTime                     `json:"time"`
@@ -20,6 +21,7 @@ type RawTransaction struct {
 	PositionFill                  OrderPositionFill            `json:"positionFill"`
 	TriggerCondition              OrderTriggerCondition        `json:"triggerCondition"`
 	Reason                        string                       `json:"reason"`
+	RejectReason                  string                       `json:"rejectReason"`
 	ClientExtensions              ClientExtensions             `json:"clientExtensions"`
 	TakeProfitOnFill              TakeProfitDetails            `json:"takeProfitOnFill"`
 	StopLossOnFill                StopLossDetails              `json:"stopLossOnFill"`
@@ -55,6 +57,7 @@ type RawTransaction struct {
 	Amount                        AccountUnits                 `json:"amount"`
 	FundingReason                 FundingReason                `json:"fundingReason"`
 	Comment                       string                       `json:"comment"`
+	IntendedReplacesOrderID       OrderID                      `json:"intendedReplacesOrderID"`
 }
 
 func (t *RawTransaction) ToTransaction() Transaction {
@@ -135,13 +138,33 @@ func (t *RawTransaction) ToTransaction() Transaction {
 			TrailingStopLossOnFill: t.TrailingStopLossOnFill,
 			TradeClientExtensions:  t.TradeClientExtensions,
 		}
-		//todo
 	case TRANSACTION_TYPE_MARKET_ORDER_REJECT:
-		return nil
 		return &MarketOrderRejectTransaction{
-			Type: t.Type,
+			Id:                     t.Id,
+			Time:                   t.Time,
+			UserID:                 t.UserID,
+			AccountID:              t.AccountID,
+			BatchId:                t.BatchID,
+			RequestID:              t.RequestID,
+			Type:                   t.Type,
+			Instrument:             t.Instrument,
+			Units:                  t.Units,
+			TimeInForce:            t.TimeInForce,
+			PriceBound:             t.PriceBound,
+			PositionFill:           t.PositionFill,
+			TradeClose:             t.TradeClose,
+			LongPositionCloseout:   t.LongPositionCloseout,
+			ShortPositionCloseout:  t.ShortPositionCloseout,
+			MarginCloseout:         t.MarginCloseout,
+			DelayedTradeClose:      t.DelayedTradeClose,
+			Reason:                 MarketOrderReason(t.Reason),
+			ClientExtensions:       t.ClientExtensions,
+			TakeProfitOnFill:       t.TakeProfitOnFill,
+			StopLossOnFill:         t.StopLossOnFill,
+			TrailingStopLossOnFill: t.TrailingStopLossOnFill,
+			TradeClientExtensions:  t.TradeClientExtensions,
+			RejectReason:           TransactionRejectReason(t.RejectReason),
 		}
-		//todo
 	case TRANSACTION_TYPE_FIXED_PRICE_ORDER:
 		return nil
 		return &FixedPriceOrderTransaction{
@@ -181,16 +204,58 @@ func (t *RawTransaction) ToTransaction() Transaction {
 		}
 		//todo
 	case TRANSACTION_TYPE_STOP_ORDER:
-		return nil
 		return &StopOrderTransaction{
-			Type: t.Type,
+			id:                       t.Id,
+			time:                     t.Time,
+			userID:                   t.UserID,
+			accountID:                t.AccountID,
+			batchID:                  t.BatchID,
+			requestID:                t.RequestID,
+			Type:                     t.Type,
+			instrument:               t.Instrument,
+			units:                    t.Units,
+			price:                    t.Price,
+			priceBound:               t.PriceBound,
+			timeInForce:              t.TimeInForce,
+			gtdTime:                  t.GtdTime,
+			positionFill:             t.PositionFill,
+			triggerCondition:         t.TriggerCondition,
+			reason:                   StopOrderReason(t.Reason),
+			clientExtensions:         t.ClientExtensions,
+			takeProfitOnFill:         t.TakeProfitOnFill,
+			stopLossOnFill:           t.StopLossOnFill,
+			trailingStopLossOnFill:   t.TrailingStopLossOnFill,
+			guaranteedStopLossOnFill: t.GuaranteedStopLossOnFill,
+			tradeClientExtensions:    t.TradeClientExtensions,
+			replacesOrderID:          t.ReplacesOrderID,
+			cancellingTransactionID:  t.CancellingTransactionID,
 		}
-		//todo
 	case TRANSACTION_TYPE_STOP_ORDER_REJECT:
-		return nil
-		//todo
 		return &StopOrderRejectTransaction{
-			Type: t.Type,
+			id:                       t.Id,
+			time:                     t.Time,
+			userID:                   t.UserID,
+			accountID:                t.AccountID,
+			batchID:                  t.BatchID,
+			requestID:                t.RequestID,
+			Type:                     t.Type,
+			instrument:               t.Instrument,
+			units:                    t.Units,
+			price:                    t.Price,
+			priceBound:               t.PriceBound,
+			timeInForce:              t.TimeInForce,
+			gtdTime:                  t.GtdTime,
+			positionFill:             t.PositionFill,
+			triggerCondition:         t.TriggerCondition,
+			reason:                   StopOrderReason(t.Reason),
+			clientExtensions:         t.ClientExtensions,
+			takeProfitOnFill:         t.TakeProfitOnFill,
+			stopLossOnFill:           t.StopLossOnFill,
+			trailingStopLossOnFill:   t.TrailingStopLossOnFill,
+			guaranteedStopLossOnFill: t.GuaranteedStopLossOnFill,
+			tradeClientExtensions:    t.TradeClientExtensions,
+			intendedReplacesOrderID:  "",
+			rejectReason:             TransactionRejectReason(t.RejectReason),
 		}
 	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER:
 		return nil
@@ -713,7 +778,7 @@ func (m *MarketOrderTransaction) GetType() TransactionType {
 type MarketOrderRejectTransaction struct {
 	Id                     TransactionID                `json:"id"`
 	Time                   DateTime                     `json:"time"`
-	UserID                 int                          `json:"userID"`
+	UserID                 int64                        `json:"userID"`
 	AccountID              AccountID                    `json:"accountID"`
 	BatchId                TransactionID                `json:"batchID"`
 	RequestID              RequestID                    `json:"requestID"`

@@ -1,6 +1,5 @@
 package gOanda
 
-
 type RawTransaction struct {
 	Id                            TransactionID                `json:"id"`
 	Time                          DateTime                     `json:"time"`
@@ -173,9 +172,9 @@ func (t *RawTransaction) ToTransaction() Transaction {
 		//todo
 	case TRANSACTION_TYPE_LIMIT_ORDER:
 		return &LimitOrderTransaction{
-			id:                       t.Id,
-			time:                     t.Time,
-			userID:                   t.UserID,
+			Id:                       t.Id,
+			Time:                     t.Time,
+			UserID:                   t.UserID,
 			accountID:                t.AccountID,
 			batchID:                  t.BatchID,
 			requestID:                t.RequestID,
@@ -205,57 +204,57 @@ func (t *RawTransaction) ToTransaction() Transaction {
 		//todo
 	case TRANSACTION_TYPE_STOP_ORDER:
 		return &StopOrderTransaction{
-			id:                       t.Id,
-			time:                     t.Time,
-			userID:                   t.UserID,
-			accountID:                t.AccountID,
-			batchID:                  t.BatchID,
-			requestID:                t.RequestID,
+			Id:                       t.Id,
+			Time:                     t.Time,
+			UserID:                   t.UserID,
+			AccountID:                t.AccountID,
+			BatchID:                  t.BatchID,
+			RequestID:                t.RequestID,
 			Type:                     t.Type,
-			instrument:               t.Instrument,
-			units:                    t.Units,
-			price:                    t.Price,
-			priceBound:               t.PriceBound,
-			timeInForce:              t.TimeInForce,
-			gtdTime:                  t.GtdTime,
-			positionFill:             t.PositionFill,
-			triggerCondition:         t.TriggerCondition,
-			reason:                   StopOrderReason(t.Reason),
-			clientExtensions:         t.ClientExtensions,
-			takeProfitOnFill:         t.TakeProfitOnFill,
-			stopLossOnFill:           t.StopLossOnFill,
-			trailingStopLossOnFill:   t.TrailingStopLossOnFill,
-			guaranteedStopLossOnFill: t.GuaranteedStopLossOnFill,
-			tradeClientExtensions:    t.TradeClientExtensions,
-			replacesOrderID:          t.ReplacesOrderID,
-			cancellingTransactionID:  t.CancellingTransactionID,
+			Instrument:               t.Instrument,
+			Units:                    t.Units,
+			Price:                    t.Price,
+			PriceBound:               t.PriceBound,
+			TimeInForce:              t.TimeInForce,
+			GtdTime:                  t.GtdTime,
+			PositionFill:             t.PositionFill,
+			TriggerCondition:         t.TriggerCondition,
+			Reason:                   StopOrderReason(t.Reason),
+			ClientExtensions:         t.ClientExtensions,
+			TakeProfitOnFill:         t.TakeProfitOnFill,
+			StopLossOnFill:           t.StopLossOnFill,
+			TrailingStopLossOnFill:   t.TrailingStopLossOnFill,
+			GuaranteedStopLossOnFill: t.GuaranteedStopLossOnFill,
+			TradeClientExtensions:    t.TradeClientExtensions,
+			ReplacesOrderID:          t.ReplacesOrderID,
+			CancellingTransactionID:  t.CancellingTransactionID,
 		}
 	case TRANSACTION_TYPE_STOP_ORDER_REJECT:
 		return &StopOrderRejectTransaction{
-			id:                       t.Id,
-			time:                     t.Time,
-			userID:                   t.UserID,
-			accountID:                t.AccountID,
-			batchID:                  t.BatchID,
-			requestID:                t.RequestID,
+			Id:                       t.Id,
+			Time:                     t.Time,
+			UserID:                   t.UserID,
+			AccountID:                t.AccountID,
+			BatchID:                  t.BatchID,
+			RequestID:                t.RequestID,
 			Type:                     t.Type,
-			instrument:               t.Instrument,
-			units:                    t.Units,
-			price:                    t.Price,
-			priceBound:               t.PriceBound,
-			timeInForce:              t.TimeInForce,
-			gtdTime:                  t.GtdTime,
-			positionFill:             t.PositionFill,
-			triggerCondition:         t.TriggerCondition,
-			reason:                   StopOrderReason(t.Reason),
-			clientExtensions:         t.ClientExtensions,
-			takeProfitOnFill:         t.TakeProfitOnFill,
-			stopLossOnFill:           t.StopLossOnFill,
-			trailingStopLossOnFill:   t.TrailingStopLossOnFill,
-			guaranteedStopLossOnFill: t.GuaranteedStopLossOnFill,
-			tradeClientExtensions:    t.TradeClientExtensions,
-			intendedReplacesOrderID:  "",
-			rejectReason:             TransactionRejectReason(t.RejectReason),
+			Instrument:               t.Instrument,
+			Units:                    t.Units,
+			Price:                    t.Price,
+			PriceBound:               t.PriceBound,
+			TimeInForce:              t.TimeInForce,
+			GtdTime:                  t.GtdTime,
+			PositionFill:             t.PositionFill,
+			TriggerCondition:         t.TriggerCondition,
+			Reason:                   StopOrderReason(t.Reason),
+			ClientExtensions:         t.ClientExtensions,
+			TakeProfitOnFill:         t.TakeProfitOnFill,
+			StopLossOnFill:           t.StopLossOnFill,
+			TrailingStopLossOnFill:   t.TrailingStopLossOnFill,
+			GuaranteedStopLossOnFill: t.GuaranteedStopLossOnFill,
+			TradeClientExtensions:    t.TradeClientExtensions,
+			IntendedReplacesOrderID:  "",
+			RejectReason:             TransactionRejectReason(t.RejectReason),
 		}
 	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER:
 		return nil
@@ -271,14 +270,14 @@ func (t *RawTransaction) ToTransaction() Transaction {
 		//todo
 	case TRANSACTION_TYPE_TAKE_PROFIT_ORDER:
 		return &TakeProfitOrderTransaction{
-			id:                      t.Id,
-			time:                    t.Time,
-			userID:                  t.UserID,
-			accountID:               t.AccountID,
-			batchID:                 t.BatchID,
-			requestID:               t.RequestID,
+			Id:                      t.Id,
+			Time:                    t.Time,
+			UserID:                  t.UserID,
+			AccountID:               t.AccountID,
+			BatchID:                 t.BatchID,
+			RequestID:               t.RequestID,
 			Type:                    t.Type,
-			tradeID:                 t.TradeID,
+			TradeID:                 t.TradeID,
 			clientTradeID:           t.ClientTradeID,
 			price:                   t.Price,
 			timeInForce:             t.TimeInForce,
@@ -299,15 +298,15 @@ func (t *RawTransaction) ToTransaction() Transaction {
 		//todo
 	case TRANSACTION_TYPE_STOP_LOSS_ORDER:
 		return &StopLossOrderTransaction{
-			id:                         t.Id,
-			time:                       t.Time,
-			userID:                     t.UserID,
+			Id:                         t.Id,
+			Time:                       t.Time,
+			UserID:                     t.UserID,
 			accountID:                  t.AccountID,
 			batchID:                    t.BatchID,
 			requestID:                  t.RequestID,
 			Type:                       t.Type,
-			tradeID:                    t.TradeID,
-			clientTradeID:              t.ClientTradeID,
+			TradeID:                    t.TradeID,
+			ClientTradeID:              t.ClientTradeID,
 			price:                      t.Price,
 			distance:                   t.Distance,
 			timeInForce:                t.TimeInForce,
@@ -485,13 +484,13 @@ type Transaction interface {
 
 type CreateTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -529,13 +528,13 @@ func (c *CreateTransaction) GetType() TransactionType {
 
 type CloseTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -557,13 +556,13 @@ func (c *CloseTransaction) GetType() TransactionType {
 
 type ReopenTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -586,13 +585,13 @@ func (r *ReopenTransaction) GetType() TransactionType {
 
 type ClientConfigureTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -621,13 +620,13 @@ func (c *ClientConfigureTransaction) GetType() TransactionType {
 
 type ClientConfigureRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -703,13 +702,13 @@ func (t *TransferFundsTransaction) GetType() TransactionType {
 
 type TransferFundsRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -808,13 +807,13 @@ func (m *MarketOrderRejectTransaction) GetType() TransactionType {
 
 type FixedPriceOrderTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -886,13 +885,13 @@ func (f *FixedPriceOrderTransaction) GetType() TransactionType {
 
 type LimitOrderTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -996,13 +995,13 @@ func (l *LimitOrderTransaction) GetType() TransactionType {
 
 type LimitOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -1105,56 +1104,56 @@ func (l *LimitOrderRejectTransaction) GetType() TransactionType {
 
 type StopOrderTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
-	accountID AccountID
+	AccountID AccountID
 
 	// The ID of the “batch” that the Transaction belongs to. Transactions in
 	// the same batch are applied to the Account simultaneously.
-	batchID TransactionID
+	BatchID TransactionID
 
 	// The Request ID of the request which generated the transaction.
-	requestID RequestID
+	RequestID RequestID
 
 	// The Type of the Transaction. Always set to “STOP_ORDER” in a
 	// StopOrderTransaction.
 	Type TransactionType
 
 	// The Stop Order’s Instrument.
-	instrument InstrumentName
+	Instrument InstrumentName
 
 	// The quantity requested to be filled by the Stop Order. A positive number
 	// of units results in a long Order, and a negative number of units results
 	// in a short Order.
-	units DecimalNumber
+	Units DecimalNumber
 
 	// The price threshold specified for the Stop Order. The Stop Order will
 	// only be filled by a market price that is equal to or worse than this
 	// price.
-	price PriceValue
+	Price PriceValue
 
 	// The worst market price that may be used to fill this Stop Order. If the
 	// market gaps and crosses through both the price and the priceBound, the
 	// Stop Order will be cancelled instead of being filled.
-	priceBound PriceValue
+	PriceBound PriceValue
 
 	// The time-in-force requested for the Stop Order.
-	timeInForce TimeInForce
+	TimeInForce TimeInForce
 
 	// The date/time when the Stop Order will be cancelled if its timeInForce is
 	// “GTD”.
-	gtdTime DateTime
+	GtdTime DateTime
 
 	// Specification of how Positions in the Account are modified when the Order
 	// is filled.
-	positionFill OrderPositionFill
+	PositionFill OrderPositionFill
 
 	// Specification of which price component should be used when determining if
 	// an Order should be triggered and filled. This allows Orders to be
@@ -1173,45 +1172,45 @@ type StopOrderTransaction struct {
 	// “natural” trigger side “DEFAULT” results in. So for a Guaranteed Stop
 	// Loss Order for a long trade valid values are “DEFAULT” and “BID”, and for
 	// short trades “DEFAULT” and “ASK” are valid.
-	triggerCondition OrderTriggerCondition
+	TriggerCondition OrderTriggerCondition
 
 	// The reason that the Stop Order was initiated
-	reason StopOrderReason
+	Reason StopOrderReason
 
 	// Client Extensions to add to the Order (only provided if the Order is
 	// being created with client extensions).
-	clientExtensions ClientExtensions
+	ClientExtensions ClientExtensions
 
 	// The specification of the Take Profit Order that should be created for a
 	// Trade opened when the Order is filled (if such a Trade is created).
-	takeProfitOnFill TakeProfitDetails
+	TakeProfitOnFill TakeProfitDetails
 
 	// The specification of the Stop Loss Order that should be created for a
 	// Trade opened when the Order is filled (if such a Trade is created).
-	stopLossOnFill StopLossDetails
+	StopLossOnFill StopLossDetails
 
 	// The specification of the Trailing Stop Loss Order that should be created
 	// for a Trade that is opened when the Order is filled (if such a Trade is
 	// created).
-	trailingStopLossOnFill TrailingStopLossDetails
+	TrailingStopLossOnFill TrailingStopLossDetails
 
 	// The specification of the Guaranteed Stop Loss Order that should be
 	// created for a Trade that is opened when the Order is filled (if such a
 	// Trade is created).
-	guaranteedStopLossOnFill GuaranteedStopLossDetails
+	GuaranteedStopLossOnFill GuaranteedStopLossDetails
 
 	// Client Extensions to add to the Trade created when the Order is filled
 	// (if such a Trade is created).  Do not set, modify, delete
 	// tradeClientExtensions if your account is associated with MT4.
-	tradeClientExtensions ClientExtensions
+	TradeClientExtensions ClientExtensions
 
 	// The ID of the Order that this Order replaces (only provided if this Order
 	// replaces an existing Order).
-	replacesOrderID OrderID
+	ReplacesOrderID OrderID
 
 	// The ID of the Transaction that cancels the replaced Order (only provided
 	// if this Order replaces an existing Order).
-	cancellingTransactionID TransactionID
+	CancellingTransactionID TransactionID
 }
 
 func (s *StopOrderTransaction) GetType() TransactionType {
@@ -1220,56 +1219,56 @@ func (s *StopOrderTransaction) GetType() TransactionType {
 
 type StopOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
-	accountID AccountID
+	AccountID AccountID
 
 	// The ID of the “batch” that the Transaction belongs to. Transactions in
 	// the same batch are applied to the Account simultaneously.
-	batchID TransactionID
+	BatchID TransactionID
 
 	// The Request ID of the request which generated the transaction.
-	requestID RequestID
+	RequestID RequestID
 
 	// The Type of the Transaction. Always set to “STOP_ORDER_REJECT” in a
 	// StopOrderRejectTransaction.
 	Type TransactionType
 
 	// The Stop Order’s Instrument.
-	instrument InstrumentName
+	Instrument InstrumentName
 
 	// The quantity requested to be filled by the Stop Order. A positive number
 	// of units results in a long Order, and a negative number of units results
 	// in a short Order.
-	units DecimalNumber
+	Units DecimalNumber
 
 	// The price threshold specified for the Stop Order. The Stop Order will
 	// only be filled by a market price that is equal to or worse than this
 	// price.
-	price PriceValue
+	Price PriceValue
 
 	// The worst market price that may be used to fill this Stop Order. If the
 	// market gaps and crosses through both the price and the priceBound, the
 	// Stop Order will be cancelled instead of being filled.
-	priceBound PriceValue
+	PriceBound PriceValue
 
 	// The time-in-force requested for the Stop Order.
-	timeInForce TimeInForce
+	TimeInForce TimeInForce
 
 	// The date/time when the Stop Order will be cancelled if its timeInForce is
 	// “GTD”.
-	gtdTime DateTime
+	GtdTime DateTime
 
 	// Specification of how Positions in the Account are modified when the Order
 	// is filled.
-	positionFill OrderPositionFill
+	PositionFill OrderPositionFill
 
 	// Specification of which price component should be used when determining if
 	// an Order should be triggered and filled. This allows Orders to be
@@ -1288,44 +1287,44 @@ type StopOrderRejectTransaction struct {
 	// “natural” trigger side “DEFAULT” results in. So for a Guaranteed Stop
 	// Loss Order for a long trade valid values are “DEFAULT” and “BID”, and for
 	// short trades “DEFAULT” and “ASK” are valid.
-	triggerCondition OrderTriggerCondition
+	TriggerCondition OrderTriggerCondition
 
 	// The reason that the Stop Order was initiated
-	reason StopOrderReason
+	Reason StopOrderReason
 
 	// Client Extensions to add to the Order (only provided if the Order is
 	// being created with client extensions).
-	clientExtensions ClientExtensions
+	ClientExtensions ClientExtensions
 
 	// The specification of the Take Profit Order that should be created for a
 	// Trade opened when the Order is filled (if such a Trade is created).
-	takeProfitOnFill TakeProfitDetails
+	TakeProfitOnFill TakeProfitDetails
 
 	// The specification of the Stop Loss Order that should be created for a
 	// Trade opened when the Order is filled (if such a Trade is created).
-	stopLossOnFill StopLossDetails
+	StopLossOnFill StopLossDetails
 
 	// The specification of the Trailing Stop Loss Order that should be created
 	// for a Trade that is opened when the Order is filled (if such a Trade is
 	// created).
-	trailingStopLossOnFill TrailingStopLossDetails
+	TrailingStopLossOnFill TrailingStopLossDetails
 
 	// The specification of the Guaranteed Stop Loss Order that should be
 	// created for a Trade that is opened when the Order is filled (if such a
 	// Trade is created).
-	guaranteedStopLossOnFill GuaranteedStopLossDetails
+	GuaranteedStopLossOnFill GuaranteedStopLossDetails
 
 	// Client Extensions to add to the Trade created when the Order is filled
 	// (if such a Trade is created).  Do not set, modify, delete
 	// tradeClientExtensions if your account is associated with MT4.
-	tradeClientExtensions ClientExtensions
+	TradeClientExtensions ClientExtensions
 
 	// The ID of the Order that this Order was intended to replace (only
 	// provided if this Order was intended to replace an existing Order).
-	intendedReplacesOrderID OrderID
+	IntendedReplacesOrderID OrderID
 
 	// The reason that the Reject Transaction was created
-	rejectReason TransactionRejectReason
+	RejectReason TransactionRejectReason
 }
 
 func (s *StopOrderRejectTransaction) GetType() TransactionType {
@@ -1334,35 +1333,35 @@ func (s *StopOrderRejectTransaction) GetType() TransactionType {
 
 type MarketIfTouchedOrderTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
-	accountID AccountID
+	AccountID AccountID
 
 	// The ID of the “batch” that the Transaction belongs to. Transactions in
 	// the same batch are applied to the Account simultaneously.
-	batchID TransactionID
+	BatchID TransactionID
 
 	// The Request ID of the request which generated the transaction.
-	requestID RequestID
+	RequestID RequestID
 
 	// The Type of the Transaction. Always set to “MARKET_IF_TOUCHED_ORDER” in a
 	// MarketIfTouchedOrderTransaction.
 	Type TransactionType
 
 	// The MarketIfTouched Order’s Instrument.
-	instrument InstrumentName
+	Instrument InstrumentName
 
 	// The quantity requested to be filled by the MarketIfTouched Order. A
 	// positive number of units results in a long Order, and a negative number
 	// of units results in a short Order.
-	units DecimalNumber
+	Units DecimalNumber
 
 	// The price threshold specified for the MarketIfTouched Order. The
 	// MarketIfTouched Order will only be filled by a market price that crosses
@@ -1370,23 +1369,23 @@ type MarketIfTouchedOrderTransaction struct {
 	// Order was created (the initialMarketPrice). Depending on the value of the
 	// Order’s price and initialMarketPrice, the MarketIfTouchedOrder will
 	// behave like a Limit or a Stop Order.
-	price PriceValue
+	Price PriceValue
 
 	// The worst market price that may be used to fill this MarketIfTouched
 	// Order.
-	priceBound PriceValue
+	PriceBound PriceValue
 
 	// The time-in-force requested for the MarketIfTouched Order. Restricted to
 	// “GTC”, “GFD” and “GTD” for MarketIfTouched Orders.
-	timeInForce TimeInForce
+	TimeInForce TimeInForce
 
 	// The date/time when the MarketIfTouched Order will be cancelled if its
 	// timeInForce is “GTD”.
-	gtdTime DateTime
+	GtdTime DateTime
 
 	// Specification of how Positions in the Account are modified when the Order
 	// is filled.
-	positionFill OrderPositionFill
+	PositionFill OrderPositionFill
 
 	// Specification of which price component should be used when determining if
 	// an Order should be triggered and filled. This allows Orders to be
@@ -1405,45 +1404,45 @@ type MarketIfTouchedOrderTransaction struct {
 	// “natural” trigger side “DEFAULT” results in. So for a Guaranteed Stop
 	// Loss Order for a long trade valid values are “DEFAULT” and “BID”, and for
 	// short trades “DEFAULT” and “ASK” are valid.
-	triggerCondition OrderTriggerCondition
+	TriggerCondition OrderTriggerCondition
 
 	// The reason that the Market-if-touched Order was initiated
-	reason MarketIfTouchedOrderReason
+	Reason MarketIfTouchedOrderReason
 
 	// Client Extensions to add to the Order (only provided if the Order is
 	// being created with client extensions).
-	clientExtensions ClientExtensions
+	ClientExtensions ClientExtensions
 
 	// The specification of the Take Profit Order that should be created for a
 	// Trade opened when the Order is filled (if such a Trade is created).
-	takeProfitOnFill TakeProfitDetails
+	TakeProfitOnFill TakeProfitDetails
 
 	// The specification of the Stop Loss Order that should be created for a
 	// Trade opened when the Order is filled (if such a Trade is created).
-	stopLossOnFill StopLossDetails
+	StopLossOnFill StopLossDetails
 
 	// The specification of the Trailing Stop Loss Order that should be created
 	// for a Trade that is opened when the Order is filled (if such a Trade is
 	// created).
-	trailingStopLossOnFill TrailingStopLossDetails
+	TrailingStopLossOnFill TrailingStopLossDetails
 
 	// The specification of the Guaranteed Stop Loss Order that should be
 	// created for a Trade that is opened when the Order is filled (if such a
 	// Trade is created).
-	guaranteedStopLossOnFill GuaranteedStopLossDetails
+	GuaranteedStopLossOnFill GuaranteedStopLossDetails
 
 	// Client Extensions to add to the Trade created when the Order is filled
 	// (if such a Trade is created).  Do not set, modify, delete
 	// tradeClientExtensions if your account is associated with MT4.
-	tradeClientExtensions ClientExtensions
+	TradeClientExtensions ClientExtensions
 
 	// The ID of the Order that this Order replaces (only provided if this Order
 	// replaces an existing Order).
-	replacesOrderID OrderID
+	ReplacesOrderID OrderID
 
 	// The ID of the Transaction that cancels the replaced Order (only provided
 	// if this Order replaces an existing Order).
-	cancellingTransactionID TransactionID
+	CancellingTransactionID TransactionID
 }
 
 func (m *MarketIfTouchedOrderTransaction) GetType() TransactionType {
@@ -1452,23 +1451,23 @@ func (m *MarketIfTouchedOrderTransaction) GetType() TransactionType {
 
 type MarketIfTouchedOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
-	accountID AccountID
+	AccountID AccountID
 
 	// The ID of the “batch” that the Transaction belongs to. Transactions in
 	// the same batch are applied to the Account simultaneously.
-	batchID TransactionID
+	BatchID TransactionID
 
 	// The Request ID of the request which generated the transaction.
-	requestID RequestID
+	RequestID RequestID
 
 	// The Type of the Transaction. Always set to
 	// “MARKET_IF_TOUCHED_ORDER_REJECT” in a
@@ -1476,12 +1475,12 @@ type MarketIfTouchedOrderRejectTransaction struct {
 	Type TransactionType
 
 	// The MarketIfTouched Order’s Instrument.
-	instrument InstrumentName
+	Instrument InstrumentName
 
 	// The quantity requested to be filled by the MarketIfTouched Order. A
 	// positive number of units results in a long Order, and a negative number
 	// of units results in a short Order.
-	units DecimalNumber
+	Units DecimalNumber
 
 	// The price threshold specified for the MarketIfTouched Order. The
 	// MarketIfTouched Order will only be filled by a market price that crosses
@@ -1489,23 +1488,23 @@ type MarketIfTouchedOrderRejectTransaction struct {
 	// Order was created (the initialMarketPrice). Depending on the value of the
 	// Order’s price and initialMarketPrice, the MarketIfTouchedOrder will
 	// behave like a Limit or a Stop Order.
-	price PriceValue
+	Price PriceValue
 
 	// The worst market price that may be used to fill this MarketIfTouched
 	// Order.
-	priceBound PriceValue
+	PriceBound PriceValue
 
 	// The time-in-force requested for the MarketIfTouched Order. Restricted to
 	// “GTC”, “GFD” and “GTD” for MarketIfTouched Orders.
-	timeInForce TimeInForce
+	TimeInForce TimeInForce
 
 	// The date/time when the MarketIfTouched Order will be cancelled if its
 	// timeInForce is “GTD”.
-	gtdTime DateTime
+	GtdTime DateTime
 
 	// Specification of how Positions in the Account are modified when the Order
 	// is filled.
-	positionFill OrderPositionFill
+	PositionFill OrderPositionFill
 
 	// Specification of which price component should be used when determining if
 	// an Order should be triggered and filled. This allows Orders to be
@@ -1524,44 +1523,44 @@ type MarketIfTouchedOrderRejectTransaction struct {
 	// “natural” trigger side “DEFAULT” results in. So for a Guaranteed Stop
 	// Loss Order for a long trade valid values are “DEFAULT” and “BID”, and for
 	// short trades “DEFAULT” and “ASK” are valid.
-	triggerCondition OrderTriggerCondition
+	TriggerCondition OrderTriggerCondition
 
 	// The reason that the Market-if-touched Order was initiated
-	reason MarketIfTouchedOrderReason
+	Reason MarketIfTouchedOrderReason
 
 	// Client Extensions to add to the Order (only provided if the Order is
 	// being created with client extensions).
-	clientExtensions ClientExtensions
+	ClientExtensions ClientExtensions
 
 	// The specification of the Take Profit Order that should be created for a
 	// Trade opened when the Order is filled (if such a Trade is created).
-	takeProfitOnFill TakeProfitDetails
+	TakeProfitOnFill TakeProfitDetails
 
 	// The specification of the Stop Loss Order that should be created for a
 	// Trade opened when the Order is filled (if such a Trade is created).
-	stopLossOnFill StopLossDetails
+	StopLossOnFill StopLossDetails
 
 	// The specification of the Trailing Stop Loss Order that should be created
 	// for a Trade that is opened when the Order is filled (if such a Trade is
 	// created).
-	trailingStopLossOnFill TrailingStopLossDetails
+	TrailingStopLossOnFill TrailingStopLossDetails
 
 	// The specification of the Guaranteed Stop Loss Order that should be
 	// created for a Trade that is opened when the Order is filled (if such a
 	// Trade is created).
-	guaranteedStopLossOnFill GuaranteedStopLossDetails
+	GuaranteedStopLossOnFill GuaranteedStopLossDetails
 
 	// Client Extensions to add to the Trade created when the Order is filled
 	// (if such a Trade is created).  Do not set, modify, delete
 	// tradeClientExtensions if your account is associated with MT4.
-	tradeClientExtensions ClientExtensions
+	TradeClientExtensions ClientExtensions
 
 	// The ID of the Order that this Order was intended to replace (only
 	// provided if this Order was intended to replace an existing Order).
-	intendedReplacesOrderID OrderID
+	IntendedReplacesOrderID OrderID
 
 	// The reason that the Reject Transaction was created
-	rejectReason TransactionRejectReason
+	RejectReason TransactionRejectReason
 }
 
 func (m *MarketIfTouchedOrderRejectTransaction) GetType() TransactionType {
@@ -1570,30 +1569,30 @@ func (m *MarketIfTouchedOrderRejectTransaction) GetType() TransactionType {
 
 type TakeProfitOrderTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
-	accountID AccountID
+	AccountID AccountID
 
 	// The ID of the “batch” that the Transaction belongs to. Transactions in
 	// the same batch are applied to the Account simultaneously.
-	batchID TransactionID
+	BatchID TransactionID
 
 	// The Request ID of the request which generated the transaction.
-	requestID RequestID
+	RequestID RequestID
 
 	// The Type of the Transaction. Always set to “TAKE_PROFIT_ORDER” in a
 	// TakeProfitOrderTransaction.
 	Type TransactionType
 
 	// The ID of the Trade to close when the price threshold is breached.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The client ID of the Trade to be closed when the price threshold is
 	// breached.
@@ -1658,13 +1657,13 @@ func (t *TakeProfitOrderTransaction) GetType() TransactionType {
 
 type TakeProfitOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -1681,7 +1680,7 @@ type TakeProfitOrderRejectTransaction struct {
 	Type TransactionType
 
 	// The ID of the Trade to close when the price threshold is breached.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The client ID of the Trade to be closed when the price threshold is
 	// breached.
@@ -1745,13 +1744,13 @@ func (t *TakeProfitOrderRejectTransaction) GetType() TransactionType {
 
 type StopLossOrderTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -1768,11 +1767,11 @@ type StopLossOrderTransaction struct {
 	Type TransactionType
 
 	// The ID of the Trade to close when the price threshold is breached.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The client ID of the Trade to be closed when the price threshold is
 	// breached.
-	clientTradeID ClientID
+	ClientTradeID ClientID
 
 	// The price threshold specified for the Stop Loss Order. The associated
 	// Trade will be closed by a market price that is equal to or worse than
@@ -1852,13 +1851,13 @@ func (s *StopLossOrderTransaction) GetType() TransactionType {
 
 type StopLossOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -1875,11 +1874,11 @@ type StopLossOrderRejectTransaction struct {
 	Type TransactionType
 
 	// The ID of the Trade to close when the price threshold is breached.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The client ID of the Trade to be closed when the price threshold is
 	// breached.
-	clientTradeID ClientID
+	ClientTradeID ClientID
 
 	// The price threshold specified for the Stop Loss Order. The associated
 	// Trade will be closed by a market price that is equal to or worse than
@@ -1951,13 +1950,13 @@ func (s *StopLossOrderRejectTransaction) GetType() TransactionType {
 
 type GuaranteedStopLossOrderTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -1974,11 +1973,11 @@ type GuaranteedStopLossOrderTransaction struct {
 	Type TransactionType
 
 	// The ID of the Trade to close when the price threshold is breached.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The client ID of the Trade to be closed when the price threshold is
 	// breached.
-	clientTradeID ClientID
+	ClientTradeID ClientID
 
 	// The price threshold specified for the Guaranteed Stop Loss Order. The
 	// associated Trade will be closed at this price.
@@ -2050,13 +2049,13 @@ type GuaranteedStopLossOrderReason string
 
 type GuaranteedStopLossOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2074,11 +2073,11 @@ type GuaranteedStopLossOrderRejectTransaction struct {
 	Type TransactionType
 
 	// The ID of the Trade to close when the price threshold is breached.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The client ID of the Trade to be closed when the price threshold is
 	// breached.
-	clientTradeID ClientID
+	ClientTradeID ClientID
 
 	// The price threshold specified for the Guaranteed Stop Loss Order. The
 	// associated Trade will be closed at this price.
@@ -2142,13 +2141,13 @@ func (g *GuaranteedStopLossOrderRejectTransaction) GetType() TransactionType {
 
 type TrailingStopLossOrderTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2165,11 +2164,11 @@ type TrailingStopLossOrderTransaction struct {
 	Type TransactionType
 
 	// The ID of the Trade to close when the price threshold is breached.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The client ID of the Trade to be closed when the price threshold is
 	// breached.
-	clientTradeID ClientID
+	ClientTradeID ClientID
 
 	// The price distance (in price units) specified for the TrailingStopLoss
 	// Order.
@@ -2229,13 +2228,13 @@ func (t *TrailingStopLossOrderTransaction) GetType() TransactionType {
 
 type TrailingStopLossOrderRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2253,11 +2252,11 @@ type TrailingStopLossOrderRejectTransaction struct {
 	Type TransactionType
 
 	// The ID of the Trade to close when the price threshold is breached.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The client ID of the Trade to be closed when the price threshold is
 	// breached.
-	clientTradeID ClientID
+	ClientTradeID ClientID
 
 	// The price distance (in price units) specified for the TrailingStopLoss
 	// Order.
@@ -2366,13 +2365,13 @@ func (o *OrderCancelTransaction) GetType() TransactionType {
 
 type OrderCancelRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2405,13 +2404,13 @@ func (o *OrderCancelRejectTransaction) GetType() TransactionType {
 
 type OrderClientExtensionsModifyTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2448,13 +2447,13 @@ func (o *OrderClientExtensionsModifyTransaction) GetType() TransactionType {
 
 type OrderClientExtensionsModifyRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2494,13 +2493,13 @@ func (o *OrderClientExtensionsModifyRejectTransaction) GetType() TransactionType
 
 type TradeClientExtensionsModifyTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2518,11 +2517,11 @@ type TradeClientExtensionsModifyTransaction struct {
 	Type TransactionType
 
 	// The ID of the Trade who’s client extensions are to be modified.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The original Client ID of the Trade who’s client extensions are to be
 	// modified.
-	clientTradeID ClientID
+	ClientTradeID ClientID
 
 	// The new Client Extensions for the Trade.
 	tradeClientExtensionsModify ClientExtensions
@@ -2534,13 +2533,13 @@ func (t *TradeClientExtensionsModifyTransaction) GetType() TransactionType {
 
 type TradeClientExtensionsModifyRejectTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2558,11 +2557,11 @@ type TradeClientExtensionsModifyRejectTransaction struct {
 	Type TransactionType
 
 	// The ID of the Trade who’s client extensions are to be modified.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The original Client ID of the Trade who’s client extensions are to be
 	// modified.
-	clientTradeID ClientID
+	ClientTradeID ClientID
 
 	// The new Client Extensions for the Trade.
 	tradeClientExtensionsModify ClientExtensions
@@ -2577,13 +2576,13 @@ func (t *TradeClientExtensionsModifyRejectTransaction) GetType() TransactionType
 
 type MarginCallEnterTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2606,13 +2605,13 @@ func (m *MarginCallEnterTransaction) GetType() TransactionType {
 
 type MarginCallExtendTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2640,13 +2639,13 @@ func (m *MarginCallExtendTransaction) GetType() TransactionType {
 
 type MarginCallExitTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2669,13 +2668,13 @@ func (m *MarginCallExitTransaction) GetType() TransactionType {
 
 type DelayedTradeClosureTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2696,7 +2695,7 @@ type DelayedTradeClosureTransaction struct {
 
 	// List of Trade ID’s identifying the open trades that will be closed when
 	// their respective instruments become tradeable
-	tradeIDs TradeID
+	TradeIDs TradeID
 }
 
 func (d *DelayedTradeClosureTransaction) GetType() TransactionType {
@@ -2750,13 +2749,13 @@ func (d *DailyFinancingTransaction) GetType() TransactionType {
 
 type DividendAdjustmentTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID
+	Id TransactionID
 
 	// The date/time when the Transaction was created.
-	time DateTime
+	Time DateTime
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -2808,13 +2807,13 @@ func (d *DividendAdjustmentTransaction) GetType() TransactionType {
 
 type ResetResettablePLTransaction struct {
 	// The Transaction’s Identifier.
-	id TransactionID `json:"id"`
+	Id TransactionID `json:"id"`
 
 	// The date/time when the Transaction was created.
-	time DateTime `json:"time"`
+	Time DateTime `json:"time"`
 
 	// The ID of the user that initiated the creation of the Transaction.
-	userID int64
+	UserID int64
 
 	// The ID of the Account the Transaction was created for.
 	accountID AccountID
@@ -3106,10 +3105,10 @@ type MarketOrderMarginCloseoutReason string // todo const
 
 type MarketOrderDelayedTradeClose struct {
 	// The ID of the Trade being closed
-	tradeID TradeID
+	TradeID TradeID
 
 	// The Client ID of the Trade being closed
-	clientTradeID TradeID
+	ClientTradeID TradeID
 
 	// The Transaction ID of the DelayedTradeClosure transaction to which this
 	// Delayed Trade Close belongs to
@@ -3139,7 +3138,7 @@ type LiquidityRegenerationScheduleStep struct {
 
 type OpenTradeFinancing struct {
 	// The ID of the Trade that financing is being paid/collected for.
-	tradeID TradeID
+	TradeID TradeID
 
 	// The amount of financing paid/collected for the Trade.
 	financing AccountUnits
@@ -3199,5 +3198,5 @@ type TransactionHeartbeat struct {
 	lastTransactionID TransactionID
 
 	// The date/time when the TransactionHeartbeat was created.
-	time DateTime
+	Time DateTime
 }

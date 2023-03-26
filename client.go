@@ -134,8 +134,8 @@ func (c *Client) GetOrder(request GetOrderRequest) (*GetOrderResponse, error) {
 	return response, nil
 }
 
-func (c *Client) PutReplaceOrder() (*PutReplaceOrderResponse, error) {
-	response, err := c.requester.PutReplaceOrder(PutReplaceOrderRequest{})
+func (c *Client) PutReplaceOrder(request PutReplaceOrderRequest) (*PutReplaceOrderResponse, error) {
+	response, err := c.requester.PutReplaceOrder(request)
 	if err != nil {
 		return nil, err
 	}

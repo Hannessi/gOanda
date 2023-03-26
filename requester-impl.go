@@ -240,7 +240,24 @@ func (r *HttpRequester) GetOrder(request GetOrderRequest) (*GetOrderResponse, er
 }
 
 func (r *HttpRequester) PutReplaceOrder(request PutReplaceOrderRequest) (*PutReplaceOrderResponse, error) {
-	return nil, errors.New("not implemented yet")
+	rawResponse := &PutReplaceRawOrderResponse{}
+	requestUrl := r.UrlManager.PostOrder()
+
+	order := struct {
+		Order OrderRequest `json:"order"`
+	}{
+		Order: request.Order.ToOrderRequest(),
+	}
+
+	if err := HttpRequestWrapper(POST, requestUrl, order, &rawResponse, r.Token); err != nil {
+		return nil, err
+	}
+	response := rawResponse.ToPutReplaceOrderResponse()
+	if response.ErrorCode != "" || response.ErrorMessage != "" {
+		return &response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
+
+	return &response, nil
 }
 
 func (r *HttpRequester) PutCancelOrder(request PutCancelOrderRequest) (*PutCancelOrderResponse, error) {

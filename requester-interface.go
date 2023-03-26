@@ -256,9 +256,48 @@ type GetOrderResponse struct {
 	ErrorMessage      string        `json:"errorMessage"`
 }
 
-type PutReplaceOrderRequest struct{}
+type PutReplaceOrderRequest struct {
+	Order   AnOrderRequest
+	OrderID OrderID
+}
 
-type PutReplaceOrderResponse struct{}
+type PutReplaceRawOrderResponse struct {
+	OrderCreateTransaction        RawTransaction         `json:"orderCreateTransaction"`
+	OrderFillTransaction          OrderFillTransaction   `json:"orderFillTransaction"`
+	OrderCancelTransaction        OrderCancelTransaction `json:"orderCancelTransaction"`
+	OrderReissueTransaction       RawTransaction         `json:"orderReissueTransaction"`
+	OrderReissueRejectTransaction RawTransaction         `json:"orderReissueRejectTransaction"`
+	RelatedTransactionIDs         []TransactionID        `json:"relatedTransactionIDs"`
+	LastTransactionID             TransactionID          `json:"lastTransactionID"`
+	ErrorCode                     string                 `json:"errorCode"`
+	ErrorMessage                  string                 `json:"errorMessage"`
+}
+
+type PutReplaceOrderResponse struct {
+	OrderCreateTransaction        Transaction            `json:"orderCreateTransaction"`
+	OrderFillTransaction          OrderFillTransaction   `json:"orderFillTransaction"`
+	OrderCancelTransaction        OrderCancelTransaction `json:"orderCancelTransaction"`
+	OrderReissueTransaction       Transaction            `json:"orderReissueTransaction"`
+	OrderReissueRejectTransaction Transaction            `json:"orderReissueRejectTransaction"`
+	RelatedTransactionIDs         []TransactionID        `json:"relatedTransactionIDs"`
+	LastTransactionID             TransactionID          `json:"lastTransactionID"`
+	ErrorCode                     string                 `json:"errorCode"`
+	ErrorMessage                  string                 `json:"errorMessage"`
+}
+
+func (p *PutReplaceRawOrderResponse) ToPutReplaceOrderResponse() PutReplaceOrderResponse {
+	return PutReplaceOrderResponse{
+		OrderCreateTransaction:        p.OrderCreateTransaction.ToTransaction(),
+		OrderFillTransaction:          p.OrderFillTransaction,
+		OrderCancelTransaction:        p.OrderCancelTransaction,
+		OrderReissueTransaction:       p.OrderReissueTransaction.ToTransaction(),
+		OrderReissueRejectTransaction: p.OrderReissueRejectTransaction.ToTransaction(),
+		RelatedTransactionIDs:         p.RelatedTransactionIDs,
+		LastTransactionID:             p.LastTransactionID,
+		ErrorCode:                     p.ErrorCode,
+		ErrorMessage:                  p.ErrorMessage,
+	}
+}
 
 type PutCancelOrderRequest struct{}
 

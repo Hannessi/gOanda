@@ -219,7 +219,24 @@ func (r *HttpRequester) GetPendingOrders(request GetPendingOrdersRequest) (*GetP
 }
 
 func (r *HttpRequester) GetOrder(request GetOrderRequest) (*GetOrderResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &GetRawOrderResponse{}
+	requestUrl := r.UrlManager.GetOrder(OrderSpecifier(request.Id.String()))
+
+	if err := HttpRequestWrapper(GET, requestUrl, nil, response, r.Token); err != nil {
+		return nil, err
+	}
+
+	if response.ErrorCode != "" || response.ErrorMessage != "" {
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
+
+	unmarshalledResponse, err := response.Unmarshal()
+	if err != nil {
+		logrus.Error("Could not unmarshal order:", err.Error())
+		return nil, err
+	}
+
+	return unmarshalledResponse, nil
 }
 
 func (r *HttpRequester) PutReplaceOrder(request PutReplaceOrderRequest) (*PutReplaceOrderResponse, error) {
@@ -320,7 +337,19 @@ func (r *HttpRequester) GetTransactions(request GetTransactionsRequest) (*GetTra
 }
 
 func (r *HttpRequester) GetTransaction(request GetTransactionRequest) (*GetTransactionResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &GetTransactionResponse{}
+	requestUrl := r.UrlManager.GetTransaction(GetTransactionParameters{
+		TransactionID: request.TransactionID,
+	})
+
+	if err := HttpRequestWrapper(GET, requestUrl, nil, &response, r.Token); err != nil {
+		return nil, err
+	}
+	if response.ErrorCode != "" || response.ErrorMessage != "" {
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
+
+	return response, nil
 }
 
 func (r *HttpRequester) GetRangeOfTransactions(request GetRangeOfTransactionsRequest) (*GetRangeOfTransactionsResponse, error) {

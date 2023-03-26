@@ -118,7 +118,7 @@ func (m *UrlManager) GetPendingOrders() string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/pendingOrders"
 }
 func (m *UrlManager) GetOrder(orderSpecifier OrderSpecifier) string {
-	return m.BaseUrl + "/accounts/" + m.AccountId + "/order/" + orderSpecifier.String()
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders/" + orderSpecifier.String()
 }
 func (m *UrlManager) PutReplaceOrder() string {
 	return "" // todo
@@ -209,8 +209,13 @@ func (m *UrlManager) PutClosePosition() string {
 func (m *UrlManager) GetTransactions() string {
 	return "" // todo
 }
-func (m *UrlManager) GetTransaction() string {
-	return "" // todo
+
+type GetTransactionParameters struct {
+	TransactionID TransactionID
+}
+
+func (m *UrlManager) GetTransaction(request GetTransactionParameters) string {
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/transactions/" + request.TransactionID.String()
 }
 
 type GetRangeOfTransactionsParameters struct {

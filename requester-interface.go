@@ -222,9 +222,39 @@ type GetPendingOrdersResponse struct {
 	ErrorMessage      string        `json:"errorMessage"`
 }
 
-type GetOrderRequest struct{}
+type GetOrderRequest struct {
+	Id OrderID
+}
 
-type GetOrderResponse struct{}
+type GetRawOrderResponse struct {
+	Order             RawOrder      `json:"order"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
+
+func (g *GetRawOrderResponse) Unmarshal() (*GetOrderResponse, error) {
+
+	unmarshalledOrder, err := g.Order.ToOrder()
+	if err != nil {
+		logrus.Error("Could not unmarshal order")
+		return nil, err
+	}
+
+	return &GetOrderResponse{
+		Order:             unmarshalledOrder,
+		LastTransactionID: g.LastTransactionID,
+		ErrorCode:         g.ErrorCode,
+		ErrorMessage:      g.ErrorMessage,
+	}, nil
+}
+
+type GetOrderResponse struct {
+	Order             Order         `json:"order"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
 
 type PutReplaceOrderRequest struct{}
 
@@ -316,9 +346,16 @@ type GetTransactionsRequest struct{}
 
 type GetTransactionsResponse struct{}
 
-type GetTransactionRequest struct{}
+type GetTransactionRequest struct {
+	TransactionID TransactionID `json:"transactionID"`
+}
 
-type GetTransactionResponse struct{}
+type GetTransactionResponse struct {
+	Transaction       Transaction   `json:"transaction"`
+	LastTransactionID TransactionID `json:"lastTransactionID"`
+	ErrorCode         string        `json:"errorCode"`
+	ErrorMessage      string        `json:"errorMessage"`
+}
 
 type GetRangeOfTransactionsRequest struct {
 	To   TransactionID

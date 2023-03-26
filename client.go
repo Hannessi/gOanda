@@ -126,8 +126,8 @@ func (c *Client) GetPendingOrders() (*GetPendingOrdersResponse, error) {
 	return response, nil
 }
 
-func (c *Client) GetOrder() (*GetOrderResponse, error) {
-	response, err := c.requester.GetOrder(GetOrderRequest{})
+func (c *Client) GetOrder(request GetOrderRequest) (*GetOrderResponse, error) {
+	response, err := c.requester.GetOrder(request)
 	if err != nil {
 		return nil, err
 	}
@@ -257,8 +257,8 @@ func (c *Client) GetTransactions() (*GetTransactionsResponse, error) {
 	return &GetTransactionsResponse{}, nil
 }
 
-func (c *Client) GetTransaction() (*GetTransactionResponse, error) {
-	_, err := c.requester.GetTransaction(GetTransactionRequest{})
+func (c *Client) GetTransaction(request GetTransactionRequest) (*GetTransactionResponse, error) {
+	_, err := c.requester.GetTransaction(request)
 	if err != nil {
 		return nil, err
 	}
@@ -274,9 +274,7 @@ func (c *Client) GetRangeOfTransactions() (*GetRangeOfTransactionsResponse, erro
 }
 
 func (c *Client) GetTransactionsSinceId(request GetTransactionsSinceIdRequest) (*GetTransactionsSinceIdResponse, error) {
-	response, err := c.requester.GetTransactionsSinceId(GetTransactionsSinceIdRequest{
-		TransactionId: request.TransactionId,
-	})
+	response, err := c.requester.GetTransactionsSinceId(request)
 	if err != nil {
 		return nil, err
 	}

@@ -18,6 +18,7 @@ func (m method) String() string {
 const GET method = "GET"
 const POST method = "POST"
 const PATCH method = "PATCH"
+const PUT method = "PUT"
 
 func HttpRequestWrapper(method method, url string, requestBody interface{}, response interface{}, token string) error {
 	var body io.Reader

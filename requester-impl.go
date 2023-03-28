@@ -241,7 +241,7 @@ func (r *HttpRequester) GetOrder(request GetOrderRequest) (*GetOrderResponse, er
 
 func (r *HttpRequester) PutReplaceOrder(request PutReplaceOrderRequest) (*PutReplaceOrderResponse, error) {
 	rawResponse := &PutReplaceRawOrderResponse{}
-	requestUrl := r.UrlManager.PostOrder()
+	requestUrl := r.UrlManager.PutReplaceOrder(OrderSpecifier(request.OrderID))
 
 	order := struct {
 		Order OrderRequest `json:"order"`
@@ -249,7 +249,7 @@ func (r *HttpRequester) PutReplaceOrder(request PutReplaceOrderRequest) (*PutRep
 		Order: request.Order.ToOrderRequest(),
 	}
 
-	if err := HttpRequestWrapper(POST, requestUrl, order, &rawResponse, r.Token); err != nil {
+	if err := HttpRequestWrapper(PUT, requestUrl, order, &rawResponse, r.Token); err != nil {
 		return nil, err
 	}
 	response := rawResponse.ToPutReplaceOrderResponse()

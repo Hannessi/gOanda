@@ -120,8 +120,8 @@ func (m *UrlManager) GetPendingOrders() string {
 func (m *UrlManager) GetOrder(orderSpecifier OrderSpecifier) string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders/" + orderSpecifier.String()
 }
-func (m *UrlManager) PutReplaceOrder() string {
-	return "" // todo
+func (m *UrlManager) PutReplaceOrder(orderSpecifier OrderSpecifier) string {
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders/" + orderSpecifier.String()
 }
 func (m *UrlManager) PutCancelOrder() string {
 	return "" // todo

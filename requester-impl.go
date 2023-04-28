@@ -261,7 +261,15 @@ func (r *HttpRequester) PutReplaceOrder(request PutReplaceOrderRequest) (*PutRep
 }
 
 func (r *HttpRequester) PutCancelOrder(request PutCancelOrderRequest) (*PutCancelOrderResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &PutCancelOrderResponse{}
+	requestUrl := r.UrlManager.PutCancelOrder(request.OrderSpecifier)
+	if err := HttpRequestWrapper(PUT, requestUrl, nil, response, r.Token); err != nil {
+		return nil, err
+	}
+	if response.ErrorCode != "" || response.ErrorMessage != "" {
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
+	return response, nil
 }
 
 func (r *HttpRequester) PutUpdateOrderClientExtensions(request PutUpdateOrderClientExtensionsRequest) (*PutUpdateOrderClientExtensionsResponse, error) {
@@ -320,7 +328,15 @@ func (r *HttpRequester) GetTrade(request GetTradeRequest) (*GetTradeResponse, er
 }
 
 func (r *HttpRequester) PutCloseTrade(request PutCloseTradeRequest) (*PutCloseTradeResponse, error) {
-	return nil, errors.New("not implemented yet")
+	response := &PutCloseTradeResponse{}
+	requestUrl := r.UrlManager.PutCloseTrade(request.TradeSpecifier)
+	if err := HttpRequestWrapper(PUT, requestUrl, nil, response, r.Token); err != nil {
+		return nil, err
+	}
+	if response.ErrorCode != "" || response.ErrorMessage != "" {
+		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+	}
+	return response, nil
 }
 
 func (r *HttpRequester) PutUpdateTradeClientExtensions(request PutUpdateTradeClientExtensionsRequest) (*PutUpdateTradeClientExtensionsResponse, error) {

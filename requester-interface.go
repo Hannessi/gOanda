@@ -299,9 +299,18 @@ func (p *PutReplaceRawOrderResponse) ToPutReplaceOrderResponse() PutReplaceOrder
 	}
 }
 
-type PutCancelOrderRequest struct{}
+type PutCancelOrderRequest struct {
+	OrderSpecifier OrderSpecifier
+}
 
-type PutCancelOrderResponse struct{}
+type PutCancelOrderResponse struct {
+	OrderCancelTransaction       OrderCancelTransaction       `json:"orderCancelTransaction"`
+	OrderCancelRejectTransaction OrderCancelRejectTransaction `json:"orderCancelRejectTransaction"`
+	RelatedTransactionIDs        []TransactionID              `json:"relatedTransactionIDs"`
+	LastTransactionID            TransactionID                `json:"lastTransactionID"`
+	ErrorCode                    string                       `json:"errorCode"`
+	ErrorMessage                 string                       `json:"errorMessage"`
+}
 
 type PutUpdateOrderClientExtensionsRequest struct{}
 

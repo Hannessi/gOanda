@@ -123,8 +123,8 @@ func (m *UrlManager) GetOrder(orderSpecifier OrderSpecifier) string {
 func (m *UrlManager) PutReplaceOrder(orderSpecifier OrderSpecifier) string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders/" + orderSpecifier.String()
 }
-func (m *UrlManager) PutCancelOrder() string {
-	return "" // todo
+func (m *UrlManager) PutCancelOrder(orderSpecifier OrderSpecifier) string {
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/order/" + orderSpecifier.String() + "/cancel"
 }
 func (m *UrlManager) PutUpdateOrderClientExtensions() string {
 	return "" // todo
@@ -181,9 +181,10 @@ type GetTradeRequestParameters struct {
 func (m *UrlManager) GetTrade(request GetTradeRequestParameters) string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/trades/" + request.TradeSpecifier.String()
 }
-func (m *UrlManager) PutCloseTrade() string {
-	return "" // todo
+func (m *UrlManager) PutCloseTrade(tradeSpecifier TradeSpecifier) string {
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/trades/" + tradeSpecifier.String() + "/close"
 }
+
 func (m *UrlManager) PutUpdateTradeClientExtensions() string {
 	return "" // todo
 }

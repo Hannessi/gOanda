@@ -142,8 +142,8 @@ func (c *Client) PutReplaceOrder(request PutReplaceOrderRequest) (*PutReplaceOrd
 	return response, nil
 }
 
-func (c *Client) PutCancelOrder() (*PutCancelOrderResponse, error) {
-	response, err := c.requester.PutCancelOrder(PutCancelOrderRequest{})
+func (c *Client) PutCancelOrder(request PutCancelOrderRequest) (*PutCancelOrderResponse, error) {
+	response, err := c.requester.PutCancelOrder(request)
 	if err != nil {
 		return nil, err
 	}
@@ -185,9 +185,7 @@ func (c *Client) GetTrade(request GetTradeRequest) (*GetTradeResponse, error) {
 }
 
 func (c *Client) PutCloseTrade(request PutCloseTradeRequest) (*PutCloseTradeResponse, error) {
-	putCloseTradeResponse, err := c.requester.PutCloseTrade(PutCloseTradeRequest{
-		TradeSpecifier: request.TradeSpecifier,
-	})
+	putCloseTradeResponse, err := c.requester.PutCloseTrade(request)
 	if err != nil {
 		return nil, err
 	}

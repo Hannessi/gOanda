@@ -124,7 +124,7 @@ func (m *UrlManager) PutReplaceOrder(orderSpecifier OrderSpecifier) string {
 	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders/" + orderSpecifier.String()
 }
 func (m *UrlManager) PutCancelOrder(orderSpecifier OrderSpecifier) string {
-	return m.BaseUrl + "/accounts/" + m.AccountId + "/order/" + orderSpecifier.String() + "/cancel"
+	return m.BaseUrl + "/accounts/" + m.AccountId + "/orders/" + orderSpecifier.String() + "/cancel"
 }
 func (m *UrlManager) PutUpdateOrderClientExtensions() string {
 	return "" // todo

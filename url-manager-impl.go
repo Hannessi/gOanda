@@ -160,7 +160,7 @@ func (m *UrlManager) GetTrades(request GetTradesRequestParameters) string {
 		additionalParameters = append(additionalParameters, "count="+strconv.FormatInt(request.Count, 10))
 	}
 	if request.BeforeID != "" {
-		additionalParameters = append(additionalParameters, "beforeID"+request.BeforeID.String())
+		additionalParameters = append(additionalParameters, "beforeID="+request.BeforeID.String())
 	}
 
 	if len(additionalParameters) > 0 {

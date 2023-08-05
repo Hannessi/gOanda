@@ -256,11 +256,11 @@ func (c *Client) GetTransactions() (*GetTransactionsResponse, error) {
 }
 
 func (c *Client) GetTransaction(request GetTransactionRequest) (*GetTransactionResponse, error) {
-	_, err := c.requester.GetTransaction(request)
+	response, err := c.requester.GetTransaction(request)
 	if err != nil {
 		return nil, err
 	}
-	return &GetTransactionResponse{}, nil
+	return response, nil
 }
 
 func (c *Client) GetRangeOfTransactions() (*GetRangeOfTransactionsResponse, error) {

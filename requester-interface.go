@@ -398,6 +398,25 @@ type GetTransactionRequest struct {
 	TransactionID TransactionID `json:"transactionID"`
 }
 
+type GetRawTransactionResponse struct {
+	Transaction       RawTransaction `json:"transaction"`
+	LastTransactionID TransactionID  `json:"lastTransactionID"`
+	ErrorCode         string         `json:"errorCode"`
+	ErrorMessage      string         `json:"errorMessage"`
+}
+
+func (g *GetRawTransactionResponse) Unmarshal() (*GetTransactionResponse, error) {
+	unmarshalledTransaction := g.Transaction.ToTransaction()
+
+	return &GetTransactionResponse{
+		Transaction:       unmarshalledTransaction,
+		LastTransactionID: g.LastTransactionID,
+		ErrorCode:         g.ErrorCode,
+		ErrorMessage:      g.ErrorMessage,
+	}, nil
+
+}
+
 type GetTransactionResponse struct {
 	Transaction       Transaction   `json:"transaction"`
 	LastTransactionID TransactionID `json:"lastTransactionID"`

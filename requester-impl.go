@@ -370,7 +370,7 @@ func (r *HttpRequester) GetTransactions(request GetTransactionsRequest) (*GetTra
 }
 
 func (r *HttpRequester) GetTransaction(request GetTransactionRequest) (*GetTransactionResponse, error) {
-	response := &GetTransactionResponse{}
+	response := &GetRawTransactionResponse{}
 	requestUrl := r.UrlManager.GetTransaction(GetTransactionParameters{
 		TransactionID: request.TransactionID,
 	})
@@ -378,11 +378,18 @@ func (r *HttpRequester) GetTransaction(request GetTransactionRequest) (*GetTrans
 	if err := HttpRequestWrapper(GET, requestUrl, nil, &response, r.Token); err != nil {
 		return nil, err
 	}
+
 	if response.ErrorCode != "" || response.ErrorMessage != "" {
-		return response, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
+		return nil, errors.New(response.ErrorCode + ": " + response.ErrorMessage)
 	}
 
-	return response, nil
+	unmarshalledResponse, err := response.Unmarshal()
+	if err != nil {
+		logrus.Error("Could not unmarshal transaction:", err.Error())
+		return nil, err
+	}
+
+	return unmarshalledResponse, nil
 }
 
 func (r *HttpRequester) GetRangeOfTransactions(request GetRangeOfTransactionsRequest) (*GetRangeOfTransactionsResponse, error) {

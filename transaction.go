@@ -63,30 +63,25 @@ func (t *RawTransaction) ToTransaction() Transaction {
 	switch t.Type {
 	case TRANSACTION_TYPE_CREATE_ACCOUNT:
 		//todo
-		return nil
 		return &CreateTransaction{
 			Type: t.Type,
 		}
 	case TRANSACTION_TYPE_CLOSE_ACCOUNT:
 		//todo
-		return nil
 		return &CloseTransaction{
 			Type: t.Type,
 		}
 	case TRANSACTION_TYPE_REOPEN_ACCOUNT:
 		//todo
-		return nil
 		return &ReopenTransaction{
 			Type: t.Type,
 		}
 	case TRANSACTION_TYPE_CLIENT_CONFIGURE:
-		return nil
 		return &ClientConfigureTransaction{
 			Type: t.Type,
 		}
 		//todo
 	case TRANSACTION_TYPE_CLIENT_CONFIGURE_REJECT:
-		return nil
 		return &ClientConfigureRejectTransaction{
 			Type: t.Type,
 		}
@@ -106,7 +101,6 @@ func (t *RawTransaction) ToTransaction() Transaction {
 			AccountBalance: t.AccountBalance,
 		}
 	case TRANSACTION_TYPE_TRANSFER_FUNDS_REJECT:
-		return nil
 		return &TransferFundsRejectTransaction{
 			Type: t.Type,
 		}
@@ -165,7 +159,6 @@ func (t *RawTransaction) ToTransaction() Transaction {
 			RejectReason:           TransactionRejectReason(t.RejectReason),
 		}
 	case TRANSACTION_TYPE_FIXED_PRICE_ORDER:
-		return nil
 		return &FixedPriceOrderTransaction{
 			Type: t.Type,
 		}
@@ -197,7 +190,6 @@ func (t *RawTransaction) ToTransaction() Transaction {
 			cancellingTransactionID:  t.CancellingTransactionID,
 		}
 	case TRANSACTION_TYPE_LIMIT_ORDER_REJECT:
-		return nil
 		return &LimitOrderRejectTransaction{
 			Type: t.Type,
 		}
@@ -257,13 +249,11 @@ func (t *RawTransaction) ToTransaction() Transaction {
 			RejectReason:             TransactionRejectReason(t.RejectReason),
 		}
 	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER:
-		return nil
 		//todo
 		return &MarketIfTouchedOrderTransaction{
 			Type: t.Type,
 		}
 	case TRANSACTION_TYPE_MARKET_IF_TOUCHED_ORDER_REJECT:
-		return nil
 		return &MarketIfTouchedOrderRejectTransaction{
 			Type: t.Type,
 		}

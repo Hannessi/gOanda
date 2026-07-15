@@ -17,6 +17,7 @@ type RawOrder struct {
 	Units                      DecimalNumber                `json:"units"`
 	Price                      PriceValue                   `json:"price"`
 	PriceBound                 PriceValue                   `json:"priceBound"`
+	InitialMarketPrice         PriceValue                   `json:"initialMarketPrice"`
 	TimeInForce                TimeInForce                  `json:"timeInForce"`
 	GtdTime                    DateTime                     `json:"gtdTime"`
 	PositionFill               OrderPositionFill            `json:"positionFill"`
@@ -131,6 +132,37 @@ func (o *RawOrder) ToOrder() (Order, error) {
 			TradeClosedIDs:          o.TradeClosedIDs,
 			CancellingTransactionID: o.CancellingTransactionID,
 			CancelledTime:           o.CancelledTime,
+		}, nil
+
+	case ORDER_TYPE_MARKET_IF_TOUCHED:
+		return &MarketIfTouchedOrder{
+			Id:                      o.Id,
+			CreateTime:              o.CreateTime,
+			State:                   o.State,
+			ClientExtensions:        o.ClientExtensions,
+			Type:                    o.Type,
+			Instrument:              o.Instrument,
+			Units:                   o.Units,
+			Price:                   o.Price,
+			PriceBound:              o.PriceBound,
+			TimeInForce:             o.TimeInForce,
+			GtdTime:                 o.GtdTime,
+			PositionFill:            o.PositionFill,
+			TriggerCondition:        o.TriggerCondition,
+			InitialMarketPrice:      o.InitialMarketPrice,
+			TakeProfitOnFill:        o.TakeProfitOnFill,
+			StopLossOnFill:          o.StopLossOnFill,
+			TrailingStopLossOnFill:  o.TrailingStopLossOnFill,
+			TradeClientExtensions:   o.TradeClientExtensions,
+			FillingTransactionID:    o.FillingTransactionID,
+			FilledTime:              o.FilledTime,
+			TradeOpenedID:           o.TradeOpenedID,
+			TradeReducedID:          o.TradeReducedID,
+			TradeClosedIDs:          o.TradeClosedIDs,
+			CancellingTransactionID: o.CancellingTransactionID,
+			CancelledTime:           o.CancelledTime,
+			ReplacesOrderID:         o.ReplacesOrderID,
+			ReplacedByOrderID:       o.ReplacedByOrderID,
 		}, nil
 
 	case ORDER_TYPE_TAKE_PROFIT:
